@@ -38,7 +38,10 @@ const Signup = () => {
     }
 
     setError('')
+    
     setMessage('Form validated (backend comes next)')
+    
+    console.log(form)
   }
 
    return (

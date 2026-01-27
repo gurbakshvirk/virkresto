@@ -1,4 +1,6 @@
 import AddToCartButton from './AddtoCartbtn'
+import { Link } from 'react-router-dom'
+
 
 const MenuPageCard = ({ items }) => {
   console.log(items)
@@ -12,12 +14,12 @@ const MenuPageCard = ({ items }) => {
             <h2 className="font-bold mt-4">{items.title}</h2>
             <p className="text-sm">₹ {items.price}</p>
             <div className="flex gap-3 mt-4">
-              <Link href={`/menu/${items.id}`}>
+              <Link to={`/menu/${items.id}`}>
                 <button className="px-3 py-1 bg-black text-white rounded">
                   View
                 </button>
               </Link>
-               <AddToCartButton item={items} />
+              <AddToCartButton item={items} />
 
             </div>
           </div>
