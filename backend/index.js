@@ -3,6 +3,8 @@ const app = express();
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const Authrouter = require('./Routes/AuthRouter');
+const ProductRouter = require('./Routes/ProductRouter');
+
 
 
 require('dotenv').config();
@@ -17,10 +19,13 @@ app.get('/hello', (req,res) => {
 
 
 app.use(bodyParser.json());
-app.use(cors())
+app.use(cors({
+    origin: process.env.FRONTEND, 
+    credentials: true,               
+  }))
 
 app.use('/auth' , Authrouter);
-app.use('/product' , Authrouter)
+app.use('/product' , ProductRouter)
 
 
 

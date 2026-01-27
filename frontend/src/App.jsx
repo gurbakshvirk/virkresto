@@ -7,6 +7,8 @@ import Signup from './pages/Sign-up';
 import CartPage from './pages/CartPage';
 import Pagenotfound from './pages/Pagenotfound';
 import SingleProductPage from './pages/Singleproduct';
+import Login from './pages/login';
+
 
 const App = () => {
   return (
@@ -19,6 +21,7 @@ const App = () => {
         <Route path="/menu" element={<Menu />} />
 
         <Route path="/sign-up" element={<Signup />} />
+        <Route path="/login" element={<Login />} />
 
         <Route path="/cart" element={<CartPage/>} />
 

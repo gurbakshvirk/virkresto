@@ -23,7 +23,7 @@ const signup = async (req, res) => {
     } catch (error) {
         res.status(500)
             .json({
-                message: "Internal server Error",
+                message: "Either username or email already exists",
                 success: false
             })
     }

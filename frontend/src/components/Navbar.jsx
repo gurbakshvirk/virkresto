@@ -27,6 +27,8 @@ const Navbar = () => {
                         <NavLink to="/menu" className={desktopLinkClass}>Menu</NavLink>
                         <NavLink to="/cart" className={desktopLinkClass}>Cart</NavLink>
                         <NavLink to="/sign-up" className={desktopLinkClass}>Sign-up</NavLink>
+                        <NavLink to="/login" className={desktopLinkClass}>Login</NavLink>
+
                     </div>
 
                     {/* Mobile Button */}
