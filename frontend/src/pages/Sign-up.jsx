@@ -62,7 +62,7 @@ const Signup = () => {
   // `${process.env.REACT_APP_API_URL}/api/auth/google`
 
   try {
-    const res = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/register`, {
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/auth/signup`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(form),
@@ -78,6 +78,7 @@ const Signup = () => {
 
     setMessage('Account created successfully')
     setError('')
+    
   } catch (err) {
     setError('Server error')
     console.log(err)
