@@ -2,8 +2,8 @@ import React, { useState } from 'react'
 
 const Signup = () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-  const passwordRegex =
-    /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&._-])[A-Za-z\d@$!%*?&._-]{8,}$/
+  // const passwordRegex =
+  //   /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&._-])[A-Za-z\d@$!%*?&._-]{8,}$/
 
   const [form, setForm] = useState({
     name: '',
@@ -51,15 +51,18 @@ const Signup = () => {
     return
   }
 
-  if (!passwordRegex.test(form.password)) {
-    setError(
-      'Password must be at least 8 characters, include uppercase, lowercase, number & special character'
-    )
-    return
-  }
+
+
+  // if (!passwordRegex.test(form.password)) {
+  //   setError(
+  //     'Password must be at least 8 characters, include uppercase, lowercase, number & special character'
+  //   )
+  //   return
+  // }
+  // `${process.env.REACT_APP_API_URL}/api/auth/google`
 
   try {
-    const res = await fetch('http://localhost:5000/api/signup', {
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/register`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(form),
@@ -77,6 +80,7 @@ const Signup = () => {
     setError('')
   } catch (err) {
     setError('Server error')
+    console.log(err)
   }
 }
 
@@ -166,7 +170,6 @@ const Signup = () => {
         </form>
       </div>
     </section>
-  )
-}   
+  )}   
 
 export default Signup
