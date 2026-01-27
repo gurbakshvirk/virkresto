@@ -19,7 +19,9 @@ app.get('/hello', (req,res) => {
 app.use(bodyParser.json());
 app.use(cors())
 
-app.use('/auth' , Authrouter)
+app.use('/auth' , Authrouter);
+app.use('/product' , Authrouter)
+
 
 
 app.listen(PORT,()=>{
