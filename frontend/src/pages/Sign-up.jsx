@@ -22,27 +22,64 @@ const Signup = () => {
     setForm({ ...form, [e.target.name]: e.target.value })
   }
 
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault()
+
+  //   if (!emailRegex.test(form.email)) {
+  //     setError('Please enter a valid email address')
+  //     return
+  //   }
+
+  //   if (!passwordRegex.test(form.password)) {
+  //     setError(
+  //       'Password must be at least 8 characters, include uppercase, lowercase, number & special character'
+  //     )
+  //     return
+  //   }
+
+  //   setError('')
+    
+  //   setMessage('Form validated (backend comes next)')
+
+  //   console.log(form)
+  // }
   const handleSubmit = async (e) => {
-    e.preventDefault()
+  e.preventDefault()
 
-    if (!emailRegex.test(form.email)) {
-      setError('Please enter a valid email address')
-      return
-    }
-
-    if (!passwordRegex.test(form.password)) {
-      setError(
-        'Password must be at least 8 characters, include uppercase, lowercase, number & special character'
-      )
-      return
-    }
-
-    setError('')
-    
-    setMessage('Form validated (backend comes next)')
-    
-    console.log(form)
+  if (!emailRegex.test(form.email)) {
+    setError('Please enter a valid email address')
+    return
   }
+
+  if (!passwordRegex.test(form.password)) {
+    setError(
+      'Password must be at least 8 characters, include uppercase, lowercase, number & special character'
+    )
+    return
+  }
+
+  try {
+    const res = await fetch('http://localhost:5000/api/signup', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(form),
+      credentials: 'include'
+    })
+
+    const data = await res.json()
+
+    if (!res.ok) {
+      setError(data.message || 'Signup failed')
+      return
+    }
+
+    setMessage('Account created successfully')
+    setError('')
+  } catch (err) {
+    setError('Server error')
+  }
+}
+
 
    return (
     <section className="min-h-screen flex items-center justify-center bg-white">
