@@ -2,33 +2,33 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const cookieParser = require('cookie-parser');
+
 const Authrouter = require('./Routes/AuthRouter');
 const ProductRouter = require('./Routes/ProductRouter');
 
-
-
 require('dotenv').config();
-require('./Models/db')
+require('./Models/db');
 
-const PORT = process.env.PORT || 5000
+const PORT = process.env.PORT || 5000;
 
-
-app.get('/hello', (req,res) => {
-    res.send('LAVI');
+app.get('/hello', (req, res) => {
+  res.send('LAVI');
 });
 
-
+// MIDDLEWARE
 app.use(bodyParser.json());
+app.use(cookieParser());
+
 app.use(cors({
-    origin: process.env.FRONTEND, 
-    credentials: true,               
-  }))
+  origin: process.env.FRONTEND,
+  credentials: true,
+}));
 
-app.use('/auth' , Authrouter);
-app.use('/product' , ProductRouter)
+// ROUTES
+app.use('/auth', Authrouter);
+app.use('/product', ProductRouter);
 
-
-
-app.listen(PORT,()=>{
-    console.log(`'SERVER IS RUNNING' ${PORT}`)
-})
+app.listen(PORT, () => {
+  console.log(`SERVER IS RUNNING ON PORT ${PORT}`);
+});

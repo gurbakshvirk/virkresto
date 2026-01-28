@@ -1,10 +1,13 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { ToastContainer, toast } from 'react-toastify'
+import { toast } from 'react-toastify'
+import { useAuth } from '../context/authcontext'
 import 'react-toastify/dist/ReactToastify.css'
 
 const Login = () => {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
+  const { login } = useAuth()
+
   const [form, setForm] = useState({
     email: '',
     password: ''
@@ -35,15 +38,17 @@ const Login = () => {
         return
       }
 
+      // ✅ THIS IS THE KEY FIX
+      login({
+        token: data.jwttoken,
+        username: data.name,
+        role: data.role
+      })
+
       toast.success('Logged in successfully')
       setForm({ email: '', password: '' })
-      const interval = 2000;
-      setTimeout(() => {
-        navigate('/')
-      }, 2000)
 
-
-
+      navigate('/')
     } catch (err) {
       toast.error('Server error')
       console.error(err)
@@ -84,8 +89,6 @@ const Login = () => {
             Login
           </button>
         </form>
-
-        {/* <ToastContainer position="top-right" autoClose={3000} /> */}
       </div>
     </section>
   )

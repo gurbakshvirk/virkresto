@@ -43,22 +43,29 @@ const login = async (req, res) => {
 
         }
         const isPassequal = await bcrypt.compare(password, user.password);
-        if(!isPassequal){
+        if (!isPassequal) {
             return res.status(403)
                 .json({ message: errmsg, success: false });
         }
 
-        const jwttoken = jwt.sign({email:user.email, _id:user._id},
-            process.env.JWT_SECRET, 
-            {expiresIn: '24h'}
-        )
+        const jwttoken = jwt.sign({ email: user.email, _id: user._id, role: user.role },
+            process.env.JWT_SECRET,
+            { expiresIn: '24h' }
+        );
+        res.cookie('token', jwttoken, {
+            httpOnly: true,
+            sameSite: 'lax',
+            secure: false, // true only in HTTPS
+            maxAge: 24 * 60 * 60 * 1000
+        });
         res.status(200)
             .json({
                 message: "Login Successfully",
                 success: true,
                 jwttoken,
                 email,
-                name:user.name
+                name: user.name,
+                role: user.role,
             })
     } catch (error) {
         res.status(500)
@@ -68,8 +75,6 @@ const login = async (req, res) => {
             })
     }
 }
-
-
 module.exports = {
     signup,
     login

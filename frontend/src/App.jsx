@@ -12,7 +12,7 @@ import Login from './pages/login';
 
 const App = () => {
   return (
-    <BrowserRouter>
+    <>
     <div className='bg-red-300'>
       <Navbar /> 
       <div className='mt-30'>
@@ -41,7 +41,7 @@ const App = () => {
       </div>
       <Footer/>
       </div>
-    </BrowserRouter>
+    </>
   )
 }
 
