@@ -25,7 +25,7 @@ const Navbar = () => {
                     </div>
 
                     {/* Desktop Menu */}
-                    <div className="hidden md:flex items-center space-x-6 font-black text-white">
+                    <div className="hidden  md:flex items-center space-x-6 font-black text-white">
                         <NavLink to="/" className={desktopLinkClass}>Home</NavLink>
                         <NavLink to="/about" className={desktopLinkClass}>About</NavLink>
                         <NavLink to="/reservation" className={desktopLinkClass}>Reservations</NavLink>

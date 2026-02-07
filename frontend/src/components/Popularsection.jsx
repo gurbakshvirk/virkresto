@@ -1,5 +1,13 @@
 import React from 'react'
 import PopularCard from './PopularCard'
+import { Navigation, Pagination } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+import { Swiper, SwiperSlide } from 'swiper/react'
+
+
+
 
 const PopularSection = () => {
 
@@ -24,40 +32,83 @@ const PopularSection = () => {
             image: "https://images.unsplash.com/photo-1525755662778-989d0524087e",
             description: "Creamy pasta tossed with herbs and parmesan"
         },
-        // {
-        //     id: 4,
-        //     title: "Fries",
-        //     image: "https://images.unsplash.com/photo-1573080496219-bb080dd4f877",
-        //     description: "Crispy golden fries with house seasoning"
-        // },
-        // {
-        //     id: 5,
-        //     title: "Sandwich",
-        //     image: "https://images.unsplash.com/photo-1528735602780-2552fd46c7af",
-        //     description: "Toasted sandwich packed with fresh fillings"
-        // }
+        {
+            id: 4,
+            title: "Fries",
+            image: "https://images.unsplash.com/photo-1573080496219-bb080dd4f877",
+            description: "Crispy golden fries with house seasoning"
+        },
+        {
+            id: 5,
+            title: "Sandwich",
+            image: "https://images.unsplash.com/photo-1528735602780-2552fd46c7af",
+            description: "Toasted sandwich packed with fresh fillings"
+        }
     ]
     return (
-        <div className='p-16 mt-10 '>
-            <div className='my-20 text-center'>
-            <h1 className= ' text-black text-4xl md:text-5xl font-bold'>Popular Dishes</h1>
+        <div className='px-2 md:px-20 p-10 mt-10   '>
+            <div className='my-10 p-10 text-center md:mx-20'>
+                <h1 className=' text-black text-4xl md:text-6xl font-bold'>Popular</h1>
+                <div className='border-2 border-yellow-300 w-24 mx-auto mt-4'></div>
+            </div>
+
+
+
+            {/* <div className='items-center'>
+                <div className="flex gap-10 overflow-x-auto md:px-20 snap-x snap-mandatory ">
+                    {PopularItems.map((item) => (
+                        <div key={item.id} className="snap-start">
+                            <PopularCard title={item.title} image={item.image} />
+                        </div>
+                    ))}
+                </div>
+            </div> */}
+              <Swiper className=''
+        modules={[Navigation, Pagination]}
+        navigation
+        // pagination={{ clickable: true }} 
+        spaceBetween={0}
+        slidesPerView={1}
+        breakpoints={{
+          640: { slidesPerView: 2 },
+          1024: { slidesPerView: 4 },
+        }}
+      >
+
+
+ <div className='items-center  '>
+                <div 
+                // className="flex gap-10 overflow-x-auto md:px-20 snap-x snap-mandatory "
+                >
+        {PopularItems.map(item => (
+          <SwiperSlide className='px-6 ' key={item.id}>
+            <PopularCard title={item.title} image={item.image}  />
+          </SwiperSlide>
+        ))}
+        </div>
 </div>
+      </Swiper>
 
 
 
-<div className='items-center'>
-            <div className="flex gap-10 overflow-x-auto px-6 md:px-20 snap-x snap-mandatory ">
-                {PopularItems.map((item) => (
-                    <div key={item.id} className="snap-start">
-                        <PopularCard title={item.title} image={item.image} />
-                    </div>
-                ))}
-            </div>
-            </div>
 
             {/* <PopularCard image={""} title={""} /> */}
+        
+        
+                {/* <div className='border-2 border-yellow-300 w-80% mx-auto mt-4'></div> */}
+        
         </div>
+        
     )
 }
 
 export default PopularSection
+
+
+// const PopularSection = () => {
+//   return (
+//     <div className="w-full py-10">
+    
+//     </div>
+//   )
+// }

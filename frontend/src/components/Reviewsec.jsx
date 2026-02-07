@@ -74,14 +74,8 @@ const reviews = [
     product: "Chef’s Special",
   },
 ]
-
-
-
-
-
-
   return (
-    <section className="bg-white/90 py-20 m-20 rounded-4xl">
+    <section className="bg-white/90 h-screen  rounded-4xl">
 
       {/* Heading */}
       <div className="mb-12 text-center">

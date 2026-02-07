@@ -1,16 +1,16 @@
 const OurChefs = () => {
   return (
-    <section className="bg-black/25 py-24">
-      <div className="mx-auto flex max-w-7xl items-center gap-16 px-10">
+    <section className="my-10 py-10 border-b-2 border-yellow-300">
+      <div className="mx-auto flex max-w-7xl px-10 flex-col md:flex-row gap-8 justify-between md:items-center">
 
         {/* Left Content */}
-        <div className="w-1/2 text-white">
-          <h2 className="text-5xl font-bold leading-tight">
+        <div className=" text-black">
+          <h2 className="text-4xl font-bold leading-tight">
             We are more than <br />
             <span className="text-amber-400">Multiple Services</span>
           </h2>
 
-          <ul className="mt-8 space-y-4 text-xl text-gray-300">
+          <ul className="mt-6 space-y-4 text-xl md:text-2xl text-black/80">
             <li>• Online Ordering</li>
             <li>• Table Reservations</li>
             <li>• Takeaway & Delivery</li>
@@ -22,11 +22,11 @@ const OurChefs = () => {
         </div>
 
         {/* Right Image */}
-        <div className="relative w-1/2 overflow-hidden rounded-3xl">
+        <div className="relative overflow-hidden rounded-3xl">
           <img
             src="https://img.freepik.com/free-photo/chef-cooking-kitchen-while-wearing-professional-attire_23-2151208316.jpg"
             alt="Our Chefs"
-            className="h-[480px] w-full object-cover"
+            className=" md:h-[480px] w-full object-cover"
           />
         </div>
 

@@ -11,8 +11,9 @@ const Homepage = () => {
     <div>
       <Hero/>
       <PopularSection/>
-      {/* <MenuSection/> */}
       <BookTablesec/>
+      <MenuSection/>
+
       <OurChefs/>
       <ReviewSec/>
       

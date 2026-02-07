@@ -1,7 +1,7 @@
 
 const PopularCard = (props) => {
     return (
-        <div className="group relative h-96 w-80 overflow-hidden rounded-4xl border border-white/20 bg-black shadow-lg">
+        <div className="group relative h-96 w-80 overflow-hidden rounded-tr-2xl rounded-bl-2xl bg-black shadow-lg">
             {/* Image */}
             <img
                 src={props.image}
@@ -15,7 +15,7 @@ const PopularCard = (props) => {
             {/* Content */}
             <div className="absolute inset-0 z-10 flex flex-col justify-end p-6">
 
-                <h3 className="text-2xl font-bold text-white">
+                <h3 className="text-3xl font-bold text-white">
                     {props.title}
                 </h3>
 
@@ -23,7 +23,10 @@ const PopularCard = (props) => {
           Juicy patty, fresh veggies & signature sauce
         </p> */}
 
-                <button className="mt-4 w-fit rounded-full border border-white px-6 py-2 text-white transition">Explore
+                <button className="mt-4 w-fit rounded-full bg-yellow-400 border border-white px-6 py-2 hover:bg-yellow-800 hover:scale-110 text-white transition">
+            {/* <button className=" text-white rounded-full bg-yellow-400 px-6 py-3 font-semibold hover:bg-yellow-800 hover:scale-110 transition"> */}
+                    
+                    Explore
                 </button>
 
             </div>

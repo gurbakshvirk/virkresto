@@ -13,7 +13,7 @@ import Login from './pages/login';
 const App = () => {
   return (
     <>
-    <div className='bg-red-300'>
+    <div className=''>
       <Navbar /> 
       <div className='mt-30'>
       <Routes>
