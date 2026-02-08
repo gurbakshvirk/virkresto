@@ -10,19 +10,19 @@ shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 shado
 
 
       <div className="text-center w-full">
-      <img
-        src={item.image}
-        alt={item.title}
-        className="h-[320px] md:h-64 object-cover"
-      />
+        <img
+          src={item.image}
+          alt={item.title}
+          className="h-[320px] md:h-64 object-cover"
+        />
       </div>
 
       {/* <h2 className="text-md md:text-xl font-semibold my-2">
         {item.title}
       </h2> */}
       <h2 className="text-md md:text-md font-semibold my-2 line-clamp-2 min-h-[3.5rem]">
-  {item.title}
-</h2>
+        {item.title}
+      </h2>
 
 
       <p className=" text-md text-black">₹ {item.price}</p>

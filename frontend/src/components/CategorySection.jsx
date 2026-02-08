@@ -1,19 +1,10 @@
 import React from 'react'
-import PopularCard from './PopularCard'
-import { Navigation, Pagination } from 'swiper/modules';
-import 'swiper/css';
-import 'swiper/css/navigation';
-import 'swiper/css/pagination';
-import { Swiper, SwiperSlide } from 'swiper/react'
+import CategoryCard from './CategoryCard'
+
+const CategorySection = () => {
 
 
-
-
-const PopularSection = () => {
-
-
-
-    const PopularItems = [
+    const Categories = [
         {
             id: 1,
             title: "Burger",
@@ -46,69 +37,24 @@ const PopularSection = () => {
         }
     ]
     return (
-        <div className=' py-20 px-2 md:px-20 p-10 mt-10   '>
-            <div className='my-10 text-center md:mx-20'>
-                <h1 className=' text-black text-4xl md:text-6xl font-bold'>Popular</h1>
+        <div className='my-10'>
+            <div className='text-center md:mx-20 '>
+                <h1 className=' text-black text-4xl md:text-6xl font-bold'>Categories</h1>
+
+
                 <div className='border-2 border-yellow-300 w-24 mx-auto mt-4'></div>
             </div>
+            <div className="flex flex-wrap m-4 mx-auto justify-center    md:justify-center">
+            {Categories.map(item => (
 
-
-
-            {/* <div className='items-center'>
-                <div className="flex gap-10 overflow-x-auto md:px-20 snap-x snap-mandatory ">
-                    {PopularItems.map((item) => (
-                        <div key={item.id} className="snap-start">
-                            <PopularCard title={item.title} image={item.image} />
-                        </div>
-                    ))}
+                <div className="m-8 md:m-8 ">
+                <CategoryCard title={item.title} image={item.image} id={item.id} />
                 </div>
-            </div> */}
-              <Swiper className=''
-        modules={[Navigation, Pagination]}
-        navigation
-        // pagination={{ clickable: true }} 
-        spaceBetween={0}
-        slidesPerView={1}
-        breakpoints={{
-          640: { slidesPerView: 2 },
-          1024: { slidesPerView: 4 },
-        }}
-      >
-
-
- <div className='items-center  '>
-                <div 
-                // className="flex gap-10 overflow-x-auto md:px-20 snap-x snap-mandatory "
-                >
-        {PopularItems.map(item => (
-          <SwiperSlide className='px-6 ' key={item.id}>
-            <PopularCard title={item.title} image={item.image}  />
-          </SwiperSlide>
-        ))}
+            ))}
+            </div>
         </div>
-</div>
-      </Swiper>
 
-
-
-
-            {/* <PopularCard image={""} title={""} /> */}
-        
-        
-                {/* <div className='border-2 border-yellow-300 w-80% mx-auto mt-4'></div> */}
-        
-        </div>
-        
     )
 }
 
-export default PopularSection
-
-
-// const PopularSection = () => {
-//   return (
-//     <div className="w-full py-10">
-    
-//     </div>
-//   )
-// }
+export default CategorySection
