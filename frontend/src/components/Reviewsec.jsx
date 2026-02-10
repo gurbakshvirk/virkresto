@@ -24,7 +24,7 @@ useEffect(() => {
       {
         scaleX: 0.10,
         scaleY: 0.95,
-        opacity: 0,
+        opacity: 0.5,
         transformOrigin: "center center",
       },
       {
@@ -37,7 +37,7 @@ useEffect(() => {
           start: "top 50%",
           end: "top 0%",
           scrub: 2,
-          markers: true,
+          // markers: true,
         },
       }
     );
@@ -146,7 +146,7 @@ useEffect(() => {
         </div>
 
         {/* Cards */}
-        <div  ref={sectionref}  className="flex gap-8 overflow-x-auto px-6 md:justify-center">
+        <div  ref={sectionref}  className="flex gap-8 overflow-x-auto md:justify-center">
           {reviews.map((review) => (
             <ReviewCard key={review.id} {...review} />
           ))}

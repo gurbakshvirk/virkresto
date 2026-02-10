@@ -8,6 +8,7 @@ import ReviewSec from '../components/Reviewsec'
 import CategorySection from '../components/CategorySection'
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { gsap } from "gsap";
+import TextSec from '../components/TextSec'
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -55,6 +56,7 @@ const Homepage = () => {
     <div className=''  ref={mainRef}>
       
       <Hero  />
+      <TextSec/>
 
       <PopularSection/>
 

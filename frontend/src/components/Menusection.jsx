@@ -64,7 +64,7 @@ const MenuSection = () => {
       scrollTrigger: {
         trigger: sectionRef.current,
         start: "top 0%",
-        end: "bottom 0%",        // total pinned scroll distance
+        end: "bottom 40%",        // total pinned scroll distance
         scrub: true,
         pin: true,
         pinSpacing: true,
@@ -73,27 +73,27 @@ const MenuSection = () => {
     });
 
     // PHASE 1 → section fully enters viewport
-    tl.fromTo(
-      sectionRef.current,
-      {
-        scale: 0.9,
-        opacity: 0,
-        borderRadius: "25%",
-      },
-      {
-        scale: 1,
-        opacity: 1,
-        duration: 0.3,       // 30% of scroll
-        ease: "none",
-          borderRadius: "0%",
-      }
-    );
+      // tl.fromTo(
+      //   sectionRef.current,
+      //   {
+      //     scale: 1,
+      //     opacity: 1,
+      //     borderRadius: "25%",
+      //   },
+      //   {
+      //     scale: 1,
+      //     opacity: 1,
+      //     duration: 0.3,      
+      //     ease: "none",
+      //       borderRadius: "0%",
+      //   }
+      // );
 
     // PHASE 2 → stay stable
     tl.to(sectionRef.current, {
       scale: 1,
       opacity: 1,
-      duration: 0.4,        // 40% hold
+      duration: 0.1,        // 40% hold
       ease: "none",
         borderRadius: "0%",
     });
@@ -102,9 +102,10 @@ const MenuSection = () => {
     tl.to(sectionRef.current, {
       opacity: 0.8  ,
       scale: 1,
-      duration: 0.2,        // last 30%
+      duration: 0.1,        // last 30%
       ease: "none",
         borderRadius: "25%",
+
     });
 
   }, sectionRef);
@@ -119,7 +120,7 @@ const MenuSection = () => {
     {/* <section  ref={sectionRef} className="py-12 md:h-screen bg-linear-to-r from-yellow-300 via-yellow-200 to-gray-100 border-b-2 border-yellow-300"> */}
       <section
   ref={sectionRef}
-  className="py-12 md:h-screen overflow-hidden bg-linear-to-r from-yellow-300 via-yellow-200 to-gray-100 border-b-2 border-yellow-300"
+  className="py-12 h-[90vh] md:h-screen overflow-hidden bg-linear-to-r from-yellow-300 via-yellow-200 to-gray-100 border-b-2 border-yellow-300"
 >
 
       <div className=" text-center">
