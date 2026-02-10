@@ -1,15 +1,53 @@
-import React from 'react'
+import React, { useEffect , useRef } from 'react'
 import PopularCard from './PopularCard'
 import { Navigation, Pagination } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import { Swiper, SwiperSlide } from 'swiper/react'
-
-
-
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { gsap } from "gsap";
+gsap.registerPlugin(ScrollTrigger);
 
 const PopularSection = () => {
+    const headingText = useRef(null);
+    const mainRef = useRef(null);
+    const cardsSec = useRef(null);
+
+    useEffect(() => {
+            gsap.fromTo(headingText.current ,  {
+                scale: 0.8,
+                opacity: 0,
+            }, {
+                scale: 1,
+                opacity: 1,
+                duration: 1,
+                scrollTrigger: {
+                    trigger: mainRef.current,
+                    start: "-60% 40%",
+                    end: "bottom 65%",
+                    scrub: 1,
+                    // markers: true,  
+                }
+            });
+            gsap.fromTo(cardsSec.current, {
+                scale: 0.8,
+                opacity: 0,
+            }, {
+               scale: 1,
+                opacity: 1,
+                duration: 1,
+                scrollTrigger: {
+                    trigger: mainRef.current,
+                    start: "0% 60%",
+                    end: "bottom 100%",
+                    scrub: 1,
+                    // markers: true,
+                }
+            });
+
+    }, [])
+
 
 
 
@@ -46,9 +84,9 @@ const PopularSection = () => {
         }
     ]
     return (
-        <div className=' py-20 px-2 md:px-20 p-10 mt-10   '>
-            <div className='my-10 text-center md:mx-20'>
-                <h1 className=' text-black text-4xl md:text-6xl font-bold'>Popular</h1>
+        <div  ref={mainRef} className=' px-2 md:px-20 p-10   '>
+            <div ref={headingText} className='my-10 text-center md:mx-20'>
+                <h1  className=' text-black text-4xl md:text-6xl font-bold'>Popular</h1>
                 <div className='border-2 border-yellow-300 w-24 mx-auto mt-4'></div>
             </div>
 
@@ -63,6 +101,10 @@ const PopularSection = () => {
                     ))}
                 </div>
             </div> */}
+
+
+
+            <div  ref={cardsSec}>
               <Swiper className=''
         modules={[Navigation, Pagination]}
         navigation
@@ -77,7 +119,7 @@ const PopularSection = () => {
 
 
  <div className='items-center  '>
-                <div 
+                <div
                 // className="flex gap-10 overflow-x-auto md:px-20 snap-x snap-mandatory "
                 >
         {PopularItems.map(item => (
@@ -88,6 +130,7 @@ const PopularSection = () => {
         </div>
 </div>
       </Swiper>
+      </div>
 
 
 

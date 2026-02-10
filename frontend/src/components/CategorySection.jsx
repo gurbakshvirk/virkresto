@@ -1,5 +1,10 @@
 import React from 'react'
 import CategoryCard from './CategoryCard'
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { gsap } from "gsap";
+
+gsap.registerPlugin(ScrollTrigger);
+
 
 const CategorySection = () => {
 
