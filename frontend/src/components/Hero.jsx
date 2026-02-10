@@ -49,7 +49,7 @@ gsap.to(heroRefImg.current, {
     trigger: heroRef.current,
     start: "top 0%",
     end:  "bottom 30%",
-    scrub: true,
+    scrub: 3,
     // markers: true,
   },
 });

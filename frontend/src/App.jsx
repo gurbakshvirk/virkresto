@@ -23,7 +23,7 @@ const App = () => {
   // const lenisRef = useRef()
 useEffect(() => {
   const lenis = new Lenis({
-    duration: 1.2,
+    duration: 1.5,
     smooth: true,
     smoothTouch: false,
     easing: (t) => 1 - Math.pow(1 - t, 4),

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 import CategoryCard from './CategoryCard'
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { gsap } from "gsap";
@@ -7,6 +7,45 @@ gsap.registerPlugin(ScrollTrigger);
 
 
 const CategorySection = () => {
+
+
+
+    const Mainref = useRef(null);
+    const sectionRef = useRef(null);
+    //   const rightRef = useRef(null);
+    //   const heroRefImg = useRef(null);
+
+
+
+
+    useEffect(() => {
+        const ctx = gsap.context(() => {
+            gsap.fromTo(
+                sectionRef.current,
+                {
+                    scale: 1.02,
+                    opacity: 1,
+                    transformOrigin: "center center",
+                },
+                {
+                    scale: 0.9,
+                    opacity: 0.5,
+                    ease: "none",
+                    scrollTrigger: {
+                        trigger: sectionRef.current, // SAME element
+                        start: "10% 15%",
+                        end: "bottom 0%",                // scroll distance
+                        scrub: true,
+                        pin: true,
+                        pinSpacing: false,     
+                        // markers: true,
+                    },
+                }
+            );
+        }, sectionRef);
+
+        return () => ctx.revert();
+    }, []);
 
 
     const Categories = [
@@ -42,23 +81,24 @@ const CategorySection = () => {
         }
     ]
     return (
-        <div className='my-10'>
-            <div className='text-center md:mx-20 '>
-                <h1 className=' text-black text-4xl md:text-6xl font-bold'>Categories</h1>
+        <div ref={Mainref}>
+            <div className='my-10' ref={sectionRef}>
+                <div className='text-center md:mx-20 '>
+                    <h1 className=' text-black text-4xl md:text-6xl font-bold'>Categories</h1>
 
 
-                <div className='border-2 border-yellow-300 w-24 mx-auto mt-4'></div>
-            </div>
-            <div className="flex flex-wrap m-4 mx-auto justify-center    md:justify-center">
-            {Categories.map(item => (
-
-                <div className="m-8 md:m-8 ">
-                <CategoryCard title={item.title} image={item.image} id={item.id} />
+                    <div className='border-2 border-yellow-300 w-24 mx-auto mt-4'></div>
                 </div>
-            ))}
+                <div className="flex flex-wrap m-4 mx-auto justify-center    md:justify-center">
+                    {Categories.map(item => (
+
+                        <div className="m-8 md:m-8 ">
+                            <CategoryCard title={item.title} image={item.image} id={item.id} />
+                        </div>
+                    ))}
+                </div>
             </div>
         </div>
-
     )
 }
 
