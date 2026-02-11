@@ -91,6 +91,8 @@
 // }
 
 // export default OurChefs
+
+
 import React, { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -106,26 +108,41 @@ const OurChefs = () => {
     const ctx = gsap.context(() => {
 
       // SECTION animation
+      // gsap.fromTo(
+      //   sectionRef.current,
+      //   {
+      //     y: -40,
+      //     scale: 1,
+      //     opacity: 1,
+      //   },
+      //   {
+      //     y: 40,
+      //     scale: 0.95,
+      //     opacity: 0.9,
+      //     scrollTrigger: {
+      //       trigger: mainRef.current,
+      //       start: "top 10%",
+      //       end: "bottom 65%",
+      //       scrub: 1,
+      //       // markers: true,
+      //     },
+      //   }
+      // );
       gsap.fromTo(
-        sectionRef.current,
-        {
-          y: -40,
-          scale: 1,
-          opacity: 1,
-        },
-        {
-          y: 40,
-          scale: 0.95,
-          opacity: 0.9,
-          scrollTrigger: {
-            trigger: mainRef.current,
-            start: "top 10%",
-            end: "bottom 65%",
-            scrub: 1,
-            // markers: true,
-          },
-        }
-      );
+  sectionRef.current,
+  { y:150 },
+  {
+    y: 0,
+    scrollTrigger: {
+      trigger: sectionRef.current,
+      start: "top 80%",
+      end: "top 20%",
+      // markers: true,
+      scrub: true,
+    }
+  }
+);
+
 
       // LEFT CONTENT parallax
       gsap.to(leftRef.current, {
@@ -144,12 +161,19 @@ const OurChefs = () => {
     return () => ctx.revert();
   }, []);
 
+
+  
   return (
     <div ref={mainRef}>
-      <section
+      {/* <section
         ref={sectionRef}
         className="my-10 py-10 border-b-2 border-yellow-300"
-      >
+      > */}
+      <section
+  ref={sectionRef}
+  className="relative z-20 -mt-32 my-10 py-20 bg-white rounded-t-[60px]"
+>
+
         <div className="mx-auto flex max-w-7xl px-10 flex-col md:flex-row gap-8 justify-between md:items-center">
 
           {/* Left Content */}

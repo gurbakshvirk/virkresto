@@ -10,6 +10,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { gsap } from "gsap";
 import TextSec from '../components/TextSec'
 import Testimonials from '../components/Testimonials'
+import Allproducts from '../components/Allproducts'
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -67,11 +68,12 @@ const Homepage = () => {
 <div ref={catRef}>
       <CategorySection />
 </div>
+<Allproducts/>
       <MenuSection/>
 
       <OurChefs/>
       <Testimonials/>
-      {/* <ReviewSec/> */}
+      <ReviewSec/>
     </div>
   )
 }

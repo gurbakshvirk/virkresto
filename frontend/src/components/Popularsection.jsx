@@ -26,12 +26,12 @@ const PopularSection = () => {
                     trigger: mainRef.current,
                     start: "-60% 40%",
                     end: "bottom 65%",
-                    scrub: 1,
+                    scrub: 2,
                     // markers: true,  
                 }
             });
             gsap.fromTo(cardsSec.current, {
-                scale: 0.8,
+                scale: 0.7,
                 opacity: 0,
             }, {
                scale: 1,
@@ -84,8 +84,14 @@ const PopularSection = () => {
         }
     ]
     return (
-        <div  ref={mainRef} className=' px-2 md:px-20 p-10   '>
-            <div ref={headingText} className='my-10 text-center md:mx-20'>
+        // <div  ref={mainRef} className=' px-2 md:px-20 p-10   '>
+        <div
+  ref={mainRef}
+  className="relative z-10 px-2 md:px-20 p-20 bg-white"
+>
+            <div 
+            // ref={headingText}
+            className='my-10 text-center md:mx-20'>
                 <h1  className=' text-black text-4xl md:text-6xl font-bold'>Popular</h1>
                 <div className='border-2 border-yellow-300 w-24 mx-auto mt-4'></div>
             </div>

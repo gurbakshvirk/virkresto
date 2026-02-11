@@ -12,6 +12,7 @@ const CategorySection = () => {
 
     const Mainref = useRef(null);
     const sectionRef = useRef(null);
+    const cardsRef = useRef([null]);
     //   const rightRef = useRef(null);
     //   const heroRefImg = useRef(null);
 
@@ -47,43 +48,97 @@ const CategorySection = () => {
     //     return () => ctx.revert();
     // }, []);
 
- useEffect(() => {
+//  useEffect(() => {
+//   const ctx = gsap.context(() => {
+//     const section = sectionRef.current;
+//     const anim = section.querySelector(".category-anim");
+
+//     const contentHeight = anim.scrollHeight;
+//     const vh = window.innerHeight;
+
+//     // scroll duration (height-aware)
+//     const scrollLen = contentHeight + vh * 0.5;
+
+//     // convert 35% viewport to px (CORRECT way)
+//     const startPx = vh * 0.75;
+
+//     // REQUIRED when pinSpacing is false
+//     gsap.set(section, {
+//       paddingBottom: scrollLen,
+//     });
+
+//     gsap.to(anim, {
+//       y: -100,
+//       opacity: 0.2,
+//       ease: "none",
+//       scrollTrigger: {
+//         trigger: section,
+//         start: () => `top+=${startPx} top`,
+//         end: () => `+=${scrollLen}`,
+//         scrub: true,
+//         pin: true,
+//         pinSpacing: false,
+//         // markers: true,
+//       },
+//     });
+//   }, sectionRef);
+
+//   return () => ctx.revert();
+// }, []);
+useEffect(() => {
   const ctx = gsap.context(() => {
-    const section = sectionRef.current;
-    const anim = section.querySelector(".category-anim");
 
-    const contentHeight = anim.scrollHeight;
-    const vh = window.innerHeight;
-
-    // scroll duration (height-aware)
-    const scrollLen = contentHeight + vh * 0.5;
-
-    // convert 35% viewport to px (CORRECT way)
-    const startPx = vh * 0.75;
-
-    // REQUIRED when pinSpacing is false
-    gsap.set(section, {
-      paddingBottom: scrollLen,
-    });
-
-    gsap.to(anim, {
-      y: -100,
-      opacity: 0.2,
-      ease: "none",
+    gsap.from(".category-anim > div", {
+      y: 80,
+      opacity: 0,
+      duration: 1,
+      ease: "power3.out",
+      stagger: 0.1,
       scrollTrigger: {
-        trigger: section,
-        start: () => `top+=${startPx} top`,
-        end: () => `+=${scrollLen}`,
-        scrub: true,
-        pin: true,
-        pinSpacing: false,
+        trigger: sectionRef.current,
+        start: "top 80%",
+        end: "bottom 20%",
+        toggleActions: "play none none reverse",
         // markers: true,
       },
+    });
+      const cards = gsap.utils.toArray(".category-card");
+
+    // Entrance animation (keep this)
+    gsap.from(cards, {
+      y: 80,
+      opacity: 0,
+      duration: 1,
+      stagger: 0.1,
+      ease: "power3.out",
+      scrollTrigger: {
+        trigger: sectionRef.current,
+        start: "top 80%",
+        toggleActions: "play none none reverse",
+      },
+    });
+    cards.forEach((e) => {
+      gsap.fromTo(e,
+        { scale: 1 },
+        {
+          scale: 0.8,
+          ease: "none",
+          scrollTrigger: {
+            trigger: e,              // IMPORTANT
+            start: "top 10%",           // when THIS card hits 10%
+            end: "top 0%",              // until it leaves top
+            scrub: true,
+            // markers: true,
+          },
+        }
+      );
     });
   }, sectionRef);
 
   return () => ctx.revert();
 }, []);
+
+
 
 
 
@@ -152,18 +207,7 @@ const CategorySection = () => {
             image: "https://images.unsplash.com/photo-1525755662778-989d0524087e",
             description: "Creamy pasta tossed with herbs and parmesan"
         },
-        {
-            id: 4,
-            title: "Fries",
-            image: "https://images.unsplash.com/photo-1573080496219-bb080dd4f877",
-            description: "Crispy golden fries with house seasoning"
-        },
-        {
-            id: 5,
-            title: "Sandwich",
-            image: "https://images.unsplash.com/photo-1528735602780-2552fd46c7af",
-            description: "Toasted sandwich packed with fresh fillings"
-        },
+        
         
         
         
@@ -190,7 +234,7 @@ const CategorySection = () => {
 
         <div ref={Mainref}>
   {/* PIN ONLY */}
-  <div ref={sectionRef} className="relative min-h-screen overflow-hidden">
+  <div ref={sectionRef} className="relative">
 
     {/* ANIMATE ONLY THIS */}
     <div className="category-anim my-10">
@@ -203,7 +247,7 @@ const CategorySection = () => {
 
       <div className="flex flex-wrap m-4 mx-auto justify-center">
         {Categories.map((item, i) => (
-          <div key={i} className="m-8">
+          <div key={i} className="m-8 category-card">
             <CategoryCard
               title={item.title}
               image={item.image}

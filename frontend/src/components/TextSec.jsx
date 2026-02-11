@@ -16,12 +16,11 @@ const TextSec = () => {
         scrollTrigger: {
           trigger: sectionRef.current,
           start: "top top",
-          end: "+=150%",
+          end: "bottom 40%",
         //   end: "top 20% ",
-
           scrub: 1,
           pin: true,
-          markers: true,
+          // markers: true,
         },
       });
     }, sectionRef);
