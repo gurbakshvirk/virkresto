@@ -54,7 +54,7 @@ const Footer = () => {
           start: "top 90%",
           end: "bottom 75%",
           scrub: true,
-          // markers: true,
+          markers: true,
         },
       }
     );

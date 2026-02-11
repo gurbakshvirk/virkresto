@@ -1,21 +1,11 @@
   import ReviewCard from "./ReviewCard"
   import React, { use, useEffect, useRef } from 'react'
-
   import { ScrollTrigger } from "gsap/ScrollTrigger";
   import { gsap } from "gsap";
-
   gsap.registerPlugin(ScrollTrigger);
-
-
-
-
   const ReviewSec = () => {
-
   const mainref = useRef(null)
   const sectionref = useRef(null)
-
-
-
 useEffect(() => {
   const ctx = gsap.context(() => {
 
@@ -46,18 +36,12 @@ useEffect(() => {
 
   return () => ctx.revert();
 }, []);
-
   // useEffect(()=>{
   //   const conteext = gsap.context(()=>{
-
   //     gsap.fromTo(sectionref.current, {
-
-
-
   //     })
   //   }  , )
   // })
-
   const reviews = [
     {
       id: 1,
@@ -131,10 +115,8 @@ useEffect(() => {
     },
   ]
     return (
-
       <div ref={mainref}>
       <section className= " mt-30 bg-white/90 h-screen overflow-hidden  rounded-4xl">
-
         {/* Heading */}
         <div className="mb-12 text-center">
           <h2 className="text-4xl md:text-5xl font-bold text-black">
@@ -144,14 +126,12 @@ useEffect(() => {
             Real reviews from real food lovers
           </p> */}
         </div>
-
         {/* Cards */}
         <div  ref={sectionref}  className="flex gap-8 overflow-x-auto md:justify-center">
           {reviews.map((review) => (
             <ReviewCard key={review.id} {...review} />
           ))}
         </div>
-
       </section>
       </div>
     )
