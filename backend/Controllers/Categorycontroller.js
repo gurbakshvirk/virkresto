@@ -1,0 +1,118 @@
+const Category = require("../Models/CategoryModal");
+const Product = require("../Models/ProductModal");
+
+// Create Category
+exports.createCategory = async (req, res) => {
+  try {
+    const { name, foodType } = req.body;
+
+    if (!req.file) {
+      return res.status(400).json({ message: "Category image is required" });
+    }
+
+    const category = new Category({
+      name,
+      foodType,
+      image: `/uploads/${req.file.filename}`, // save file path
+    });
+
+    await category.save();
+
+    res.status(201).json(category);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: error.message });
+  }
+};
+
+
+
+// Get All Categories
+exports.getCategories = async (req, res) => {
+  try {
+    const { foodType } = req.query;
+
+    const filter = {};
+    if (foodType) filter.foodType = foodType;
+
+    const categories = await Category.find(filter).sort({ createdAt: -1 });
+
+    res.json(categories);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+
+
+// Get Single Category
+exports.getCategoryById = async (req, res) => {
+  try {
+    const category = await Category.findById(req.params.id);
+
+    if (!category) {
+      return res.status(404).json({ message: "Category not found" });
+    }
+
+    res.json(category);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+
+
+// Update Category (with optional new image)
+exports.updateCategory = async (req, res) => {
+  try {
+    const { name, foodType, isActive } = req.body;
+
+    const updateData = { name, foodType, isActive };
+
+    // If new image uploaded → replace old one
+    if (req.file) {
+      updateData.image = `/uploads/${req.file.filename}`;
+    }
+
+    const category = await Category.findByIdAndUpdate(
+      req.params.id,
+      updateData,
+      { new: true }
+    );
+
+    if (!category) {
+      return res.status(404).json({ message: "Category not found" });
+    }
+
+    res.json(category);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+
+
+// Delete Category (only if unused)
+exports.deleteCategory = async (req, res) => {
+  try {
+    const categoryId = req.params.id;
+
+    const productsExist = await Product.findOne({ category: categoryId });
+
+    if (productsExist) {
+      return res.status(400).json({
+        message: "Cannot delete category. Products exist in this category.",
+      });
+    }
+
+    const category = await Category.findByIdAndDelete(categoryId);
+
+    if (!category) {
+      return res.status(404).json({ message: "Category not found" });
+    }
+
+    res.json({ message: "Category deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};

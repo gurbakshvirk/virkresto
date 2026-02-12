@@ -13,7 +13,7 @@ const ReviewCard2 = ({ text, author }) => {
       {/* Author */}
       <div className="flex items-center gap-4 mt-8">
         <div className="w-12 h-12 rounded-full bg-pink-400 flex items-center justify-center text-white font-bold">
-          A
+          {author}
         </div>
 
         <div className="font-serif italic text-[#4b2e2e] text-lg">

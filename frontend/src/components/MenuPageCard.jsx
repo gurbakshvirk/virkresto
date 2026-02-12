@@ -2,6 +2,7 @@ import AddToCartButton from "./AddtoCartbtn"
 import { Link } from "react-router-dom"
 
 const MenuPageCard = ({ item }) => {
+  // console.log(item)
   return (
     // <div className="bg-white w-84 md:w-72 rounded-xl flex flex-col p-5">
     <div className="bg-white w-80 md:w-72 rounded-2xl flex flex-col p-5
@@ -23,8 +24,6 @@ shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 shado
       <h2 className="text-md md:text-md font-semibold my-2 line-clamp-2 min-h-[3.5rem]">
         {item.title}
       </h2>
-
-
       <p className=" text-md text-black">₹ {item.price}</p>
 
       {/* rating div  */}

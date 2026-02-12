@@ -16,7 +16,7 @@ const MenuSection = () => {
    const Mainref = useRef(null);
       const sectionRef = useRef(null);
 
-  useEffect(() => {
+    useEffect(() => {
     const fetchProducts = async () => {
       try {
         const data = await getAllProducts()

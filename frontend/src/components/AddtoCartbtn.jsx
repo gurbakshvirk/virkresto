@@ -12,7 +12,9 @@ const AddToCartButton = ({ item }) => {
   return (
     <button
       onClick={handleAddToCart}
-      className="text-sm text-white rounded-full bg-yellow-400 px-6 py-3 font-bold hover:bg-green-500 hover:scale-105 transition"
+      className="text-sm bg-orange-500 hover:bg-orange-600 text-white  px-6 py-3 rounded-full font-semibold transition-all"
+      // text-white rounded-full bg-yellow-400 py-3 font-bold hover:bg-green-500 hover:scale-105 transition"
+      // mt-2 
     >
       Add to Cart
     </button>

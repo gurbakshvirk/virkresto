@@ -91,7 +91,7 @@ const PopularSection = () => {
 >
             <div 
             // ref={headingText}
-            className='my-10 text-center md:mx-20'>
+            className='mb-10 text-center md:mx-20'>
                 <h1  className=' text-black text-4xl md:text-6xl font-bold'>Popular</h1>
                 <div className='border-2 border-yellow-300 w-24 mx-auto mt-4'></div>
             </div>
@@ -137,10 +137,6 @@ const PopularSection = () => {
 </div>
       </Swiper>
       </div>
-
-
-
-
             {/* <PopularCard image={""} title={""} /> */}
         
         

@@ -1,27 +1,41 @@
-// const { signup, login } = require('../Controllers/Authcontroller');
-// const { signupvalidation, loginvalidation } = require('../Middleware/Authvalidation');
+const express = require("express");
+const router = express.Router();
 
-const ensureAuthenticated = require('../Middleware/Auth');
-
-const router = require('express').Router();
-
-router.get('/', ensureAuthenticated, (req, res) => {
-    console.log('Logged in user details ', req.user)
-    res.status(200).json([
-        {
-            name: 'mobile',
-            price: 10000
-        },
-        {
-            name: 'tv',
-            price: 15000
-        }
-
-    ])
-});
-
-// router.post('/signup', signupvalidation, signup);
+const upload = require("../Middleware/productUpload");
+const productController = require("../Controllers/ProductController");
 
 
+// ✅ Create Product (WITH MULTIPLE IMAGE UPLOAD)
+router.post(
+  "/",
+  upload.array("images", 5), // accept up to 5 images
+  (req, res, next) => {
+    if (req.files && req.files.length > 0) {
+      // convert files into paths to store in DB
+      req.body.images = req.files.map(
+        (file) => `/uploads/products/${file.filename}`
+      );
+    }
+    next();
+  },
+  productController.createProduct
+);
+
+// Update Product (allow new images optionally)
+router.put("/:id", upload.array("images", 5), productController.updateProduct);
+
+
+// Get All Products
+router.get("/", productController.getProducts);
+
+// Get Single Product
+router.get("/:id", productController.getProductById);
+
+// Update Product
+// router.put("/:id", productController.updateProduct);
+router.put("/:id", upload.array("images", 5), productController.updateProduct);
+
+// Delete Product
+router.delete("/:id", productController.deleteProduct);
 
 module.exports = router;

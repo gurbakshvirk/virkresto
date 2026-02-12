@@ -125,7 +125,7 @@ useEffect(() => {
           ease: "none",
           scrollTrigger: {
             trigger: e,              // IMPORTANT
-            start: "top 10%",           // when THIS card hits 10%
+            start: "top 20%",           // when THIS card hits 10%
             end: "top 0%",              // until it leaves top
             scrub: true,
             // markers: true,

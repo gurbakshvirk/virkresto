@@ -132,7 +132,7 @@ const OurChefs = () => {
   sectionRef.current,
   { y:150 },
   {
-    y: 0,
+    y: -200,
     scrollTrigger: {
       trigger: sectionRef.current,
       start: "top 80%",
@@ -149,8 +149,8 @@ const OurChefs = () => {
         y: 150,
         scrollTrigger: {
           trigger: mainRef.current,
-          start: "top 0%",
-          end: "bottom 30%",
+          start: "top 18%",
+          end: "bottom 50%",
           scrub: 3,
           // markers: true,
         },
@@ -171,7 +171,7 @@ const OurChefs = () => {
       > */}
       <section
   ref={sectionRef}
-  className="relative z-20 -mt-32 my-10 py-20 bg-white rounded-t-[60px]"
+  className="relative z-20 -mt-32 -my-10 pt-20 bg-white rounded-t-[0px]"
 >
 
         <div className="mx-auto flex max-w-7xl px-10 flex-col md:flex-row gap-8 justify-between md:items-center">

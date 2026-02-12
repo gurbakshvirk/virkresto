@@ -1,0 +1,64 @@
+.offers-section {
+  padding: 80px 6%;
+  background: linear-gradient(to right, #facc15, #fef3c7);
+}
+
+.offer-heading {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.offer-heading h2 {
+  font-size: 42px;
+  font-weight: 700;
+  color: #111;
+}
+
+.offer-heading p {
+  color: #444;
+  margin-top: 10px;
+}
+
+.offer-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 30px;
+}
+
+.offer-card {
+  background: white;
+  border-radius: 20px;
+  padding: 40px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+  display: flex;
+  align-items: center;
+  transition: transform 0.3s ease;
+}
+
+.offer-card:hover {
+  transform: translateY(-8px);
+}
+
+.featured {
+  background: #111;
+  color: white;
+}
+
+.featured h3 {
+  font-size: 48px;
+  color: #facc15;
+}
+
+.small h4 {
+  font-size: 22px;
+}
+
+.offer-content button {
+  margin-top: 20px;
+  padding: 10px 25px;
+  border-radius: 25px;
+  border: none;
+  background: #facc15;
+  font-weight: 600;
+  cursor: pointer;
+}

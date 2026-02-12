@@ -11,6 +11,7 @@ import { gsap } from "gsap";
 import TextSec from '../components/TextSec'
 import Testimonials from '../components/Testimonials'
 import Allproducts from '../components/Allproducts'
+import OffersSection from './Offersection'
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -61,6 +62,7 @@ const Homepage = () => {
       <TextSec/>
 
       <PopularSection/>
+      <OffersSection/>
 
       <BookTablesec/>
 
@@ -69,11 +71,11 @@ const Homepage = () => {
       <CategorySection />
 </div>
 <Allproducts/>
-      <MenuSection/>
+      {/* <MenuSection/> */}
 
       <OurChefs/>
       <Testimonials/>
-      <ReviewSec/>
+      {/* <ReviewSec/> */}
     </div>
   )
 }
