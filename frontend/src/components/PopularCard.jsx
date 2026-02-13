@@ -4,7 +4,7 @@ const PopularCard = (props) => {
         <div className="group relative h-96 w-80 overflow-hidden rounded-tr-2xl rounded-bl-2xl bg-black shadow-lg">
             {/* Image */}
             <img
-                src={props.image}
+                src={props.image[0].url}
                 alt={props.title}
                 className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
             />

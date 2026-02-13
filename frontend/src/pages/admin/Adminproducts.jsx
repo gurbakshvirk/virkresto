@@ -7,7 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 const Adminproducts = () => {
   const [categories, setCategories] = useState([]);
   const [editingId, setEditingId] = useState(null);
-const [previewImages, setPreviewImages] = useState([]);
+  const [previewImages, setPreviewImages] = useState([]);
 
   const [form, setForm] = useState({
     name: "",
@@ -18,6 +18,8 @@ const [previewImages, setPreviewImages] = useState([]);
   });
   const [images, setImages] = useState([]);
   const [products, setProducts] = useState([]);
+  const [isVisible, setIsVisible] = useState(true);
+  const [isPopular, setIsPopular] = useState(false);
 
   const API = import.meta.env.VITE_API_URL;
 
@@ -33,6 +35,15 @@ const [previewImages, setPreviewImages] = useState([]);
     setProducts(res.data);
   };
 
+
+  useEffect(() => {
+  axios.get(`${API}/api/products`).then(res => {
+    console.log("PRODUCTS FROM API 👉", res.data);
+    setProducts(res.data);
+  });
+}, []);
+
+
   useEffect(() => {
     fetchCategories();
     fetchProducts();
@@ -45,183 +56,219 @@ const [previewImages, setPreviewImages] = useState([]);
 
   // Handle image selection
   const handleImageChange = (e) => {
-  setImages(e.target.files);
+    setImages(e.target.files);
 
-  const previews = Array.from(e.target.files).map(file =>
-    URL.createObjectURL(file)
-  );
-  setPreviewImages(previews);
-};
+    const previews = Array.from(e.target.files).map(file =>
+      URL.createObjectURL(file)
+    );
+    setPreviewImages(previews);
+  };
 
-const handleEdit = (product) => {
-  setEditingId(product._id);
+  const handleEdit = (product) => {
+    setEditingId(product._id);
 
-  setForm({
-    name: product.name,
-    price: product.price,
-    description: product.description,
-    shortdescription: product.shortdescription,
-    category: product.category?._id || product.category
-  });
+    setForm({
+      name: product.name,
+      price: product.price,
+      description: product.description,
+      shortdescription: product.shortdescription,
+      category: product.category?._id || product.category
+    });
 
-  setPreviewImages(product.images.map(img => `${API}${img}`));
-};
+    // setPreviewImages(product.images.map(img => `${API}${img}`));
+    setPreviewImages(
+  product.images.map(img =>
+    typeof img === "string" ? img : img.url
+  )
+);
+
+  };
 
 
-const handleDelete = async (id) => {
-  if (!window.confirm("Delete this product?")) return;
+  const handleDelete = async (id) => {
+    if (!window.confirm("Delete this product?")) return;
 
-  await axios.delete(`${API}/api/products/${id}`);
-  fetchProducts();
+    await axios.delete(`${API}/api/products/${id}`);
+    fetchProducts();
 
-};
+  };
 
 
   // Submit Product
   const handleSubmit = async (e) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  const data = new FormData();
+    const data = new FormData();
 
-  Object.keys(form).forEach(key => data.append(key, form[key]));
+    Object.keys(form).forEach(key => data.append(key, form[key]));
 
-  for (let i = 0; i < images.length; i++) {
-    data.append("images", images[i]);
-  }
+    data.append("isVisible", isVisible);
+    data.append("isPopular", isPopular);
 
-  if (editingId) {
-    await axios.put(`${API}/api/products/${editingId}`, data);
-    // alert("Product Updated");
-    toast.success("Product Updated successfully!");
 
-  } else {
-    await axios.post(`${API}/api/products`, data);
-    alert("Product Created");
-  }
+    for (let i = 0; i < images.length; i++) {
+      data.append("images", images[i]);
+    }
 
-  // reset
-  setEditingId(null);
-  setImages([]);
-  setPreviewImages([]);
-  setForm({
-    name: "",
-    price: "",
-    description: "",
-    shortdescription: "",
-    category: ""
-  });
+    if (editingId) {
+      await axios.put(`${API}/api/products/${editingId}`, data);
+      // alert("Product Updated");
+      toast.success("Product Updated successfully!");
 
-  fetchProducts();
-};
+    } else {
+      await axios.post(`${API}/api/products`, data);
+      alert("Product Created");
+    }
+
+    // reset
+    setEditingId(null);
+    setImages([]);
+    setPreviewImages([]);
+    setForm({
+      name: "",
+      price: "",
+      description: "",
+      shortdescription: "",
+      category: "",
+
+    });
+
+    fetchProducts();
+  };
 
   return (
-  <div className="p-8 bg-gray-50 min-h-screen">
-    {/* PAGE TITLE */}
-    <h1 className="text-3xl font-semibold mb-8">Product Manager</h1>
+    <div className="p-8 bg-gray-50 min-h-screen">
+      {/* PAGE TITLE */}
+      <h1 className="text-3xl font-semibold mb-8">Product Manager</h1>
 
-    {/* ADD PRODUCT CARD */}
-    <div className="bg-white border rounded-2xl shadow-sm p-6 mb-10">
-      <h2 className="text-xl font-medium mb-6">Add New Product</h2>
+      {/* ADD PRODUCT CARD */}
+      <div className="bg-white border rounded-2xl shadow-sm p-6 mb-10">
+        <h2 className="text-xl font-medium mb-6">Add New Product</h2>
 
-      <form
-        onSubmit={handleSubmit}
-        className="grid md:grid-cols-2 gap-6"
-      >
-        {/* LEFT SIDE */}
-        <div className="space-y-4">
-          <div>
-            <label className="text-sm text-gray-500">Product Name</label>
-            <input
-              name="name"
-              value={form.name}
-              onChange={handleChange}
-              className="w-full border rounded-lg px-4 py-2 mt-1 focus:ring-2 focus:ring-black"
-              required
-            />
+        <form
+          onSubmit={handleSubmit}
+          className="grid md:grid-cols-2 gap-6"
+        >
+          {/* LEFT SIDE */}
+          <div className="space-y-4">
+            <div>
+              <label className="text-sm text-gray-500">Product Name</label>
+              <input
+                name="name"
+                value={form.name}
+                onChange={handleChange}
+                className="w-full border rounded-lg px-4 py-2 mt-1 focus:ring-2 focus:ring-black"
+                required
+              />
+            </div>
+
+            <div>
+              <label className="text-sm text-gray-500">Price</label>
+              <input
+                name="price"
+                type="number"
+                value={form.price}
+                onChange={handleChange}
+                className="w-full border rounded-lg px-4 py-2 mt-1 focus:ring-2 focus:ring-black"
+                required
+              />
+            </div>
+
+            <div>
+              <label className="text-sm text-gray-500">Category</label>
+              <select
+                name="category"
+                value={form.category}
+                onChange={handleChange}
+                className="w-full border rounded-lg px-4 py-2 mt-1 focus:ring-2 focus:ring-black"
+                required
+              >
+                <option value="">Select Category</option>
+                {categories.map(cat => (
+                  <option key={cat._id} value={cat._id}>
+                    {cat.name} ({cat.foodType})
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div>
+              <label className="text-sm text-gray-500">Short Description</label>
+              <input
+                name="shortdescription"
+                value={form.shortdescription}
+                onChange={handleChange}
+                className="w-full border rounded-lg px-4 py-2 mt-1"
+              />
+            </div>
           </div>
 
-          <div>
-            <label className="text-sm text-gray-500">Price</label>
-            <input
-              name="price"
-              type="number"
-              value={form.price}
-              onChange={handleChange}
-              className="w-full border rounded-lg px-4 py-2 mt-1 focus:ring-2 focus:ring-black"
-              required
-            />
+          {/* RIGHT SIDE */}
+          <div className="space-y-4">
+            <div>
+              <label className="text-sm text-gray-500">Full Description</label>
+              <textarea
+                name="description"
+                value={form.description}
+                onChange={handleChange}
+                rows="5"
+                className="w-full border rounded-lg px-4 py-2 mt-1"
+              />
+            </div>
+
+            <div>
+              <label className="text-sm text-gray-500">Upload Images</label>
+              <input
+                type="file"
+                multiple
+                onChange={handleImageChange}
+                accept="image/*"
+                className="w-full border rounded-lg px-3 py-2 mt-1"
+                required={!editingId}
+              />
+
+            </div>
+            <div className="flex items-center gap-6 mt-4">
+
+              {/* Show / Hide */}
+              <label className="flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  checked={isVisible}
+                  onChange={(e) => setIsVisible(e.target.checked)}
+                />
+                Show Product
+              </label>
+
+              {/* Popular */}
+              <label className="flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  checked={isPopular}
+                  onChange={(e) => setIsPopular(e.target.checked)}
+                />
+                Mark as Popular
+              </label>
+
+            </div>
+
+            {previewImages.length > 0 && (
+              <div className="grid grid-cols-4 gap-4 mt-4">
+                {previewImages.map((img, i) => (
+                  <img key={i} src={img} className="h-24 w-full object-cover rounded" />
+                ))}
+              </div>
+            )}
+
+
+            <button className="bg-black text-white py-3 rounded-lg hover:bg-gray-800 transition w-full">
+              Create Product
+            </button>
           </div>
+        </form>
 
-          <div>
-            <label className="text-sm text-gray-500">Category</label>
-            <select
-              name="category"
-              value={form.category}
-              onChange={handleChange}
-              className="w-full border rounded-lg px-4 py-2 mt-1 focus:ring-2 focus:ring-black"
-              required
-            >
-              <option value="">Select Category</option>
-              {categories.map(cat => (
-                <option key={cat._id} value={cat._id}>
-                  {cat.name} ({cat.foodType})
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <div>
-            <label className="text-sm text-gray-500">Short Description</label>
-            <input
-              name="shortdescription"
-              value={form.shortdescription}
-              onChange={handleChange}
-              className="w-full border rounded-lg px-4 py-2 mt-1"
-            />
-          </div>
-        </div>
-
-        {/* RIGHT SIDE */}
-        <div className="space-y-4">
-          <div>
-            <label className="text-sm text-gray-500">Full Description</label>
-            <textarea
-              name="description"
-              value={form.description}
-              onChange={handleChange}
-              rows="5"
-              className="w-full border rounded-lg px-4 py-2 mt-1"
-            />
-          </div>
-
-          <div>
-            <label className="text-sm text-gray-500">Upload Images</label>
-            <input
-              type="file"
-              multiple
-              onChange={handleImageChange}
-              accept="image/*"
-              className="w-full border rounded-lg px-3 py-2 mt-1"
-              required
-            />
-          </div>
-          {previewImages.length > 0 && (
-  <div className="grid grid-cols-4 gap-4 mt-4">
-    {previewImages.map((img, i) => (
-      <img key={i} src={img} className="h-24 w-full object-cover rounded" />
-    ))}
-  </div>
-)}
-
-
-          <button className="bg-black text-white py-3 rounded-lg hover:bg-gray-800 transition w-full">
-            Create Product
-          </button>
-        </div>
-      </form>
-
-      {/* IMAGE PREVIEW GRID */}
-      {images.length > 0 && (
+        {/* IMAGE PREVIEW GRID */}
+        {/* {images.length > 0 && (
         <div className="mt-6">
           <p className="text-sm text-gray-500 mb-2">Image Preview</p>
           <div className="grid grid-cols-4 gap-4">
@@ -234,76 +281,76 @@ const handleDelete = async (id) => {
             ))}
           </div>
         </div>
-      )}
-    </div>
-
-    {/* PRODUCTS LIST */}
-    <div className="bg-white border rounded-2xl shadow-sm overflow-hidden">
-      <div className="p-5 border-b font-medium text-lg">
-        All Products
+      )} */}
       </div>
 
-      {products.length === 0 ? (
-        <p className="p-6 text-gray-400">No products added yet.</p>
-      ) : (
-        <div className="grid md:grid-cols-3 gap-6 p-6">
-          {products.map(product => (
-            <div
-              key={product._id}
-              className="border rounded-xl overflow-hidden hover:shadow-md transition"
-            >
-              {/* PRODUCT IMAGE */}
-              {product.images?.length > 0 && (
-                <img
-                  src={`${API}${product.images[0]}`}
-                  className="w-full h-48 object-cover"
-                />
-              )}
-
-              {/* CONTENT */}
-              <div className="p-4">
-                <h3 className="font-semibold text-lg">
-                  {product.name}
-                </h3>
-
-                <p className="text-gray-500 text-sm mb-2">
-                  {product.shortdescription}
-                </p>
-
-                <p className="font-bold text-xl mb-3">
-                  ₹{product.price}
-                </p>
-
-
-                <span className="text-xs bg-gray-100 px-3 py-1 rounded-full">
-                  {product.category?.name || "Category"}
-                </span>
-
-
-                <div className="flex gap-2 mt-4">
-  <button
-    onClick={() => handleEdit(product)}
-    className="bg-blue-500 text-white px-3 py-1 rounded"
-  >
-    Edit
-  </button>
-
-  <button
-    onClick={() => handleDelete(product._id)}
-    className="bg-red-500 text-white px-3 py-1 rounded"
-  >
-    Delete
-  </button>
-</div>
-
-              </div>
-            </div>
-          ))}
+      {/* PRODUCTS LIST */}
+      <div className="bg-white border rounded-2xl shadow-sm overflow-hidden">
+        <div className="p-5 border-b font-medium text-lg">
+          All Products
         </div>
-      )}
+
+        {products.length === 0 ? (
+          <p className="p-6 text-gray-400">No products added yet.</p>
+        ) : (
+          <div className="grid md:grid-cols-3 gap-6 p-6">
+            {products.map(product => (
+              <div
+                key={product._id}
+                className="border rounded-xl overflow-hidden hover:shadow-md transition"
+              >
+                {/* PRODUCT IMAGE */}
+                {product.images?.length > 0 && (
+                  <img
+                    src={product.images[0]?.url}
+                    className="w-full h-48 object-cover"
+                  />
+                )}
+
+                {/* CONTENT */}
+                <div className="p-4">
+                  <h3 className="font-semibold text-lg">
+                    {product.name}
+                  </h3>
+
+                  <p className="text-gray-500 text-sm mb-2">
+                    {product.shortdescription}
+                  </p>
+
+                  <p className="font-bold text-xl mb-3">
+                    ₹{product.price}
+                  </p>
+
+
+                  <span className="text-xs bg-gray-100 px-3 py-1 rounded-full">
+                    {product.category?.name || "Category"}
+                  </span>
+
+
+                  <div className="flex gap-2 mt-4">
+                    <button
+                      onClick={() => handleEdit(product)}
+                      className="bg-blue-500 text-white px-3 py-1 rounded"
+                    >
+                      Edit
+                    </button>
+
+                    <button
+                      onClick={() => handleDelete(product._id)}
+                      className="bg-red-500 text-white px-3 py-1 rounded"
+                    >
+                      Delete
+                    </button>
+                  </div>
+
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
     </div>
-  </div>
-);
+  );
 
 };
 

@@ -1,17 +1,24 @@
 const multer = require("multer");
-const path = require("path");
+const { CloudinaryStorage } = require("multer-storage-cloudinary");
+const cloudinary = require("cloudinary").v2;
 
-const UPLOAD_DIR = path.join(__dirname, "..", "uploads"); 
-// go OUT of Routes folder → backend/uploads
-console.log("Multer saving to:", UPLOAD_DIR);
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, UPLOAD_DIR);
-  },
-  filename: function (req, file, cb) {
-    const uniqueName = Date.now() + path.extname(file.originalname);
-    cb(null, uniqueName);
-  }
+// Configure Cloudinary
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-module.exports = multer({ storage });
+// Store files in Cloudinary (NOT locally)
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: "virkresto/categories", // separate folder from products
+    allowed_formats: ["jpg", "png", "jpeg", "webp"],
+    transformation: [{ width: 600, height: 600, crop: "limit" }],
+  },
+});
+
+const upload = multer({ storage });
+
+module.exports = upload;

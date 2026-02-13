@@ -1,5 +1,6 @@
 const Category = require("../Models/CategoryModal");
 const Product = require("../Models/ProductModal");
+const cloudinary = require("cloudinary").v2;
 
 // Create Category
 exports.createCategory = async (req, res) => {
@@ -13,7 +14,7 @@ exports.createCategory = async (req, res) => {
     const category = new Category({
       name,
       foodType,
-      image: `/uploads/${req.file.filename}`, // save file path
+      image: req.file.path, // ✅ Cloudinary URL
     });
 
     await category.save();
@@ -69,9 +70,9 @@ exports.updateCategory = async (req, res) => {
 
     const updateData = { name, foodType, isActive };
 
-    // If new image uploaded → replace old one
+    // If new image uploaded → update to Cloudinary URL
     if (req.file) {
-      updateData.image = `/uploads/${req.file.filename}`;
+      updateData.image = req.file.path; // ✅ Cloudinary URL
     }
 
     const category = await Category.findByIdAndUpdate(
@@ -92,6 +93,7 @@ exports.updateCategory = async (req, res) => {
 
 
 
+
 // Delete Category (only if unused)
 exports.deleteCategory = async (req, res) => {
   try {
@@ -105,14 +107,23 @@ exports.deleteCategory = async (req, res) => {
       });
     }
 
-    const category = await Category.findByIdAndDelete(categoryId);
+    const category = await Category.findById(categoryId);
 
     if (!category) {
       return res.status(404).json({ message: "Category not found" });
     }
 
+    // ✅ Delete image from Cloudinary
+    const publicId = category.image.split("/").pop().split(".")[0];
+
+    await cloudinary.uploader.destroy(`virkresto/categories/${publicId}`);
+
+    await Category.findByIdAndDelete(categoryId);
+
     res.json({ message: "Category deleted successfully" });
+
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
+

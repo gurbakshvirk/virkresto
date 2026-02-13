@@ -20,10 +20,11 @@ const productSchema = new mongoose.Schema({
   },
 
    images: [
-    {
-      type: String
-    }
-  ],
+  {
+    url: String,
+    public_id: String,
+  }
+],
 
   // Reference to Category
   category: {
@@ -35,7 +36,15 @@ const productSchema = new mongoose.Schema({
   isAvailable: {
     type: Boolean,
     default: true
-  }
+  },
+  isVisible: {
+    type: Boolean,
+    default: true, // product shows by default
+  },
+  isPopular: {
+    type: Boolean,
+    default: false,
+  },
 
 }, { timestamps: true });
 

@@ -33,7 +33,9 @@ const Admincategories = () => {
     setEditingId(cat._id);
     setName(cat.name);
     setFoodType(cat.foodType);
-    setPreview(`${API}${cat.image}`);
+    // setPreview(`${API}${cat.image}`);
+    setPreview(cat.image);
+
   };
 
 
@@ -175,7 +177,7 @@ return (
             {/* IMAGE */}
             <div className="col-span-2">
               <img
-                src={`${API}${cat.image}`}
+                 src={cat.image}
                 className="w-16 h-16 object-cover rounded-lg"
               />
             </div>
