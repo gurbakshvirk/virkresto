@@ -138,7 +138,7 @@ const OurChefs = () => {
       start: "top 80%",
       end: "top 20%",
       // markers: true,
-      scrub: true,
+      // scrub: true,
     }
   }
 );
@@ -149,8 +149,8 @@ const OurChefs = () => {
         y: 150,
         scrollTrigger: {
           trigger: mainRef.current,
-          start: "top 18%",
-          end: "bottom 50%",
+          start: "0% 10%",
+          end: "bottom 60%",
           scrub: 3,
           // markers: true,
         },
@@ -171,7 +171,7 @@ const OurChefs = () => {
       > */}
       <section
   ref={sectionRef}
-  className="relative z-20 -mt-32 -my-10 pt-20 bg-white rounded-t-[0px]"
+  className="relative z-20  pt-20 bg-white rounded-t-[0px]"
 >
 
         <div className="mx-auto flex max-w-7xl px-10 flex-col md:flex-row gap-8 justify-between md:items-center">

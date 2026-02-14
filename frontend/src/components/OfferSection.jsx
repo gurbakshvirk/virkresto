@@ -17,6 +17,7 @@ const OffersSection = () => {
           trigger: sectionRef.current,
           start: "top 75%",
         //   once: true, 
+
           invalidateOnRefresh: true
         }
       });
@@ -31,7 +32,8 @@ const OffersSection = () => {
         y: 80,
         opacity: 0,
         duration: 0.8,
-        stagger: 0.2
+        stagger: 0.2,
+        pin:true,
       }, "-=0.3");
 
     }, sectionRef);

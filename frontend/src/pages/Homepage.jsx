@@ -11,7 +11,7 @@ import { gsap } from "gsap";
 import TextSec from '../components/TextSec'
 import Testimonials from '../components/Testimonials'
 import Allproducts from '../components/Allproducts'
-import OffersSection from './Offersection'
+import OffersSection from '../components/OfferSection'
 
 gsap.registerPlugin(ScrollTrigger);
 

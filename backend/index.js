@@ -13,6 +13,9 @@ const Authrouter = require('./Routes/AuthRouter');
 // const ProductRouter = require('./Routes/ProductRouter');
 const categoryRoutes = require('./Routes/CategoryRoutes');
 const productRoutes = require("./Routes/ProductRouter");
+const tableroutes = require("./Routes/TableRouter")
+const reservationRoutes = require("./Routes/ReservationRoutes");
+
 
 
 require('./Models/db');
@@ -37,6 +40,9 @@ app.use('/auth', Authrouter);
 // app.use('/product', ProductRouter);
 app.use("/api/categories", categoryRoutes);
 app.use("/api/products", productRoutes);
+app.use("/api/tables", tableroutes);
+app.use("/api/reservations", reservationRoutes);
+
 // app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 // app.use("/uploads", express.static(UPLOAD_DIR));
 // console.log("Serving uploads from:", UPLOAD_DIR);

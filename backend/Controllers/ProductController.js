@@ -149,7 +149,7 @@ exports.deleteProduct = async (req, res) => {
       return res.status(404).json({ message: "Product not found" });
     }
 
-    // 🔥 Delete all images from Cloudinary
+    //  Delete all images from Cloudinary
     if (product.images && product.images.length > 0) {
       for (const img of product.images) {
         if (img.public_id) {
@@ -158,7 +158,7 @@ exports.deleteProduct = async (req, res) => {
       }
     }
 
-    // 🔥 Delete product from MongoDB
+    //  Delete product from MongoDB
     await Product.findByIdAndDelete(req.params.id);
 
     res.json({ message: "Product and images deleted successfully" });

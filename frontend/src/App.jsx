@@ -11,6 +11,7 @@ import SingleProductPage from './pages/Singleproduct';
 import Login from './pages/login';
 // import AdminLayout from "./pages/admin/Dashboard";
 import PublicLayout from "./pages/publiclayout";
+import BookTable from "./pages/BookTable";
 
 
 
@@ -158,6 +159,7 @@ const App = () => {
       <Route path="/cart" element={<CartPage />} />
       <Route path="/menu/:id" element={<SingleProductPage />} />
       <Route path="*" element={<Pagenotfound />} />
+      <Route path="/reservation" element={<BookTable />} />
 
     </Route>
 

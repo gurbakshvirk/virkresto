@@ -75,15 +75,15 @@ const Allproducts = () => {
         //   pin: true,
 
         //   pinSpacing: true,
-        //   // markers: true,
         // }
         scrollTrigger: {
           trigger: sectionRef.current,
-          start: "top top",
+          start: "top 10%",
           // end: "+=100%",  
           scrub: true,
           // pin: true,
           // pinSpacing: true,
+          // markers:true,  
           anticipatePin: 1,
         }
       });
@@ -111,7 +111,7 @@ const Allproducts = () => {
         opacity: 1,
         duration: 0.1,        // 40% hold
         ease: "none",
-        borderRadius: "0%",
+        // borderRadius: "80%",
       });
 
       // PHASE 3 → next section starts covering
@@ -120,7 +120,7 @@ const Allproducts = () => {
         scale: 1,
         duration: 0.1,        // last 30%
         ease: "none",
-        borderRadius: "50%",
+        borderRadius: "25%",
 
       });
 
@@ -139,9 +139,9 @@ const Allproducts = () => {
         className="relative h-screen overflow-hidden py-20 px-8 md:px-16 rounded-[60px] bg-gradient-to-r from-yellow-300 via-yellow-200 to-gray-100 border-b-2 border-yellow-300"
       > */}
       <section
-  ref={sectionRef}
-  className="relative z-10 h-screen py-20 px-8 md:px-16 rounded-[60px] bg-gradient-to-r from-yellow-300 via-yellow-200 to-gray-100 border-b-2 border-yellow-300"
->
+        ref={sectionRef}
+        className="relative z-10 overflow-hidden h-screen py-20 px-8 md:px-16 rounded-[60px] bg-gradient-to-r from-yellow-300 via-yellow-200 to-gray-100 border-b-2 border-yellow-300"
+      >
 
 
         <div className=" text-center">
@@ -165,9 +165,9 @@ const Allproducts = () => {
           pagination={{ clickable: true }}
           // className="mt-8"
           navigation={{
-                        nextEl: ".custom-next",
-                        prevEl: ".custom-prev",
-                    }}
+            nextEl: ".custom-next",
+            prevEl: ".custom-prev",
+          }}
         >
           {menuItems.map((item) => (
             <SwiperSlide key={item.id} className="!w-auto">

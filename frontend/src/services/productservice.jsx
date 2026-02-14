@@ -12,13 +12,20 @@ const API_URL = 'https://fakestoreapi.com/products'
 //   return await response.json()
 // }
 
+
+
+
+
+
+const API = import.meta.env.VITE_API_URL;
+
+// fetch single product 
 export const getSingleProduct = async (id) => {
   const response = await fetch(`${API_URL}/${id}`)
   if (!response.ok) throw new Error('Failed to fetch single product')
   return await response.json()
 }
 
-const API = import.meta.env.VITE_API_URL;
 
 
 

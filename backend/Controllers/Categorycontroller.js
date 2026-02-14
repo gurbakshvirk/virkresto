@@ -14,13 +14,17 @@ exports.createCategory = async (req, res) => {
     const category = new Category({
       name,
       foodType,
-      image: req.file.path, // ✅ Cloudinary URL
+      image: req.file.path, 
     });
 
     await category.save();
 
     res.status(201).json(category);
-  } catch (error) {
+  }
+  
+  
+  
+  catch (error) {
     console.log(error);
     res.status(500).json({ message: error.message });
   }
