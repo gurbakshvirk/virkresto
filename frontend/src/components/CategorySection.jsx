@@ -257,7 +257,7 @@ const CategorySection = () => {
 
         {/* ANIMATE ONLY THIS */}
         <div className="category-anim my-10">
-          <div className="text-center md:mx-20">
+          <div className="text-center md:mx-10">
             <h1 className="text-black text-4xl md:text-6xl font-bold">
               Categories
             </h1>

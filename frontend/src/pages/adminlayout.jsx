@@ -31,9 +31,9 @@ const AdminLayout = () => {
             <NavLink to="/admin/dashboard" className={linkClass}>
               <LayoutDashboard size={20} /> Dashboard
             </NavLink>
-            <NavLink to="/admin/subCategories" className={linkClass}>
+            {/* <NavLink to="/admin/subCategories" className={linkClass}>
               <LayoutDashboard size={20} />VEG or NON-VEG
-            </NavLink>
+            </NavLink> */}
             <NavLink to="/admin/Adminproducts" className={linkClass}>
               <UtensilsCrossed size={20} /> Products
             </NavLink>
@@ -51,6 +51,9 @@ const AdminLayout = () => {
             </NavLink>
             <NavLink to="/admin/Adminreservations" className={linkClass}>
               <CalendarDays size={20} /> Reservations
+            </NavLink>
+            <NavLink to="/admin/AdminLiveReservations" className={linkClass}>
+              <CalendarDays size={20} />Manage Reservations
             </NavLink>
             <NavLink to="/admin/Admincoupons" className={linkClass}>
               <Ticket size={20} /> Coupons

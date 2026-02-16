@@ -14,7 +14,9 @@ const Authrouter = require('./Routes/AuthRouter');
 const categoryRoutes = require('./Routes/CategoryRoutes');
 const productRoutes = require("./Routes/ProductRouter");
 const tableroutes = require("./Routes/TableRouter")
-const reservationRoutes = require("./Routes/ReservationRoutes");
+
+const reservationRoutes = require("./Routes/ReservationRouter");
+
 
 
 
@@ -40,8 +42,16 @@ app.use('/auth', Authrouter);
 // app.use('/product', ProductRouter);
 app.use("/api/categories", categoryRoutes);
 app.use("/api/products", productRoutes);
+// app.use("/api/products/:id", getsing)
 app.use("/api/tables", tableroutes);
 app.use("/api/reservations", reservationRoutes);
+app.use("/api/offers", require("./Routes/offerRoutes"));
+
+
+
+  
+app.use("/api/reservations", reservationRoutes);
+
 
 // app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 // app.use("/uploads", express.static(UPLOAD_DIR));

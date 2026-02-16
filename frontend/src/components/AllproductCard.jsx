@@ -48,7 +48,7 @@ const AllproductCard = ({ item }) => {
 
         {/* Button */}
         <div className="mt-1 flex gap-4">
-          <Link to={`/menu/${item.id}`}>
+          <Link to={`/product/${item._id}`}>
             <button className="text-sm  rounded-full border border-black px-6 py-2 font-semibold hover:bg-white hover:scale-95 hover:text-black transition">
               View
             </button>

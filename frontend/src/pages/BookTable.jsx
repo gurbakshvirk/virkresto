@@ -7,7 +7,10 @@ const BookTable = () => {
   const [availableIds, setAvailableIds] = useState([]);
   const [search, setSearch] = useState({ date: "", time: "", guests: 2 });
 
-  // Load all tables ONCE (restaurant layout)
+  const [bookingDone, setBookingDone] = useState(false);
+  const [bookingInfo, setBookingInfo] = useState(null);
+
+  // Load all restaurant tables once
   useEffect(() => {
     loadTables();
   }, []);
@@ -17,7 +20,7 @@ const BookTable = () => {
     setAllTables(data);
   };
 
-  // Check availability
+  // Check availability from backend
   const handleCheck = async (e) => {
     e.preventDefault();
 
@@ -27,8 +30,7 @@ const BookTable = () => {
       Number(search.guests)
     );
 
-    // Save only available table IDs
-    setAvailableIds(available.map(t => t._id));
+    setAvailableIds(available.map((t) => t._id));
   };
 
   // Book selected table
@@ -37,48 +39,81 @@ const BookTable = () => {
       tableId: table._id,
       date: search.date,
       time: search.time,
-      guests: Number(search.guests)
+      guests: Number(search.guests),
     });
 
-    alert(`Table ${table.tableNumber} booked!`);
+    setBookingDone(true);
+    setBookingInfo({
+      tableNumber: table.tableNumber,
+      date: search.date,
+      time: search.time,
+      guests: search.guests,
+    });
+
     setAvailableIds([]);
   };
 
+  // Confirmation Screen
+  if (bookingDone) {
+    return (
+      <div className="text-center py-24">
+        <h2 className="text-4xl font-bold mb-6">
+          ✅ Table Reserved Successfully
+        </h2>
+
+        <p className="text-lg">Table: {bookingInfo.tableNumber}</p>
+        <p className="text-lg">Date: {bookingInfo.date}</p>
+        <p className="text-lg">Time: {bookingInfo.time}</p>
+        <p className="text-lg">Guests: {bookingInfo.guests}</p>
+
+        <p className="mt-6 text-gray-500">
+          Please arrive 10 minutes before your time.
+        </p>
+      </div>
+    );
+  }
+
+  const hasSearched = availableIds.length > 0;
+
   return (
-    <div className="mt-30 max-w-6xl mx-auto px-6 py-10">
+    <div className="mt-24 max-w-6xl mx-auto px-6 py-10">
+      <h1 className="text-4xl font-bold mb-8 text-center">
+        Reserve Your Table
+      </h1>
 
-      <h1 className="text-3xl font-bold mb-6">Select Your Table</h1>
-
-      {/* Date Time Search */}
-      <form onSubmit={handleCheck} className="flex gap-4 mb-10">
+      {/* Search Form */}
+      <form
+        onSubmit={handleCheck}
+        className="flex flex-wrap gap-4 justify-center mb-12"
+      >
         <input
           type="date"
           required
-          className="border p-2"
+          className="border p-3"
           onChange={(e) => setSearch({ ...search, date: e.target.value })}
         />
 
         <input
           type="time"
           required
-          className="border p-2"
+          className="border p-3"
           onChange={(e) => setSearch({ ...search, time: e.target.value })}
         />
 
         <input
           type="number"
           min="1"
-          className="border p-2 w-24"
           value={search.guests}
+          className="border p-3 w-24"
           onChange={(e) => setSearch({ ...search, guests: e.target.value })}
         />
 
-        <button className="bg-black text-white px-6">
+        <button className="bg-black text-white px-8 py-3">
           Check Availability
         </button>
       </form>
 
-      {/* Restaurant Tables Layout */}
+      {/* Tables Layout */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
         {allTables.map((table) => {
           const isAvailable = availableIds.includes(table._id);
@@ -87,13 +122,21 @@ const BookTable = () => {
           return (
             <div
               key={table._id}
-              className={`border p-6 rounded transition
+              className={`border p-6 rounded text-center transition
                 ${isMaintenance && "bg-gray-200"}
                 ${isAvailable && "bg-green-100 border-green-600"}
-                ${!isAvailable && availableIds.length > 0 && !isMaintenance && "bg-red-100"}
+                ${
+                  !isAvailable &&
+                  hasSearched &&
+                  !isMaintenance &&
+                  "bg-red-100"
+                }
               `}
             >
-              <h3 className="font-bold text-lg">Table {table.tableNumber}</h3>
+              <h3 className="font-bold text-xl">
+                Table {table.tableNumber}
+              </h3>
+
               <p>{table.seats} Seats</p>
               <p className="text-sm text-gray-500">{table.type}</p>
 
@@ -101,7 +144,7 @@ const BookTable = () => {
                 <p className="text-xs text-gray-500 mt-2">Maintenance</p>
               )}
 
-              {isAvailable && (
+              {hasSearched && isAvailable && (
                 <button
                   onClick={() => handleBook(table)}
                   className="mt-4 bg-green-600 text-white px-4 py-2"
@@ -110,7 +153,7 @@ const BookTable = () => {
                 </button>
               )}
 
-              {!isAvailable && availableIds.length > 0 && !isMaintenance && (
+              {!isAvailable && hasSearched && !isMaintenance && (
                 <p className="text-sm text-red-600 mt-3">Already Booked</p>
               )}
             </div>

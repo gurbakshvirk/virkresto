@@ -10,7 +10,7 @@
 
 // const OurChefs = () => {
 
-  
+
 //       const Mainref = useRef(null);
 //       const sectionRef = useRef(null);
 //         const leftRef = useRef(null);
@@ -20,14 +20,14 @@
 //           gsap.fromTo(sectionRef.current,{
 //          y: -40,
 //          scale: 1,
-     
+
 //          opacity: 1,
 //        },{
 //          y: 40,
 //          opacity: 0.8,
 //          scale: 0.9,
 //          duration: 1,
-     
+
 //          scrollTrigger:{
 //            trigger: Mainref.current,
 //            start: "top 10%",
@@ -35,7 +35,7 @@
 //            scrub: 1,
 //            // markers: true,
 //          }
-       
+
 //        })
 //        },
 //          gsap.to(leftRef.current, {
@@ -50,7 +50,7 @@
 // })
 //        ,[])
 
-      
+
 //   return (
 
 // <div  ref={Mainref}>
@@ -129,19 +129,19 @@ const OurChefs = () => {
       //   }
       // );
       gsap.fromTo(
-  sectionRef.current,
-  { y:150 },
-  {
-    y: -200,
-    scrollTrigger: {
-      trigger: sectionRef.current,
-      start: "top 80%",
-      end: "top 20%",
-      // markers: true,
-      // scrub: true,
-    }
-  }
-);
+        sectionRef.current,
+        { y: 150 },
+        {
+          y: -200,
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top 80%",
+            end: "top 20%",
+            // markers: true,
+            scrub: true,
+          }
+        }
+      );
 
 
       // LEFT CONTENT parallax
@@ -153,6 +153,7 @@ const OurChefs = () => {
           end: "bottom 60%",
           scrub: 3,
           // markers: true,
+          scrub: true,
         },
       });
 
@@ -162,7 +163,7 @@ const OurChefs = () => {
   }, []);
 
 
-  
+
   return (
     <div ref={mainRef}>
       {/* <section
@@ -170,9 +171,9 @@ const OurChefs = () => {
         className="my-10 py-10 border-b-2 border-yellow-300"
       > */}
       <section
-  ref={sectionRef}
-  className="relative z-20  pt-20 bg-white rounded-t-[0px]"
->
+        ref={sectionRef}
+        className="relative z-20  pt-20 bg-white rounded-t-[0px]"
+      >
 
         <div className="mx-auto flex max-w-7xl px-10 flex-col md:flex-row gap-8 justify-between md:items-center">
 

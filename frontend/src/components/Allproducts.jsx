@@ -171,7 +171,7 @@ const Allproducts = () => {
         >
           {menuItems.map((item) => (
             <SwiperSlide key={item.id} className="!w-auto">
-              <AllproductCard item={item} />
+              <AllproductCard item={item} id={item._id} />
             </SwiperSlide>
           ))}
         </Swiper>

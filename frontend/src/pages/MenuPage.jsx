@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import MenuPageCard from "../components/MenuPageCard"
 import { getAllProducts, fetchCategories } from "../services/productservice"
+import { useLocation } from "react-router-dom";
 
 const Menu = () => {
   const [products, setProducts] = useState([])
@@ -8,6 +9,8 @@ const Menu = () => {
   const [activeCategory, setActiveCategory] = useState(null) // null = show all
   const [foodFilter, setFoodFilter] = useState("all")
   const [loading, setLoading] = useState(true)
+  const location = useLocation();
+  const offerProducts = location.state?.offerProducts || [];
 
   useEffect(() => {
     const loadData = async () => {
@@ -76,6 +79,11 @@ const Menu = () => {
           All
         </button>
 
+
+
+
+
+
         {/* Dynamic Categories */}
         {categories.map(cat => (
           <button
@@ -115,13 +123,33 @@ const Menu = () => {
 
       {/* Products List */}
       <div className="max-w-5xl mx-auto space-y-6 px-5">
-        {filteredProducts.length === 0 ? (
+        {/* {filteredProducts.length === 0 ? (
           <p className="text-center text-gray-500">No items available.</p>
         ) : (
           filteredProducts.map(item => (
             <MenuPageCard key={item._id} image={item.images} item={item} />
           ))
-        )}
+        )} */}
+        {filteredProducts.map(item => {
+          const isOfferProduct = offerProducts.includes(item._id);
+
+          return (
+            <div
+              key={item._id}
+              className={`transition rounded-xl ${isOfferProduct ? "ring-2 p-4 ring-yellow-400 bg-yellow-50" : ""
+                }`}
+            >
+              {isOfferProduct && (
+                <div className="text-xs font-semibold text-yellow-700 px-3 pt-2">
+                 Offer Applied
+                </div>
+              )}
+
+              <MenuPageCard image={item.images} item={item} />
+            </div>
+          );
+        })
+        }
       </div>
 
     </div>

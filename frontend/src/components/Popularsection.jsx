@@ -94,7 +94,8 @@ const PopularSection = () => {
             <SwiperSlide className='px-6' key={product._id}>
               <PopularCard
                 title={product.name}
-                image={product.images} // show first image
+                image={product.images}
+                id={product._id} 
               />
             </SwiperSlide>
           ))}

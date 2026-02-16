@@ -22,7 +22,7 @@ router.post(
 );
 
 // Update Product (allow new images optionally)
-router.put("/:id", upload.array("images", 5), productController.updateProduct);
+// router.put("/:id", upload.array("images", 5), productController.updateProduct);
 
 
 // Get All Products

@@ -1,5 +1,18 @@
+import { useNavigate } from "react-router-dom"
+
 
 const PopularCard = (props) => {
+
+  const navigate = useNavigate()
+
+    const handleExplore = () => {
+    navigate(`/product/${props.id}`
+    //     , {
+    //   state: { productId: props.id }
+    // }
+)
+  }
+
     return (
         <div className="group relative h-96 w-80 overflow-hidden rounded-tr-2xl rounded-bl-2xl bg-black shadow-lg">
             {/* Image */}
@@ -23,12 +36,11 @@ const PopularCard = (props) => {
           Juicy patty, fresh veggies & signature sauce
         </p> */}
 
-                <button className="mt-4 w-fit rounded-full bg-yellow-400 border border-white px-6 py-2 hover:bg-yellow-800 hover:scale-110 text-white transition">
+                <button className="mt-4 w-fit rounded-full bg-yellow-400 border border-white px-6 py-2 hover:bg-yellow-800 hover:scale-110 text-white transition"
+                 onClick={handleExplore} >
             {/* <button className=" text-white rounded-full bg-yellow-400 px-6 py-3 font-semibold hover:bg-yellow-800 hover:scale-110 transition"> */}
-                    
-                    Explore
-                </button>
-
+                Explore
+                    </button>
             </div>
         </div>
     )

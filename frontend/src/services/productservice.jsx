@@ -3,7 +3,6 @@ import axios from 'axios';
 
 
 
-const API_URL = 'https://fakestoreapi.com/products'
 
 
 // export const getAllProducts = async () => {
@@ -20,11 +19,31 @@ const API_URL = 'https://fakestoreapi.com/products'
 const API = import.meta.env.VITE_API_URL;
 
 // fetch single product 
+// fetch single product from YOUR backend
 export const getSingleProduct = async (id) => {
-  const response = await fetch(`${API_URL}/${id}`)
-  if (!response.ok) throw new Error('Failed to fetch single product')
-  return await response.json()
-}
+  try {
+    const response = await axios.get(`${API}/api/products/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error("Failed to fetch single product", error);
+    return null;
+  }
+};
+
+// exports.getSingleProduct = async (req, res) => {
+//   try {
+//     const product = await Product.findById(req.params.id)
+
+//     if (!product) {
+//       return res.status(404).json({ message: "Product not found" })
+//     }
+
+//     res.json(product)
+//   } catch (error) {
+//     res.status(500).json({ message: error.message })
+//   }
+// }
+
 
 
 

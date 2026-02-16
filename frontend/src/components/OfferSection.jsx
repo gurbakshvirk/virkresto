@@ -1,55 +1,82 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import axios from "axios";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useNavigate } from "react-router-dom";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const OffersSection = () => {
+
+
+   //api link
+  const API = import.meta.env.VITE_API_URL;
+
+
+
+  const [offers, setOffers] = useState([]);
+const navigate = useNavigate();
+
   const sectionRef = useRef(null);
   const headingRef = useRef(null);
   const cardsRef = useRef([]);
 
+  //  Fetch Active Offers
   useEffect(() => {
-    const ctx = gsap.context(() => {
-
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 75%",
-        //   once: true, 
-
-          invalidateOnRefresh: true
-        }
-      });
-
-      tl.from(headingRef.current, {
-        y: 60,
-        opacity: 0,
-        duration: 0.8
-      });
-
-      tl.from(cardsRef.current, {
-        y: 80,
-        opacity: 0,
-        duration: 0.8,
-        stagger: 0.2,
-        pin:true,
-      }, "-=0.3");
-
-    }, sectionRef);
-
-    return () => ctx.revert();
+    loadOffers();
   }, []);
+
+  const loadOffers = async () => {
+    try {
+      const { data } = await axios.get(`${API}/api/offers/active`);
+      console.log("OFFERS DATA:", data);   // add this
+      setOffers(data);
+    } catch (err) {
+      console.error("Failed to load offers", err);
+    }
+  };
+
+  //  GSAP Animation After Offers Load
+  // useEffect(() => {
+  //   if (!offers.length) return;
+
+  //   const ctx = gsap.context(() => {
+  //     const tl = gsap.timeline({
+  //       scrollTrigger: {
+  //         trigger: sectionRef.current,
+  //         start: "top 75%",
+  //         invalidateOnRefresh: true,
+  //       },
+  //     });
+
+  //     tl.from(headingRef.current, {
+  //       y: 60,
+  //       opacity: 0,
+  //       duration: 0.8,
+  //     });
+
+  //     tl.from(cardsRef.current, {
+  //       y: 80,
+  //       opacity: 0,
+  //       duration: 0.8,
+  //       stagger: 0.2,
+  //     });
+  //   }, sectionRef);
+
+  //   return () => ctx.revert();
+  // }, [offers]);
 
   return (
     <section
-      ref={sectionRef}
+      // ref={sectionRef}
       className="py-24 px-6 md:px-16 bg-gradient-to-r from-yellow-400 to-yellow-100"
     >
       <div className="max-w-7xl mx-auto">
 
         {/* Heading */}
-        <div ref={headingRef} className="text-center mb-12">
+        <div
+        //  ref={headingRef}
+         className="text-center mb-12">
           <h2 className="text-4xl md:text-5xl font-bold text-gray-900">
             Special Offers
           </h2>
@@ -58,66 +85,58 @@ const OffersSection = () => {
           </p>
         </div>
 
-        {/* Grid */}
+        {/* Dynamic Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
 
-          {/* Featured */}
-          <div
-            ref={el => cardsRef.current[0] = el}
-            className="bg-black text-white rounded-3xl p-8 shadow-xl hover:-translate-y-2 transition-all duration-300"
-          >
-            <span className="text-yellow-400 font-semibold uppercase tracking-wide">
-              Today Only
-            </span>
+          {offers.map((offer, index) => (
+            <div
+              key={offer._id}
+              ref={el => cardsRef.current[index] = el}
+              className="bg-white rounded-3xl p-8 shadow-lg hover:-translate-y-2 transition-all duration-300"
+            >
+              <span className="text-yellow-500 font-semibold uppercase tracking-wide">
+                Limited Time
+              </span>
 
-            <h3 className="text-5xl font-bold text-yellow-400 mt-4">
-              40% OFF
-            </h3>
+              <h3 className="text-4xl font-bold text-gray-900 mt-4">
+                {offer.discountType === "percentage"
+                  ? `${offer.discountValue}% OFF`
+                  : `₹${offer.discountValue} OFF`}
+              </h3>
 
-            <p className="mt-4 text-gray-300">
-              On All Burgers
-            </p>
+              <p className="mt-3 text-gray-600">
+                {offer.description}
+              </p>
 
-            <button className="mt-8 bg-yellow-400 text-black px-6 py-3 rounded-full font-semibold hover:bg-yellow-300 transition">
-              Order Now
-            </button>
-          </div>
+              {/* Show Products Included */}
+              <div className="mt-4">
+                <p className="font-semibold text-sm text-gray-700 mb-1">
+                  Valid On:
+                </p>
 
-          {/* Card 2 */}
-          <div
-            ref={el => cardsRef.current[1] = el}
-            className="bg-white rounded-3xl p-8 shadow-lg hover:-translate-y-2 transition-all duration-300"
-          >
-            <h4 className="text-2xl font-semibold text-gray-900">
-              Free Drink
-            </h4>
+                {offer.products.slice(0, 3).map(p => (
+                  <p key={p._id} className="text-sm text-gray-600">
+                    • {p.name}
+                  </p>
+                ))}
+              </div>
 
-            <p className="mt-3 text-gray-600">
-              On orders above ₹499
-            </p>
+              <button
+  onClick={() =>
+    navigate("/menu", {
+      state: {
+        offerId: offer._id,
+        offerProducts: offer.products.map(p => p._id)
+      }
+    })
+  }
+  className="mt-6 bg-yellow-400 text-black px-5 py-2 rounded-full font-medium hover:bg-yellow-300 transition"
+>
+  Order Now
+</button>
 
-            <button className="mt-6 bg-yellow-400 text-black px-5 py-2 rounded-full font-medium hover:bg-yellow-300 transition">
-              Claim
-            </button>
-          </div>
-
-          {/* Card 3 */}
-          <div
-            ref={el => cardsRef.current[2] = el}
-            className="bg-white rounded-3xl p-8 shadow-lg hover:-translate-y-2 transition-all duration-300"
-          >
-            <h4 className="text-2xl font-semibold text-gray-900">
-              Family Combo
-            </h4>
-
-            <p className="mt-3 text-gray-600">
-              Save ₹300 this weekend
-            </p>
-
-            <button className="mt-6 bg-yellow-400 text-black px-5 py-2 rounded-full font-medium hover:bg-yellow-300 transition">
-              View Deal
-            </button>
-          </div>
+            </div>
+          ))}
 
         </div>
       </div>
