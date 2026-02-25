@@ -33,7 +33,9 @@ router.get("/:id", productController.getProductById);
 
 // Update Product
 // router.put("/:id", productController.updateProduct);
-router.put("/:id", upload.array("images", 5), productController.updateProduct);
+router.put("/:id", 
+  upload.array("images", 5),
+ productController.updateProduct);
 
 // Delete Product
 router.delete("/:id", productController.deleteProduct);

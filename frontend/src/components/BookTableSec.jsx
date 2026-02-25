@@ -1,73 +1,52 @@
-import React, { useEffect, useRef,  } from "react"
-import { gsap } from "gsap"
-import { ScrollTrigger } from "gsap/ScrollTrigger"
-import { useNavigate } from "react-router-dom"
+import React, { useLayoutEffect, useRef } from "react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useNavigate, useLocation } from "react-router-dom";
 
-gsap.registerPlugin(ScrollTrigger)
+gsap.registerPlugin(ScrollTrigger);
 
 const BookTablesec = () => {
-  const wrapperRef = useRef(null)
-  const sectionRef = useRef(null)
-  const navigate = useNavigate()
+  const wrapperRef = useRef(null);
+  const sectionRef = useRef(null);
+  const navigate = useNavigate();
+  const location = useLocation(); // 👈 detect when we return to homepage
 
+  useLayoutEffect(() => {
+    // Only run when we are on homepage
+    if (location.pathname !== "/") return;
 
-  //     useEffect(() => {
-  //   const ctx = gsap.context(() => {
-  //     gsap.set(sectionRef.current, {
-  //       y: 0,
-  //       scale: 1,
-  //     })
-
-  //     gsap.to(sectionRef.current, {
-  //       y: 40,
-  //       scale: 0.8,
-  //       ease: "none",
-  //       scrollTrigger: {
-  //         trigger: wrapperRef.current,
-  //         start: "top 50%",   // starts when section enters viewport
-  //         end: "bottom top",
-  //         scrub: 1,              // smooth but no lag
-  //         // markers: true,
-  //       },
-  //     })
-  //   })
-
-  //   return () => ctx.revert()
-  // }, [])
-  useEffect(() => {
     const ctx = gsap.context(() => {
 
-      gsap.fromTo(
-        sectionRef.current,
-        { y: 120 },
-        {
-          y: -200,
-          ease: "none",
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "30% 100%",
-            end: "top 0%",
-            scrub: 1.2,
-            // markers:true,
-          }
+      // reset state before animating (important when coming back)
+      gsap.set(sectionRef.current, { y: 120 });
+
+      gsap.to(sectionRef.current, {
+        y: -200,
+        ease: "none",
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "30% 100%",
+          end: "top 0%",
+          scrub: 1.2,
+          invalidateOnRefresh: true, // 👈 recalculates on revisit
         }
-      );
+      });
 
-    });
+    }, wrapperRef);
 
-    return () => ctx.revert();
-  }, []);
+    // allow layout/images to settle before measuring
+    setTimeout(() => ScrollTrigger.refresh(), 100);
 
+    return () => ctx.revert(); // clean when leaving route
 
+  }, [location.pathname]); // 👈 rerun when navigating back
 
   return (
-    // <div ref={wrapperRef}>
     <div ref={wrapperRef} className="relative z-20 -mt-16 m-4">
-
 
       <section
         ref={sectionRef}
-        className="relative  bg-white  bg-white rounded-4xl shadow-2xl m-4 h-[50vh] overflow-hidden rounded-4xl border-2 md:m-10 md:h-[70vh]"
+        className="relative bg-white rounded-4xl shadow-2xl m-4 h-[50vh] overflow-hidden border-2 md:m-10 md:h-[70vh]"
       >
         {/* Background Image */}
         <img
@@ -95,11 +74,10 @@ const BookTablesec = () => {
           >
             Book Now
           </button>
-
         </div>
       </section>
     </div>
-  )
-}
+  );
+};
 
-export default BookTablesec
+export default BookTablesec;

@@ -1,41 +1,41 @@
-  import ReviewCard from "./ReviewCard"
-  import React, { use, useEffect, useRef } from 'react'
-  import { ScrollTrigger } from "gsap/ScrollTrigger";
-  import { gsap } from "gsap";
-  gsap.registerPlugin(ScrollTrigger);
-  const ReviewSec = () => {
+import ReviewCard from "./ReviewCard"
+import React, { use, useLayoutEffect, useRef } from 'react'
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { gsap } from "gsap";
+gsap.registerPlugin(ScrollTrigger);
+const ReviewSec = () => {
   const mainref = useRef(null)
   const sectionref = useRef(null)
-useEffect(() => {
-  const ctx = gsap.context(() => {
+  useLayoutEffect(() => {
+    const ctx = gsap.context(() => {
 
-    gsap.fromTo(
-      sectionref.current,
-      {
-        scaleX: 0.10,
-        scaleY: 0.95,
-        opacity: 0.5,
-        transformOrigin: "center center",
-      },
-      {
-        scaleY: 1,
-        scaleX: 1,
-        opacity: 1,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: mainref.current,
-          start: "top 50%",
-          end: "top 0%",
-          scrub: 2,
-          // markers: true,
+      gsap.fromTo(
+        sectionref.current,
+        {
+          scaleX: 0.10,
+          scaleY: 0.95,
+          opacity: 0.5,
+          transformOrigin: "center center",
         },
-      }
-    );
+        {
+          scaleY: 1,
+          scaleX: 1,
+          opacity: 1,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: mainref.current,
+            start: "top 50%",
+            end: "top 0%",
+            scrub: 2,
+            // markers: true,
+          },
+        }
+      );
 
-  }, mainref);
+    }, mainref);
 
-  return () => ctx.revert();
-}, []);
+    return () => ctx.revert();
+  }, []);
   // useEffect(()=>{
   //   const conteext = gsap.context(()=>{
   //     gsap.fromTo(sectionref.current, {
@@ -114,9 +114,9 @@ useEffect(() => {
       product: "Chef’s Special",
     },
   ]
-    return (
-      <div ref={mainref}>
-      <section className= " mt-30 bg-white/90 h-screen overflow-hidden  rounded-4xl">
+  return (
+    <div ref={mainref}>
+      <section className=" mt-30 bg-white/90 h-screen overflow-hidden  rounded-4xl">
         {/* Heading */}
         <div className="mb-12 text-center">
           <h2 className="text-4xl md:text-5xl font-bold text-black">
@@ -127,14 +127,14 @@ useEffect(() => {
           </p> */}
         </div>
         {/* Cards */}
-        <div  ref={sectionref}  className="flex gap-8 overflow-x-auto md:justify-center">
+        <div ref={sectionref} className="flex gap-8 overflow-x-auto md:justify-center">
           {reviews.map((review) => (
             <ReviewCard key={review.id} {...review} />
           ))}
         </div>
       </section>
-      </div>
-    )
-  }
+    </div>
+  )
+}
 
-  export default ReviewSec
+export default ReviewSec

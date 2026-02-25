@@ -6,7 +6,7 @@ const Category = require("../Models/CategoryModal");
 exports.createProduct = async (req, res) => {
   try {
     const { name, price, description, shortdescription, category, isAvailable, isVisible, isPopular    } = req.body;
-
+      
     // Check category exists
     const categoryExists = await Category.findById(category);
     if (!categoryExists) {

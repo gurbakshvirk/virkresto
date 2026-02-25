@@ -28,9 +28,11 @@ import App from './App.jsx'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { AuthProvider } from "./context/authcontext.jsx";
+import { CartProvider } from './context/CartContext.jsx'
 
 createRoot(document.getElementById('root')).render(
-  <StrictMode>
+  <CartProvider>
+  {/* // <StrictMode> */}
     <BrowserRouter>
       <AuthProvider>
         <App />
@@ -38,5 +40,6 @@ createRoot(document.getElementById('root')).render(
         <ToastContainer position="top-right" autoClose={3000} />
       </AuthProvider>
     </BrowserRouter>
-  </StrictMode>
+    </CartProvider>
+  // {/* </StrictMode> */}
 )

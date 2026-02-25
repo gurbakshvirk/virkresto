@@ -153,7 +153,7 @@ const OurChefs = () => {
           end: "bottom 60%",
           scrub: 3,
           // markers: true,
-          scrub: true,
+          // scrub: true,
         },
       });
 

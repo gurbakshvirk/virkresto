@@ -38,7 +38,7 @@ const Adminproducts = () => {
 
   useEffect(() => {
   axios.get(`${API}/api/products`).then(res => {
-    console.log("PRODUCTS FROM API 👉", res.data);
+    console.log("PRODUCTS FROM API ", res.data);
     setProducts(res.data);
   });
 }, []);

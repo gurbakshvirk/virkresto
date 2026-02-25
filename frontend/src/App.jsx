@@ -18,9 +18,9 @@ import BookTable from "./pages/BookTable";
 
 import Dashboard from './pages/admin/Dashboard';
 import Adminproducts from "./pages/admin/Adminproducts";
-import Lenis from "@studio-freight/lenis"
-import { gsap } from "gsap"
-import { ScrollTrigger } from "gsap/ScrollTrigger"
+// import Lenis from "@studio-freight/lenis"
+// import { gsap } from "gsap"
+// import { ScrollTrigger } from "gsap/ScrollTrigger"
 import AdminLayout from "./pages/adminlayout";
 import Adminorders from "./pages/admin/Adminorders";
 import Admincategories from "./pages/admin/Admincategories";
@@ -32,43 +32,61 @@ import SubCategories from "./pages/admin/subCategories";
 import AdminLiveReservations from "./pages/admin/AdminLiveReservations";
 
 
-gsap.registerPlugin(ScrollTrigger)
-const App = () => {
+
+
+// import { useEffect } from "react";
+import { useLocation } from "react-router-dom";
+
+function ScrollToTop() {
+  const { pathname } = useLocation();
+
   useEffect(() => {
-    const lenis = new Lenis({
-      duration: 1.5,
-      smooth: true,
-      smoothTouch: false,
-      easing: (t) => 1 - Math.pow(1 - t, 4),
-    })
-    function raf(time) {
-      lenis.raf(time)
-      requestAnimationFrame(raf)
-    }
-    requestAnimationFrame(raf)
-    lenis.on("scroll", ScrollTrigger.update)
-    ScrollTrigger.scrollerProxy(document.body, {
-      scrollTop(value) {
-        return arguments.length
-          ? lenis.scrollTo(value, { immediate: true })
-          : window.scrollY
-      },
-      getBoundingClientRect() {
-        return {
-          top: 0,
-          left: 0,
-          width: window.innerWidth,
-          height: window.innerHeight,
-        }
-      },
-    })
-    ScrollTrigger.refresh()
-    return () => lenis.destroy()
-  }, [])
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  return null;
+}
+
+
+// gsap.registerPlugin(ScrollTrigger)
+const App = () => {
+  // useEffect(() => {
+  //   const lenis = new Lenis({
+  //     duration: 1.5,
+  //     smooth: true,
+  //     smoothTouch: false,
+  //     easing: (t) => 1 - Math.pow(1 - t, 4),
+  //   })
+  //   function raf(time) {
+  //     lenis.raf(time)
+  //     requestAnimationFrame(raf)
+  //   }
+  //   requestAnimationFrame(raf)
+  //   lenis.on("scroll", ScrollTrigger.update)
+  //   ScrollTrigger.scrollerProxy(document.body, {
+  //     scrollTop(value) {
+  //       return arguments.length
+  //         ? lenis.scrollTo(value, { immediate: true })
+  //         : window.scrollY
+  //     },
+  //     getBoundingClientRect() {
+  //       return {
+  //         top: 0,
+  //         left: 0,
+  //         width: window.innerWidth,
+  //         height: window.innerHeight,
+  //       }
+  //     },
+  //   })
+  //   ScrollTrigger.refresh()
+  //   return () => lenis.destroy()
+  // }, [])
+const location = useLocation();
 
 
   return (
-    <Routes>
+   <Routes location={location} key={location.pathname}>
+
       {/* PUBLIC ROUTES */}
       <Route element={<PublicLayout />}>
         <Route path="/" element={<Homepage />} />
