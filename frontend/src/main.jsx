@@ -20,7 +20,7 @@
 
 
 
-import { StrictMode } from 'react'
+// import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
 import './index.css'
@@ -28,18 +28,21 @@ import App from './App.jsx'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { AuthProvider } from "./context/authcontext.jsx";
+// import { CartProvider } from './context/CartContext.jsx'
 import { CartProvider } from './context/CartContext.jsx'
-
 createRoot(document.getElementById('root')).render(
-  <CartProvider>
-  {/* // <StrictMode> */}
+
     <BrowserRouter>
       <AuthProvider>
+ <CartProvider>
+
         <App />
         {/* ✅ Must be inside React tree */}
         <ToastContainer position="top-right" autoClose={3000} />
+  </CartProvider>
+
       </AuthProvider>
+
     </BrowserRouter>
-    </CartProvider>
-  // {/* </StrictMode> */}
+    
 )

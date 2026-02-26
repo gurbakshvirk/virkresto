@@ -94,33 +94,57 @@ const Adminproducts = () => {
   };
 
 
+  const uploadImagesToCloudinary = async () => {
+  const uploadedUrls = [];
+
+  for (let i = 0; i < images.length; i++) {
+    const formData = new FormData();
+    formData.append("file", images[i]);
+    formData.append("upload_preset", import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET);
+
+    const res = await fetch(
+      `https://api.cloudinary.com/v1_1/${import.meta.env.VITE_CLOUDINARY_CLOUD_NAME}/image/upload`,
+      {
+        method: "POST",
+        body: formData,
+      }
+    );
+
+    const data = await res.json();
+    uploadedUrls.push({ url: data.secure_url });
+  }
+
+  return uploadedUrls;
+};
+
   // Submit Product
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    const data = new FormData();
+  try {
+    let imageUrls = [];
 
-    Object.keys(form).forEach(key => data.append(key, form[key]));
-
-    data.append("isVisible", isVisible);
-    data.append("isPopular", isPopular);
-
-
-    for (let i = 0; i < images.length; i++) {
-      data.append("images", images[i]);
+    // Only upload if new images selected
+    if (images.length > 0) {
+      imageUrls = await uploadImagesToCloudinary();
     }
+
+    const productData = {
+      ...form,
+      isVisible,
+      isPopular,
+      images: imageUrls.length > 0 ? imageUrls : previewImages.map(url => ({ url }))
+    };
 
     if (editingId) {
-      await axios.put(`${API}/api/products/${editingId}`, data);
-      // alert("Product Updated");
+      await axios.put(`${API}/api/products/${editingId}`, productData);
       toast.success("Product Updated successfully!");
-
     } else {
-      await axios.post(`${API}/api/products`, data);
-      alert("Product Created");
+      await axios.post(`${API}/api/products`, productData);
+      toast.success("Product Created successfully!");
     }
 
-    // reset
+    // Reset
     setEditingId(null);
     setImages([]);
     setPreviewImages([]);
@@ -130,11 +154,15 @@ const Adminproducts = () => {
       description: "",
       shortdescription: "",
       category: "",
-
     });
 
     fetchProducts();
-  };
+
+  } catch (error) {
+    console.error(error);
+    toast.error("Something went wrong");
+  }
+};
 
   return (
     <div className="p-8 bg-gray-50 min-h-screen">

@@ -98,11 +98,17 @@
 // export default CartPage
 
 
-import { useCart } from "../context/CartContext"
+import { useContext } from "react"
+import { CartContext } from "../context/CartContext"
+
 
 const CartPage = () => {
-  const { cart, updateQuantity, removeItem, totalPrice } = useCart()
-
+  const { cart, increaseQty, removeItem, decreaseQty, clearCart } = useContext(CartContext)
+  // console.log(cart)
+  const totalPrice = cart.reduce(
+    (total, item) => total + item.price * item.qty,
+    0
+  )
   return (
     <div className="min-h-screen mt-10 px-10 py-20 text-black bg-white/80">
       <h1 className="text-4xl font-bold mb-10">Your Cart</h1>
@@ -110,34 +116,35 @@ const CartPage = () => {
       {cart.length === 0 && <p>Your cart is empty</p>}
 
       {cart.map(item => (
-        <div key={item.id} className="flex justify-between border-b py-4">
+        <div key={item._id} className="flex justify-between border-b py-4">
           <div>
-            <img src={item.image} alt="Product" className="h-[100px] rounded" />
+            <img
+              src={item.images?.[0]?.url}
+              alt={item.name}
+              className="h-[100px] rounded"
+            />
+
             <h2 className="text-xl font-semibold">{item.name}</h2>
 
             <div className="flex items-center gap-4 mt-2">
               <button
-                onClick={() =>
-                  updateQuantity(item.id, item.quantity - 1)
-                }
+                onClick={() => decreaseQty(item._id)}
                 className="px-3 py-1 border rounded"
               >
                 −
               </button>
 
-              <span>{item.quantity}</span>
+              <span>{item.qty}</span>
 
               <button
-                onClick={() =>
-                  updateQuantity(item.id, item.quantity + 1)
-                }
+                onClick={() => increaseQty(item._id)}
                 className="px-3 py-1 border rounded"
               >
                 +
               </button>
 
               <button
-                onClick={() => removeItem(item.id)}
+                onClick={() => removeItem(item._id)}
                 className="ml-4 text-red-600"
               >
                 Remove
@@ -145,7 +152,7 @@ const CartPage = () => {
             </div>
           </div>
 
-          <p>₹{item.price * item.quantity}</p>
+          <p>₹{item.price * item.qty}</p>
         </div>
       ))}
 

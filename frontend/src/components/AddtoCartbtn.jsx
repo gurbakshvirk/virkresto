@@ -46,12 +46,13 @@
 //   export default AddToCartButton
 
 
-import { useCart } from "../context/CartContext"
+import { useContext } from "react"
+import { CartContext } from "../context/CartContext"
 
 const AddToCartButton = ({ item }) => {
 
   
-  const { addToCart } = useCart()
+  const { cart , addToCart , increaseQty,removeItem, decreaseQty, clearCart } = useContext(CartContext);
 
   return (
     <button

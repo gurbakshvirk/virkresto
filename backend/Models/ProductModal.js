@@ -19,10 +19,18 @@ const productSchema = new mongoose.Schema({
     type: String
   },
 
-   images: [
+//    images: [
+//   {
+//     url: String,
+//     public_id: String,
+//   }
+// ],
+images: [
   {
-    url: String,
-    public_id: String,
+    url: {
+      type: String,
+      required: true
+    }
   }
 ],
 

@@ -2,7 +2,7 @@ require('dotenv').config();
 
 const express = require('express');
 const app = express();
-const bodyParser = require('body-parser');
+// const bodyParser = require('body-parser');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 // const path = require("path");
@@ -29,7 +29,10 @@ app.get('/hello', (req, res) => {
 });
 
 // MIDDLEWARE
-app.use(bodyParser.json());
+// app.use(bodyParser.json());
+app.use(express.json());
+
+
 app.use(cookieParser());
 
 app.use(cors({
@@ -50,7 +53,7 @@ app.use("/api/offers", require("./Routes/offerRoutes"));
 
 
   
-app.use("/api/reservations", reservationRoutes);
+// app.use("/api/reservations", reservationRoutes);
 
 
 // app.use("/uploads", express.static(path.join(__dirname, "uploads")));
