@@ -1,10 +1,10 @@
 import React, { useEffect, useRef } from 'react'
 import axios from 'axios';
 
-import CategoryCard from './CategoryCard'
+import CategoryCard from '../CategoryCard'
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { gsap } from "gsap";
-import { fetchCategories } from '../services/productservice';
+import { fetchCategories } from '../../services/productservice';
 import { useState } from 'react';
 
 gsap.registerPlugin(ScrollTrigger);

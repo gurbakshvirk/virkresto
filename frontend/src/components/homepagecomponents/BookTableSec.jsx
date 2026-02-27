@@ -9,7 +9,7 @@ const BookTablesec = () => {
   const wrapperRef = useRef(null);
   const sectionRef = useRef(null);
   const navigate = useNavigate();
-  const location = useLocation(); // 👈 detect when we return to homepage
+  const location = useLocation(); //  detect when we return to homepage
 
   useLayoutEffect(() => {
     // Only run when we are on homepage
@@ -28,7 +28,7 @@ const BookTablesec = () => {
           start: "30% 100%",
           end: "top 0%",
           scrub: 1.2,
-          invalidateOnRefresh: true, // 👈 recalculates on revisit
+          invalidateOnRefresh: true, //  recalculates on revisit
         }
       });
 
@@ -39,7 +39,7 @@ const BookTablesec = () => {
 
     return () => ctx.revert(); // clean when leaving route
 
-  }, [location.pathname]); // 👈 rerun when navigating back
+  }, [location.pathname]); // rerun when navigating back
 
   return (
     <div ref={wrapperRef} className="relative z-20 -mt-16 m-4">

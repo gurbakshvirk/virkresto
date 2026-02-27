@@ -1,6 +1,6 @@
 import './Testimonials.css';
 import React, { useEffect, useRef } from "react";
-import ReviewCard2 from "./ReviewCars2";
+import ReviewCard2 from "../ReviewCars2";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { gsap } from "gsap";
 import { Swiper, SwiperSlide } from "swiper/react";

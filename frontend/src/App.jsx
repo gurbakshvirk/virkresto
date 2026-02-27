@@ -12,7 +12,7 @@ import Login from './pages/login';
 // import AdminLayout from "./pages/admin/Dashboard";
 import PublicLayout from "./pages/publiclayout";
 import BookTable from "./pages/BookTable";
-
+import Checkout from "./pages/Checkout";
 
 
 
@@ -98,6 +98,8 @@ const location = useLocation();
         {/* <Route path="/menu/:id" element={<SingleProductPage />} /> */}
         <Route path="*" element={<Pagenotfound />} />
         <Route path="/reservation" element={<BookTable />} />
+        <Route path="/checkout" element={<Checkout />} />
+
       </Route>
 
 

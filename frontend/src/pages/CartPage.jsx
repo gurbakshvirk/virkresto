@@ -100,9 +100,13 @@
 
 import { useContext } from "react"
 import { CartContext } from "../context/CartContext"
+import { useNavigate } from "react-router-dom";
+
 
 
 const CartPage = () => {
+    const navigate = useNavigate(); 
+
   const { cart, increaseQty, removeItem, decreaseQty, clearCart } = useContext(CartContext)
   // console.log(cart)
   const totalPrice = cart.reduce(
@@ -161,7 +165,10 @@ const CartPage = () => {
         <div className="text-2xl font-bold ">
           Total: ₹{totalPrice}
         </div>
-        <button className="border p-2 rounded text-white  bg-emerald-700">Checkout</button>
+        {/* <button >Checkout</button> */}
+        <button className="border p-2 rounded text-white  bg-emerald-700" onClick={() => navigate("/checkout")}>
+                    Checkout
+                </button>
 
       </div>
     </div>

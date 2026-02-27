@@ -1,8 +1,8 @@
 import { useEffect, useState, useRef } from "react"
 // import React, { useEffect, useRef } from 'react'
 
-import { getAllProducts } from "../services/productservice"
-import AllproductCard from "./AllproductCard"
+import { getAllProducts } from "../../services/productservice"
+import AllproductCard from "../AllproductCard"
 
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { gsap } from "gsap";

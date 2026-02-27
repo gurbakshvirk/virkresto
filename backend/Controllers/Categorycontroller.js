@@ -1,35 +1,60 @@
-const Category = require("../Models/CategoryModal");
-const Product = require("../Models/ProductModal");
+// const Category = require("../Models/CategoryModal");
+// const Product = require("../Models/ProductModal");
 const cloudinary = require("cloudinary").v2;
 
 // Create Category
+// exports.createCategory = async (req, res) => {
+//   try {
+//     const { name, foodType } = req.body;
+
+//     if (!req.file) {
+//       return res.status(400).json({ message: "Category image is required" });
+//     }
+
+//     const category = new Category({
+//       name,
+//       foodType,
+//       image: req.file.path, 
+//     });
+
+//     await category.save();
+
+//     res.status(201).json(category);
+//   }
+  
+  
+  
+//   catch (error) {
+//     console.log(error);
+//     res.status(500).json({ message: error.message });
+//   }
+// };
+
+const Category = require("../Models/CategoryModal");
+const Product = require("../Models/ProductModal");
+
+// CREATE CATEGORY
 exports.createCategory = async (req, res) => {
   try {
-    const { name, foodType } = req.body;
+    const { name, foodType, image } = req.body;
 
-    if (!req.file) {
-      return res.status(400).json({ message: "Category image is required" });
+    if (!name || !foodType || !image) {
+      return res.status(400).json({ message: "All fields required" });
     }
 
-    const category = new Category({
+    const category = await Category.create({
       name,
       foodType,
-      image: req.file.path, 
+      image,
     });
 
-    await category.save();
-
     res.status(201).json(category);
-  }
-  
-  
-  
-  catch (error) {
-    console.log(error);
+
+  } catch (error) {
+     console.log("CREATE CATEGORY ERROR:", error); 
     res.status(500).json({ message: error.message });
   }
 };
-
 
 
 // Get All Categories
@@ -68,20 +93,40 @@ exports.getCategoryById = async (req, res) => {
 
 
 // Update Category (with optional new image)
+// exports.updateCategory = async (req, res) => {
+//   try {
+//     const { name, foodType, isActive } = req.body;
+
+//     const updateData = { name, foodType, isActive };
+
+//     // If new image uploaded → update to Cloudinary URL
+//     if (req.file) {
+//       updateData.image = req.file.path; // ✅ Cloudinary URL
+//     }
+
+//     const category = await Category.findByIdAndUpdate(
+//       req.params.id,
+//       updateData,
+//       { new: true }
+//     );
+
+//     if (!category) {
+//       return res.status(404).json({ message: "Category not found" });
+//     }
+
+//     res.json(category);
+//   } catch (error) {
+//     res.status(500).json({ message: error.message });
+//   }
+// };
+
 exports.updateCategory = async (req, res) => {
   try {
-    const { name, foodType, isActive } = req.body;
-
-    const updateData = { name, foodType, isActive };
-
-    // If new image uploaded → update to Cloudinary URL
-    if (req.file) {
-      updateData.image = req.file.path; // ✅ Cloudinary URL
-    }
+    const { name, foodType, image, isActive } = req.body;
 
     const category = await Category.findByIdAndUpdate(
       req.params.id,
-      updateData,
+      { name, foodType, image, isActive },
       { new: true }
     );
 
@@ -90,11 +135,11 @@ exports.updateCategory = async (req, res) => {
     }
 
     res.json(category);
+
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
-
 
 
 

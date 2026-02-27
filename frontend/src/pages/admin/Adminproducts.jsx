@@ -3,7 +3,7 @@ import axios from "axios";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-
+import imageCompression from "browser-image-compression";
 const Adminproducts = () => {
   const [categories, setCategories] = useState([]);
   const [editingId, setEditingId] = useState(null);
@@ -20,6 +20,7 @@ const Adminproducts = () => {
   const [products, setProducts] = useState([]);
   const [isVisible, setIsVisible] = useState(true);
   const [isPopular, setIsPopular] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const API = import.meta.env.VITE_API_URL;
 
@@ -37,11 +38,11 @@ const Adminproducts = () => {
 
 
   useEffect(() => {
-  axios.get(`${API}/api/products`).then(res => {
-    console.log("PRODUCTS FROM API ", res.data);
-    setProducts(res.data);
-  });
-}, []);
+    axios.get(`${API}/api/products`).then(res => {
+      console.log("PRODUCTS FROM API ", res.data);
+      setProducts(res.data);
+    });
+  }, []);
 
 
   useEffect(() => {
@@ -77,10 +78,10 @@ const Adminproducts = () => {
 
     // setPreviewImages(product.images.map(img => `${API}${img}`));
     setPreviewImages(
-  product.images.map(img =>
-    typeof img === "string" ? img : img.url
-  )
-);
+      product.images.map(img =>
+        typeof img === "string" ? img : img.url
+      )
+    );
 
   };
 
@@ -95,75 +96,133 @@ const Adminproducts = () => {
 
 
   const uploadImagesToCloudinary = async () => {
-  const uploadedUrls = [];
 
-  for (let i = 0; i < images.length; i++) {
-    const formData = new FormData();
-    formData.append("file", images[i]);
-    formData.append("upload_preset", import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET);
+    const uploadPromises = Array.from(images).map(async (image) => {
 
-    const res = await fetch(
-      `https://api.cloudinary.com/v1_1/${import.meta.env.VITE_CLOUDINARY_CLOUD_NAME}/image/upload`,
-      {
-        method: "POST",
-        body: formData,
-      }
-    );
+      const compressedFile = await imageCompression(image, {
+        maxSizeMB: 1,
+        maxWidthOrHeight: 1280,
+        useWebWorker: true,
+      });
 
-    const data = await res.json();
-    uploadedUrls.push({ url: data.secure_url });
-  }
+      const formData = new FormData();
+      formData.append("file", compressedFile);
+      formData.append(
+        "upload_preset",
+        import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET
+      );
 
-  return uploadedUrls;
-};
+      const res = await fetch(
+        `https://api.cloudinary.com/v1_1/${import.meta.env.VITE_CLOUDINARY_CLOUD_NAME}/image/upload`,
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
 
-  // Submit Product
-const handleSubmit = async (e) => {
-  e.preventDefault();
-
-  try {
-    let imageUrls = [];
-
-    // Only upload if new images selected
-    if (images.length > 0) {
-      imageUrls = await uploadImagesToCloudinary();
-    }
-
-    const productData = {
-      ...form,
-      isVisible,
-      isPopular,
-      images: imageUrls.length > 0 ? imageUrls : previewImages.map(url => ({ url }))
-    };
-
-    if (editingId) {
-      await axios.put(`${API}/api/products/${editingId}`, productData);
-      toast.success("Product Updated successfully!");
-    } else {
-      await axios.post(`${API}/api/products`, productData);
-      toast.success("Product Created successfully!");
-    }
-
-    // Reset
-    setEditingId(null);
-    setImages([]);
-    setPreviewImages([]);
-    setForm({
-      name: "",
-      price: "",
-      description: "",
-      shortdescription: "",
-      category: "",
+      const data = await res.json();
+      return { url: data.secure_url };
     });
 
-    fetchProducts();
+    return await Promise.all(uploadPromises);
+  };
 
-  } catch (error) {
-    console.error(error);
-    toast.error("Something went wrong");
-  }
-};
+  // Submit Product
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
 
+  //   try {
+  //     let imageUrls = [];
+
+  //     // Only upload if new images selected
+  //     if (images.length > 0) {
+  //       imageUrls = await uploadImagesToCloudinary();
+  //     }
+
+  //     const productData = {
+  //       ...form,
+  //       isVisible,
+  //       isPopular,
+  //       images: imageUrls.length > 0 ? imageUrls : previewImages.map(url => ({ url }))
+  //     };
+
+  //     if (editingId) {
+  //       await axios.put(`${API}/api/products/${editingId}`, productData);
+  //       toast.success("Product Updated successfully!");
+  //     } else {
+  //       await axios.post(`${API}/api/products`, productData);
+  //       toast.success("Product Created successfully!");
+  //     }
+
+  //     // Reset
+  //     setEditingId(null);
+  //     setImages([]);
+  //     setPreviewImages([]);
+  //     setForm({
+  //       name: "",
+  //       price: "",
+  //       description: "",
+  //       shortdescription: "",
+  //       category: "",
+  //     });
+
+  //     fetchProducts();
+
+  //   } catch (error) {
+  //     console.error(error);
+  //     toast.error("Something went wrong");
+  //   }
+  // };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (loading) return;
+
+    try {
+      setLoading(true);
+
+      let imageUrls = [];
+
+      if (images.length > 0) {
+        imageUrls = await uploadImagesToCloudinary();
+      }
+
+      const productData = {
+        ...form,
+        isVisible,
+        isPopular,
+        images: imageUrls,
+      };
+
+      if (editingId) {
+        await axios.put(`${API}/api/products/${editingId}`, productData);
+        toast.success("Product Updated successfully!");
+      } else {
+        await axios.post(`${API}/api/products`, productData);
+        toast.success("Product Created successfully!");
+      }
+
+      // reset
+      setEditingId(null);
+      setImages([]);
+      setPreviewImages([]);
+      setForm({
+        name: "",
+        price: "",
+        description: "",
+        shortdescription: "",
+        category: "",
+      });
+
+      fetchProducts();
+
+    } catch (error) {
+      toast.error("Something went wrong");
+    } finally {
+      setLoading(false);
+    }
+  };
   return (
     <div className="p-8 bg-gray-50 min-h-screen">
       {/* PAGE TITLE */}
@@ -289,8 +348,19 @@ const handleSubmit = async (e) => {
             )}
 
 
-            <button className="bg-black text-white py-3 rounded-lg hover:bg-gray-800 transition w-full">
-              Create Product
+            <button
+              disabled={loading}
+              className={`py-3 rounded-lg transition w-full flex justify-center items-center gap-2
+    ${loading ? "bg-gray-500 cursor-not-allowed" : "bg-black hover:bg-gray-800 text-white"}`}
+            >
+              {loading ? (
+                <>
+                  <span className="animate-spin h-5 w-5 border-2 border-white border-t-transparent rounded-full"></span>
+                  Uploading...
+                </>
+              ) : (
+                editingId ? "Update Product" : "Create Product"
+              )}
             </button>
           </div>
         </form>

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import PopularCard from './PopularCard'
+import PopularCard from '../PopularCard'
 import { Navigation, Pagination } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -7,7 +7,7 @@ import 'swiper/css/pagination';
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { gsap } from "gsap";
-import { getPopularProducts } from '../services/productservice';
+import { getPopularProducts } from '../../services/productservice';
 
 gsap.registerPlugin(ScrollTrigger);
 
