@@ -1,21 +1,17 @@
 import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useNavigate } from "react-router-dom";
 
-gsap.registerPlugin(ScrollTrigger);
 
 const OffersSection = () => {
 
 
-   //api link
   const API = import.meta.env.VITE_API_URL;
 
 
 
   const [offers, setOffers] = useState([]);
-const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const sectionRef = useRef(null);
   const headingRef = useRef(null);
@@ -29,42 +25,14 @@ const navigate = useNavigate();
   const loadOffers = async () => {
     try {
       const { data } = await axios.get(`${API}/api/offers/active`);
-      console.log("OFFERS DATA:", data);   // add this
+      console.log("OFFERS DATA:", data);
       setOffers(data);
     } catch (err) {
       console.error("Failed to load offers", err);
     }
   };
 
-  //  GSAP Animation After Offers Load
-  // useEffect(() => {
-  //   if (!offers.length) return;
 
-  //   const ctx = gsap.context(() => {
-  //     const tl = gsap.timeline({
-  //       scrollTrigger: {
-  //         trigger: sectionRef.current,
-  //         start: "top 75%",
-  //         invalidateOnRefresh: true,
-  //       },
-  //     });
-
-  //     tl.from(headingRef.current, {
-  //       y: 60,
-  //       opacity: 0,
-  //       duration: 0.8,
-  //     });
-
-  //     tl.from(cardsRef.current, {
-  //       y: 80,
-  //       opacity: 0,
-  //       duration: 0.8,
-  //       stagger: 0.2,
-  //     });
-  //   }, sectionRef);
-
-  //   return () => ctx.revert();
-  // }, [offers]);
 
   return (
     <section
@@ -75,8 +43,8 @@ const navigate = useNavigate();
 
         {/* Heading */}
         <div
-        //  ref={headingRef}
-         className="text-center mb-12">
+          //  ref={headingRef}
+          className="text-center mb-12">
           <h2 className="text-4xl md:text-5xl font-bold text-gray-900">
             Special Offers
           </h2>
@@ -122,18 +90,18 @@ const navigate = useNavigate();
               </div>
 
               <button
-  onClick={() =>
-    navigate("/menu", {
-      state: {
-        offerId: offer._id,
-        offerProducts: offer.products.map(p => p._id)
-      }
-    })
-  }
-  className="mt-6 bg-yellow-400 text-black px-5 py-2 rounded-full font-medium hover:bg-yellow-300 transition"
->
-  Order Now
-</button>
+                onClick={() =>
+                  navigate("/menu", {
+                    state: {
+                      offerId: offer._id,
+                      offerProducts: offer.products.map(p => p._id)
+                    }
+                  })
+                }
+                className="mt-6 bg-yellow-400 text-black px-5 py-2 rounded-full font-medium hover:bg-yellow-300 transition"
+              >
+                Order Now
+              </button>
 
             </div>
           ))}

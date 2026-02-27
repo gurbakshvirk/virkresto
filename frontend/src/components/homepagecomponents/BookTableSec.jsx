@@ -1,48 +1,15 @@
 import React, { useLayoutEffect, useRef } from "react";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useNavigate, useLocation } from "react-router-dom";
 
-gsap.registerPlugin(ScrollTrigger);
 
 const BookTablesec = () => {
   const wrapperRef = useRef(null);
   const sectionRef = useRef(null);
   const navigate = useNavigate();
-  const location = useLocation(); //  detect when we return to homepage
-
-  useLayoutEffect(() => {
-    // Only run when we are on homepage
-    if (location.pathname !== "/") return;
-
-    const ctx = gsap.context(() => {
-
-      // reset state before animating (important when coming back)
-      gsap.set(sectionRef.current, { y: 120 });
-
-      gsap.to(sectionRef.current, {
-        y: -200,
-        ease: "none",
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "30% 100%",
-          end: "top 0%",
-          scrub: 1.2,
-          invalidateOnRefresh: true, //  recalculates on revisit
-        }
-      });
-
-    }, wrapperRef);
-
-    // allow layout/images to settle before measuring
-    setTimeout(() => ScrollTrigger.refresh(), 100);
-
-    return () => ctx.revert(); // clean when leaving route
-
-  }, [location.pathname]); // rerun when navigating back
+  const location = useLocation(); 
 
   return (
-    <div ref={wrapperRef} className="relative z-20 -mt-16 m-4">
+    <div ref={wrapperRef} className="relative z-20 mt-16 m-4">
 
       <section
         ref={sectionRef}
