@@ -37,7 +37,6 @@ createRoot(document.getElementById('root')).render(
  <CartProvider>
 
         <App />
-        {/* ✅ Must be inside React tree */}
         <ToastContainer position="top-right" autoClose={3000} />
   </CartProvider>
 

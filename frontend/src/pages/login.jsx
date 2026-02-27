@@ -38,12 +38,16 @@ const Login = () => {
         return
       }
 
-      // ✅ THIS IS THE KEY FIX
-      login({
-        token: data.jwttoken,
-        username: data.name,
-        role: data.role
-      })
+      // THIS IS THE KEY FIX
+//       login({
+//   token: data.jwttoken,
+//   username: data.name,
+//   role: data.role
+// })
+login({
+  token: data.jwttoken,
+  userData: data.user
+})
 
       toast.success('Logged in successfully')
       setForm({ email: '', password: '' })

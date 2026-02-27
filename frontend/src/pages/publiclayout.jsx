@@ -1,7 +1,7 @@
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { Outlet, useLocation } from "react-router-dom";
-import { useLayoutEffect } from "react";
+import { useLayoutEffect, useEffect } from "react";
 import Lenis from "@studio-freight/lenis";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -11,11 +11,8 @@ gsap.registerPlugin(ScrollTrigger);
 const PublicLayout = () => {
   const location = useLocation();
 
+  //  LENIS — RUN ONLY ONCE
   useLayoutEffect(() => {
-    // Kill ALL previous triggers (important when switching pages)
-    ScrollTrigger.getAll().forEach(trigger => trigger.kill());
-
-    // Create fresh Lenis instance for this route
     const lenis = new Lenis({
       duration: 1.2,
       smooth: true,
@@ -33,10 +30,9 @@ const PublicLayout = () => {
     ScrollTrigger.scrollerProxy(document.body, {
       scrollTop(value) {
         if (arguments.length) {
-          lenis.scrollTo(value, { immediate: true });
-        } else {
-          return lenis.scroll;
+          return lenis.scrollTo(value, { immediate: true });
         }
+        return lenis.animatedScroll;
       },
       getBoundingClientRect() {
         return {
@@ -48,18 +44,20 @@ const PublicLayout = () => {
       },
     });
 
-    // Wait for layout/images before calculating triggers
-    setTimeout(() => {
-      ScrollTrigger.refresh();
-    }, 200);
+    // ScrollTrigger.addEventListener("refresh", () => lenis.update());
+    ScrollTrigger.refresh();
 
-    // CLEANUP when leaving the page
     return () => {
       lenis.destroy();
-      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
     };
+  }, []);
 
-  }, [location.pathname]); // rerun every navigation
+  //  REFRESH ON ROUTE CHANGE
+  useEffect(() => {
+    setTimeout(() => {
+      ScrollTrigger.refresh();
+    }, 300);
+  }, [location]);
 
   return (
     <>

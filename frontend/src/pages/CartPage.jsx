@@ -105,28 +105,41 @@ import { useNavigate } from "react-router-dom";
 
 
 const CartPage = () => {
-    const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
   const { cart, increaseQty, removeItem, decreaseQty, clearCart } = useContext(CartContext)
   // console.log(cart)
-  const totalPrice = cart.reduce(
+
+
+
+  const deliveryCharges = 0;
+
+  const subTotal = cart.reduce(
     (total, item) => total + item.price * item.qty,
     0
-  )
+  );
+  const taxRate = 0.05; // 5% tax
+
+  const tax = subTotal * taxRate;
+
+  const finalPrice = subTotal + tax + deliveryCharges;
+
+
   return (
-    <div className="min-h-screen mt-10 px-10 py-20 text-black bg-white/80">
-      <h1 className="text-4xl font-bold mb-10">Your Cart</h1>
+    <div className="min-h-screen mt-15 px-10 py-20 text-black bg-white/80">
+      <h1 className="text-4xl font-bold mb-1">Your Cart</h1>
 
       {cart.length === 0 && <p>Your cart is empty</p>}
 
       {cart.map(item => (
         <div key={item._id} className="flex justify-between border-b py-4">
-          <div>
-            <img
+           <img
               src={item.images?.[0]?.url}
               alt={item.name}
-              className="h-[100px] rounded"
+              className="h-[120px] w-[120px] object-cover rounded"
             />
+          <div>
+           
 
             <h2 className="text-xl font-semibold">{item.name}</h2>
 
@@ -155,20 +168,79 @@ const CartPage = () => {
               </button>
             </div>
           </div>
+          <div>
+            <p>Item price ₹{item.price}</p>
 
-          <p>₹{item.price * item.qty}</p>
+            <p>Item Total:{item.price * item.qty}</p>
+          </div>
         </div>
       ))}
 
 
-      <div className="flex flex-row p-10 gap-6">
+
+
+       {/* {cart.map(item => (
+        <div key={item._id} className="flex justify-between border-b py-4">
+           <img
+              src={item.images?.[0]?.url}
+              alt={item.name}
+              className="h-[100px] rounded"
+            />
+
+            <h2 className="text-xl font-semibold">{item.name}</h2>
+
+          <div>
+           
+
+
+            <div className="flex items-center gap-4 mt-2">
+              <button
+                onClick={() => decreaseQty(item._id)}
+                className="px-3 py-1 border rounded"
+              >
+                −
+              </button>
+
+              <span>{item.qty}</span>
+
+              <button
+                onClick={() => increaseQty(item._id)}
+                className="px-3 py-1 border rounded"
+              >
+                +
+              </button>
+
+              <button
+                onClick={() => removeItem(item._id)}
+                className="ml-4 text-red-600"
+              >
+                Remove
+              </button>
+            </div>
+          </div>
+          <div>
+            <p>Item price ₹{item.price}</p>
+
+            <p>Item Total:{item.price * item.qty}</p>
+          </div>
+        </div>
+      ))} */}
+
+      <div className="text-l font-semibold p-4">
+        <div>Amount: {subTotal}</div>
+        <div>Delivery Charges: {deliveryCharges}</div>
+        <div>Tax: {taxRate}%</div>
+      </div>
+      <div className="flex flex-row p-10 gap-6 border-t-2">
+
+
         <div className="text-2xl font-bold ">
-          Total: ₹{totalPrice}
+          Total: ₹{finalPrice}
         </div>
         {/* <button >Checkout</button> */}
         <button className="border p-2 rounded text-white  bg-emerald-700" onClick={() => navigate("/checkout")}>
-                    Checkout
-                </button>
+          Checkout
+        </button>
 
       </div>
     </div>

@@ -14,19 +14,27 @@ export const AuthProvider = ({ children }) => {
         const token = localStorage.getItem("token");
         const username = localStorage.getItem("loggedinuser");
         const role = localStorage.getItem("userrole");
+        const id = localStorage.getItem("userid");
 
         if (token && username && role) {
-            setUser({ token, username, role });
+            setUser({ token, id, username, role });
         }
     }, []);
 
     // Login function
-    const login = ({ token, username, role }) => {
-        localStorage.setItem("token", token);
-        localStorage.setItem("loggedinuser", username);
-        localStorage.setItem("userrole", role);
-        setUser({ token, username, role });
-    };
+   const login = ({ token, userData }) => {
+    localStorage.setItem("token", token);
+    localStorage.setItem("userid", userData._id);
+    localStorage.setItem("loggedinuser", userData.name);
+    localStorage.setItem("userrole", userData.role);
+
+    setUser({
+        token,
+        _id: userData._id,
+        username: userData.name,
+        role: userData.role
+    });
+};
 
     // Logout function
     const logout = () => {

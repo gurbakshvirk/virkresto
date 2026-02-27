@@ -32,6 +32,8 @@ const OffersSection = () => {
     }
   };
 
+  console.log(offers)
+
 
 
   return (

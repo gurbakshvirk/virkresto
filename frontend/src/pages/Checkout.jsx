@@ -29,38 +29,57 @@ console.log(cart)
         })
     }
 
-    const handleSubmit = async (e) => {
-        e.preventDefault()
+   const handleSubmit = async (e) => {
+    e.preventDefault()
 
-        const orderPayload = {
-            items: cart.map(item => ({
-                productId: item.id,
-                quantity: item.qty
-            }))
-        }
-        console.log("cart:", cart)
-        console.log("Order Payload:", orderPayload)
+    const token = localStorage.getItem("token")
 
-        try {
-            const response = await fetch("", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(orderPayload)
-            })
-
-            if (response.ok) {
-                clearCart()
-                alert("Order Placed Successfully")
-                navigate("/")
-            }
-        } catch (error) {
-            console.error("Error placing order:", error)
-            alert("Failed to place order")
-        }
+    if (!token) {
+        alert("Please login first")
+        navigate("/login")
+        return
     }
 
+    const orderPayload = {
+        items: cart.map(item => ({
+            productId: item.id,
+            quantity: item.qty
+        })),
+        totalAmount,
+        customerDetails: form
+    }
+
+    try {
+        const response = await fetch(
+            `${import.meta.env.VITE_API_URL}/api/orders`,
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`
+                },
+                body: JSON.stringify(orderPayload)
+            }
+        )
+
+        const data = await response.json()
+
+        if (!response.ok) {
+            alert(data.message || "Failed to place order")
+            return
+        }
+
+        clearCart()
+        alert("Order Placed Successfully")
+        navigate("/")
+    } catch (error) {
+        console.error("Error placing order:", error)
+        alert("Server error")
+    }
+}
+
     return (
-    <div className="min-h-screen bg-gray-100 py-20 px-4">
+    <div className="min-h-screen  bg-gray-100 py-35 px-4">
         <div className="max-w-4xl mx-auto bg-white shadow-xl rounded-2xl p-8 grid md:grid-cols-2 gap-8">
 
             {/* LEFT SIDE - ORDER SUMMARY */}

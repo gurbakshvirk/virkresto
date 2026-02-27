@@ -148,7 +148,7 @@ const Allproducts = () => {
           {/* <h2 className="text-4xl md:text-5xl font-bold">All Products</h2> */}
           <h2 className="text-black text-4xl md:text-6xl font-bold">All Products</h2>
 
-
+          
           <div className='border-2 border-white w-24 mx-auto mt-4'></div>
           <p className="mt-2 text-black">Explore our most loved dishes</p>
         </div>
