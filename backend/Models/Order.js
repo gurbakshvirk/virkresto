@@ -44,10 +44,20 @@ const orderSchema = new mongoose.Schema({
     }
   ],
 
-  totalAmount: {
-    type: Number,
-    required: true
-  },
+  subtotal: {
+  type: Number,
+  required: true
+},
+
+discountAmount: {
+  type: Number,
+  default: 0
+},
+
+totalAmount: {
+  type: Number,
+  required: true
+},
 
   status: {
     type: String,

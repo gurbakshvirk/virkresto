@@ -30,6 +30,7 @@ import Admincoupons from "./pages/admin/Admincoupons";
 import Adminsettings from "./pages/admin/Adminsettings";
 import SubCategories from "./pages/admin/subCategories";
 import AdminLiveReservations from "./pages/admin/AdminLiveReservations";
+import CheckoutSuccess from "./pages/CheckoutSuccess"
 
 
 
@@ -99,6 +100,8 @@ const location = useLocation();
         <Route path="*" element={<Pagenotfound />} />
         <Route path="/reservation" element={<BookTable />} />
         <Route path="/checkout" element={<Checkout />} />
+<Route path="/checkout-success" element={<CheckoutSuccess />} />
+
 
       </Route>
 

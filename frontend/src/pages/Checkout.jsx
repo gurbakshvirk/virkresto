@@ -1,10 +1,15 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 import { CartContext } from '../context/CartContext'
 import { useNavigate } from 'react-router-dom'
+import { loadStripe } from "@stripe/stripe-js";
+
+const stripePromise = loadStripe(""); // replace with your Stripe key
+// `${import.meta.env.STRIPEKEY}
 
 const Checkout = () => {
 
     const { cart, clearCart } = useContext(CartContext)
+    const [preview, setPreview] = useState(null)
     const navigate = useNavigate()
 console.log(cart)
     if (cart.length === 0) {
@@ -28,8 +33,81 @@ console.log(cart)
             [e.target.name]: e.target.value
         })
     }
+ const handleCheckout = async () => {
+  const token = localStorage.getItem("token");
 
-   const handleSubmit = async (e) => {
+  if (!token) {
+    alert("Please login first");
+    navigate("/login");
+    return;
+  }
+
+  try {
+    const response = await fetch(
+      `${import.meta.env.VITE_API_URL}/api/payment/create-checkout-session`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          customer: form,
+          items: cart.map(item => ({
+            productId: item._id,
+            quantity: item.qty
+          }))
+        })
+      }
+    );
+
+    const data = await response.json();
+
+    window.location.href = data.url;
+
+  } catch (err) {
+    console.error("Stripe checkout error:", err);
+  }
+};
+
+    useEffect(() => {
+    const fetchPreview = async () => {
+        const token = localStorage.getItem("token")
+        if (!token) return
+
+        try {
+            const response = await fetch(
+                `${import.meta.env.VITE_API_URL}/api/orders/preview`,
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`
+                    },
+                    body: JSON.stringify({
+                        items: cart.map(item => ({
+                            productId: item._id,
+                            quantity: item.qty
+                        }))
+                    })
+                }
+            )
+
+            const data = await response.json()
+            if (response.ok) {
+                setPreview(data)
+            }
+
+        } catch (error) {
+            console.error("Preview fetch error:", error)
+        }
+    }
+
+    fetchPreview()
+}, [cart])
+
+
+ const handleSubmit = async (e) => {
     e.preventDefault()
 
     const token = localStorage.getItem("token")
@@ -41,12 +119,16 @@ console.log(cart)
     }
 
     const orderPayload = {
+        customer: {
+            name: form.name,
+            phone: form.phone
+        },
+        orderType: form.orderType,
+        deliveryAddress: form.orderType === "delivery" ? form.address : null,
         items: cart.map(item => ({
-            productId: item.id,
+            productId: item._id,
             quantity: item.qty
-        })),
-        totalAmount,
-        customerDetails: form
+        }))
     }
 
     try {
@@ -69,9 +151,17 @@ console.log(cart)
             return
         }
 
+        // Backend now returns:
+        // subtotal
+        // discountAmount
+        // totalAmount
+
+        console.log("Order Breakdown:", data)
+
         clearCart()
-        alert("Order Placed Successfully")
+        alert(`Order Placed! You saved ₹${data.discountAmount}`)
         navigate("/")
+
     } catch (error) {
         console.error("Error placing order:", error)
         alert("Server error")
@@ -104,10 +194,26 @@ console.log(cart)
                     ))}
                 </div>
 
-                <div className="mt-6 flex justify-between text-lg font-bold">
+                {/* <div className="mt-6 flex justify-between text-lg font-bold">
                     <span>Total</span>
                     <span>₹{totalAmount}</span>
-                </div>
+                </div> */}
+                <div className="mt-6 space-y-2 text-lg font-semibold">
+    <div className="flex justify-between">
+        <span>Subtotal</span>
+        <span>₹{preview?.subtotal || 0}</span>
+    </div>
+
+    <div className="flex justify-between text-green-600">
+        <span>Discount</span>
+        <span>- ₹{preview?.discountAmount || 0}</span>
+    </div>
+
+    <div className="flex justify-between border-t pt-2 font-bold">
+        <span>Total</span>
+        <span>₹{preview?.totalAmount || 0}</span>
+    </div>
+</div>
             </div>
 
             {/* RIGHT SIDE - FORM */}
@@ -143,7 +249,7 @@ console.log(cart)
                         placeholder="Address"
                         value={form.address}
                         onChange={handleChange}
-                        required
+                       required={form.orderType === "delivery"}
                         className="w-full border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-black"
                     />
 
@@ -158,11 +264,22 @@ console.log(cart)
                     </select>
 
                     <button
+  type="button"
+  className="w-full bg-black text-white py-3 rounded-lg hover:bg-gray-800 transition font-semibold"
+  onClick={handleCheckout}
+>
+  Pay & Place Order
+</button>
+
+                    {/* <button
                         type="submit"
                         className="w-full bg-black text-white py-3 rounded-lg hover:bg-gray-800 transition font-semibold"
-                    >
+                     onClick={handleCheckout} >
                         Place Order
-                    </button>
+                    </button> */}
+                     {/* <button onClick={handleCheckout} disabled={cart.length === 0}>
+  Checkout
+</button> */}
 
                 </form>
             </div>

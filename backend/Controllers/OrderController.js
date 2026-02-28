@@ -7,11 +7,13 @@ POST /api/orders
 Protected Route
 ========================================
 */
+const Product = require("../Models/ProductModal");
+const Offer = require("../Models/OfferModal");
+
 const createOrder = async (req, res) => {
   try {
-    const { customer, orderType, deliveryAddress, items, totalAmount } = req.body;
+    const { customer, orderType, deliveryAddress, items } = req.body;
 
-    // 1️⃣ Basic validation
     if (!customer || !customer.name || !customer.phone) {
       return res.status(400).json({ message: "Customer details required" });
     }
@@ -24,20 +26,70 @@ const createOrder = async (req, res) => {
       return res.status(400).json({ message: "Order type required" });
     }
 
-    // 2️⃣ Conditional validation for delivery
     if (orderType === "delivery" && !deliveryAddress) {
       return res.status(400).json({
         message: "Delivery address required for delivery orders"
       });
     }
 
-    // 3️⃣ Create order
+    let subtotal = 0;
+    let discountAmount = 0;
+
+    const now = new Date();
+
+    const processedItems = [];
+
+    for (const item of items) {
+      const product = await Product.findById(item.productId);
+
+      if (!product) continue;
+
+      let itemPrice = product.price;
+      let itemTotal = itemPrice * item.quantity;
+
+      subtotal += itemTotal;
+
+      // 🔥 Check active offer for this product
+      const offer = await Offer.findOne({
+        isActive: true,
+        startDate: { $lte: now },
+        endDate: { $gte: now },
+        products: product._id
+      });
+
+      let itemDiscount = 0;
+
+      if (offer) {
+        if (offer.discountType === "percentage") {
+          itemDiscount = (itemTotal * offer.discountValue) / 100;
+        }
+
+        if (offer.discountType === "flat") {
+          itemDiscount = offer.discountValue * item.quantity;
+        }
+      }
+
+      discountAmount += itemDiscount;
+
+      processedItems.push({
+        productId: product._id,
+        name: product.name,
+        price: itemPrice,
+        quantity: item.quantity,
+        image: product.image
+      });
+    }
+
+    const totalAmount = Math.max(subtotal - discountAmount, 0);
+
     const newOrder = new Order({
-      user: req.user._id,   // 🔥 From JWT middleware (SECURE)
+      user: req.user._id,
       customer,
       orderType,
       deliveryAddress: orderType === "delivery" ? deliveryAddress : null,
-      items,
+      items: processedItems,
+      subtotal,
+      discountAmount,
       totalAmount,
       status: "pending"
     });
@@ -46,16 +98,89 @@ const createOrder = async (req, res) => {
 
     res.status(201).json({
       message: "Order created successfully",
-      orderId: newOrder._id
+      orderId: newOrder._id,
+      subtotal,
+      discountAmount,
+      totalAmount
     });
 
   } catch (error) {
     console.error("Create Order Error:", error);
-    res.status(500).json({
-      message: "Server Error"
-    });
+    res.status(500).json({ message: "Server Error" });
   }
 };
+
+
+
+
+
+
+
+
+
+
+/*
+========================================
+PREVIEW ORDER (Calculate totals only)
+POST /api/orders/preview
+Protected Route
+========================================
+*/
+const previewOrder = async (req, res) => {
+  try {
+    const { items } = req.body;
+
+    if (!items || items.length === 0) {
+      return res.status(400).json({ message: "Cart is empty" });
+    }
+
+    let subtotal = 0;
+    let discountAmount = 0;
+    const now = new Date();
+
+    for (const item of items) {
+      const product = await Product.findById(item.productId);
+      if (!product) continue;
+
+      const itemTotal = product.price * item.quantity;
+      subtotal += itemTotal;
+
+      const offer = await Offer.findOne({
+        isActive: true,
+        startDate: { $lte: now },
+        endDate: { $gte: now },
+        products: product._id
+      });
+
+      if (offer) {
+        if (offer.discountType === "percentage") {
+          discountAmount += (itemTotal * offer.discountValue) / 100;
+        }
+
+        if (offer.discountType === "flat") {
+          discountAmount += offer.discountValue * item.quantity;
+        }
+      }
+    }
+
+    const totalAmount = Math.max(subtotal - discountAmount, 0);
+
+    res.json({
+      subtotal,
+      discountAmount,
+      totalAmount
+    });
+
+  } catch (error) {
+    console.error("Preview Order Error:", error);
+    res.status(500).json({ message: "Server Error" });
+  }
+};
+
+
+
+
+
 
 
 /*
@@ -113,6 +238,7 @@ const getAllOrders = async (req, res) => {
 
 module.exports = {
   createOrder,
+  previewOrder,
   getMyOrders,
   getAllOrders
 };

@@ -18,6 +18,7 @@ const tableroutes = require("./Routes/TableRouter")
 const reservationRoutes = require("./Routes/ReservationRouter");
 
 const orderRoutes = require("./Routes/OrderRoutes");
+const stripeRoutes = require("./Routes/stripeRoutes");
 
 
 
@@ -52,6 +53,7 @@ app.use("/api/reservations", reservationRoutes);
 app.use("/api/offers", require("./Routes/offerRoutes"));
 
 app.use("/api/orders", orderRoutes);
+app.use("/api/payment", stripeRoutes);
 
 
   

@@ -237,6 +237,9 @@ const CartPage = () => {
         <div className="text-2xl font-bold ">
           Total: ₹{finalPrice}
         </div>
+        <p className="text-green-600 mt-2">
+  Discounts will be applied at checkout
+</p>  
         {/* <button >Checkout</button> */}
         <button className="border p-2 rounded text-white  bg-emerald-700" onClick={() => navigate("/checkout")}>
           Checkout
