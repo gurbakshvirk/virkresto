@@ -19,7 +19,7 @@ const PopularSection = () => {
   const mainRef = useRef(null);
   const cardsSec = useRef(null);
 
-  // ✅ Fetch Popular Products
+  //  Fetch Popular Products
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -33,7 +33,7 @@ const PopularSection = () => {
     fetchData();
   }, []);
 
-  // ✅ GSAP Animation
+  //  GSAP Animation
   useEffect(() => {
 
     gsap.fromTo(headingText.current , {

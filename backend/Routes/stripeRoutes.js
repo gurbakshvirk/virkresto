@@ -3,8 +3,8 @@ const router = express.Router();
 const Stripe = require("stripe");
 const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
 
-const Product = require("../Models/Product");
-const Offer = require("../Models/Offer");
+const Product = require("../Models/ProductModal");
+const Offer = require("../Models/OfferModal");
 
 // router.post("/create-checkout-session", async (req, res) => {
 //   try {
