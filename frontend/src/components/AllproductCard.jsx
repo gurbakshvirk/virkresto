@@ -2,7 +2,7 @@ import AddToCartButton from "./AddtoCartbtn"
 import { Link } from "react-router-dom"
 const AllproductCard = ({ item }) => {
   return (
-    <div className="w-[280px] bg-white rounded-3xl overflow-hidden shadow-lg flex flex-col">
+    <div className="w-[280px] bg-white rounded-3xl overflow-hidden shadow-2xl  flex flex-col">
 
       {/* Image (fixed height) */}
       <div className="h-[250px] w-full overflow-hidden">

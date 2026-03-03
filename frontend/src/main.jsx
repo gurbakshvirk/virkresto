@@ -23,6 +23,8 @@
 // import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
+import { LoaderProvider } from "./context/Loadercontext.jsx";
+
 import './index.css'
 import App from './App.jsx'
 import { ToastContainer } from 'react-toastify'
@@ -32,16 +34,18 @@ import { AuthProvider } from "./context/authcontext.jsx";
 import { CartProvider } from './context/CartContext.jsx'
 createRoot(document.getElementById('root')).render(
 
-    <BrowserRouter>
-      <AuthProvider>
- <CartProvider>
+  <BrowserRouter>
+  <LoaderProvider>
+    <AuthProvider>
+      <CartProvider>
 
         <App />
         <ToastContainer position="top-right" autoClose={3000} />
-  </CartProvider>
+      </CartProvider>
 
-      </AuthProvider>
+    </AuthProvider>
+    </LoaderProvider>
 
-    </BrowserRouter>
-    
+  </BrowserRouter>
+
 )

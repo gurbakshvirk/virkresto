@@ -1,10 +1,12 @@
 import React, { useContext, useState, useEffect } from 'react'
 import { CartContext } from '../context/CartContext'
 import { useNavigate } from 'react-router-dom'
-import { loadStripe } from "@stripe/stripe-js";
+// import { loadStripe } from "@stripe/stripe-js";
 
-const stripePromise = loadStripe(""); // replace with your Stripe key
-// `${import.meta.env.STRIPEKEY}
+// const stripePromise = loadStripe(`${import.meta.env.STRIPEKEY}`); 
+// const stripePromise = loadStripe(
+//   import.meta.env.VITE_STRIPE_PUBLIC_KEY
+// );
 
 const Checkout = () => {
 
@@ -51,8 +53,21 @@ const Checkout = () => {
                         "Content-Type": "application/json",
                         Authorization: `Bearer ${token}`
                     },
+                    //  body: JSON.stringify({
+                    //     customer: form,
+                    //     items: cart.map(item => ({
+                    //         productId: item._id,
+                    //         quantity: item.qty
+                    //     }))
+                    // })
                     body: JSON.stringify({
-                        customer: form,
+                        customer: {
+                            name: form.name,
+                            phone: form.phone
+                        },
+                        orderType: form.orderType,
+                        deliveryAddress:
+                            form.orderType === "delivery" ? form.address : null,
                         items: cart.map(item => ({
                             productId: item._id,
                             quantity: item.qty
@@ -62,14 +77,14 @@ const Checkout = () => {
             );
 
             const data = await response.json();
-
+            console.log("Stripe Response:", data);
             window.location.href = data.url;
 
         } catch (err) {
             console.error("Stripe checkout error:", err);
         }
     };
-console.log("API URL:", import.meta.env.VITE_API_URL)
+    console.log("API URL:", import.meta.env.VITE_API_URL)
     useEffect(() => {
         const fetchPreview = async () => {
             const token = localStorage.getItem("token")

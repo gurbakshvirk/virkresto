@@ -1,104 +1,202 @@
-const express = require("express");
-const router = express.Router();
-const Stripe = require("stripe");
-const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
+  const express = require("express");
+  const router = express.Router();
+  const Stripe = require("stripe");
+  const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
 
-const Product = require("../Models/ProductModal");
-const Offer = require("../Models/OfferModal");
+  const Product = require("../Models/ProductModal");
+  const Offer = require("../Models/OfferModal");
+  const Order = require("../Models/Order")
+  const ensureAuthenticated = require("../Middleware/Auth");
+  // router.post("/create-checkout-session", async (req, res) => {
+  //   try {
+  //     const { items } = req.body;
 
-// router.post("/create-checkout-session", async (req, res) => {
-//   try {
-//     const { items } = req.body;
+  //     // 1️⃣ Fetch products from DB
+  //     let subtotal = 0;
+  //     const line_items = [];
 
-//     // 1️⃣ Fetch products from DB
-//     let subtotal = 0;
-//     const line_items = [];
+  //     for (const item of items) {
+  //       const product = await Product.findById(item.productId);
 
-//     for (const item of items) {
-//       const product = await Product.findById(item.productId);
+  //       if (!product) continue;
 
-//       if (!product) continue;
+  //       const productTotal = product.price * item.quantity;
+  //       subtotal += productTotal;
 
-//       const productTotal = product.price * item.quantity;
-//       subtotal += productTotal;
+  //       line_items.push({
+  //         price_data: {
+  //           currency: "inr",
+  //           product_data: { name: product.name },
+  //           unit_amount: product.price * 100,
+  //         },
+  //         quantity: item.quantity,
+  //       });
+  //     }
 
-//       line_items.push({
-//         price_data: {
-//           currency: "inr",
-//           product_data: { name: product.name },
-//           unit_amount: product.price * 100,
-//         },
-//         quantity: item.quantity,
-//       });
-//     }
+  //     // 2️⃣ Apply Offers
+  //     const now = new Date();
+  //     const activeOffers = await Offer.find({
+  //       validFrom: { $lte: now },
+  //       validUntil: { $gte: now },
+  //     });
 
-//     // 2️⃣ Apply Offers
-//     const now = new Date();
-//     const activeOffers = await Offer.find({
-//       validFrom: { $lte: now },
-//       validUntil: { $gte: now },
-//     });
+  //     let discountAmount = 0;
 
-//     let discountAmount = 0;
+  //     for (const offer of activeOffers) {
+  //       for (const item of items) {
+  //         if (offer.products.includes(item.productId)) {
+  //           const product = await Product.findById(item.productId);
 
-//     for (const offer of activeOffers) {
-//       for (const item of items) {
-//         if (offer.products.includes(item.productId)) {
-//           const product = await Product.findById(item.productId);
+  //           const itemTotal = product.price * item.quantity;
 
-//           const itemTotal = product.price * item.quantity;
+  //           if (offer.percentageDiscount) {
+  //             discountAmount +=
+  //               (itemTotal * offer.percentageDiscount) / 100;
+  //           }
 
-//           if (offer.percentageDiscount) {
-//             discountAmount +=
-//               (itemTotal * offer.percentageDiscount) / 100;
-//           }
+  //           if (offer.discountValue) {
+  //             discountAmount += offer.discountValue * item.quantity;
+  //           }
+  //         }
+  //       }
+  //     }
 
-//           if (offer.discountValue) {
-//             discountAmount += offer.discountValue * item.quantity;
-//           }
-//         }
-//       }
-//     }
+  //     const totalAmount = subtotal - discountAmount;
 
-//     const totalAmount = subtotal - discountAmount;
+  //     // 3️⃣ Create Stripe session using FINAL TOTAL
+  //     const session = await stripe.checkout.sessions.create({
+  //       payment_method_types: ["card"],
+  //       mode: "payment",
+  //       line_items,
+  //       success_url: `${import.meta.env.FRONTEND}/checkout-success`,
+        
+  //       cancel_url: `${import.meta.env.FRONTEND}/checkout-cancel`,
+  //       metadata: {
+  //         subtotal,
+  //         discountAmount,
+  //         totalAmount,
+  //       },
+  //     });
 
-//     // 3️⃣ Create Stripe session using FINAL TOTAL
-//     const session = await stripe.checkout.sessions.create({
-//       payment_method_types: ["card"],
-//       mode: "payment",
-//       line_items,
-//       success_url: `${import.meta.env.FRONTEND}/checkout-success`,
-      
-//       cancel_url: `${import.meta.env.FRONTEND}/checkout-cancel`,
-//       metadata: {
-//         subtotal,
-//         discountAmount,
-//         totalAmount,
-//       },
-//     });
+  //     res.json({ url: session.url });
 
-//     res.json({ url: session.url });
+  //   } catch (err) {
+  //     console.log(err);
+  //     res.status(500).json({ error: "Something went wrong" });
+  //   }
+  // });
+  // router.post("/create-checkout-session", async (req, res) => {
+  //   try {
+  //     const { items } = req.body;
 
-//   } catch (err) {
-//     console.log(err);
-//     res.status(500).json({ error: "Something went wrong" });
-//   }
-// });
-router.post("/create-checkout-session", async (req, res) => {
+  //     let subtotal = 0;
+  //     let discountAmount = 0;
+  //     const line_items = [];
+
+  //     // 1️⃣ Fetch products
+  //     for (const item of items) {
+  //       const product = await Product.findById(item.productId);
+  //       if (!product) continue;
+
+  //       const itemTotal = product.price * item.quantity;
+  //       subtotal += itemTotal;
+
+  //       line_items.push({
+  //         price_data: {
+  //           currency: "inr",
+  //           product_data: { name: product.name },
+  //           unit_amount: Math.round(product.price * 100),
+  //         },
+  //         quantity: item.quantity,
+  //       });
+  //     }
+
+  //     // 2️⃣ Apply Offers
+  //     const now = new Date();
+
+  //     const activeOffers = await Offer.find({
+  //       validFrom: { $lte: now },
+  //       validUntil: { $gte: now },
+  //     });
+
+  //     for (const offer of activeOffers) {
+  //       for (const item of items) {
+  //         if (offer.products.includes(item.productId)) {
+  //           const product = await Product.findById(item.productId);
+  //           const itemTotal = product.price * item.quantity;
+
+  //           if (offer.percentageDiscount) {
+  //             discountAmount +=
+  //               (itemTotal * offer.percentageDiscount) / 100;
+  //           }
+
+  //           if (offer.discountValue) {
+  //             discountAmount += offer.discountValue * item.quantity;
+  //           }
+  //         }
+  //       }
+  //     }
+
+  //     const totalAmount = subtotal - discountAmount;
+
+  //     // 3️⃣ Add discount as negative line item
+  //     if (discountAmount > 0) {
+  //       line_items.push({
+  //         price_data: {
+  //           currency: "inr",
+  //           product_data: { name: "Discount" },
+  //           unit_amount: -Math.round(discountAmount * 100),
+  //         },
+  //         quantity: 1,
+  //       });
+  //     }
+
+  //     // 4️⃣ Create Stripe session
+  //     const session = await stripe.checkout.sessions.create({
+  //       payment_method_types: ["card"],
+  //       mode: "payment",
+  //       line_items,
+  //       success_url: `${process.env.FRONTEND}/checkout-success`,
+  //       cancel_url: `${process.env.FRONTEND}/checkout-cancel`,
+  //       metadata: {
+  //         subtotal,
+  //         discountAmount,
+  //         totalAmount,
+  //       },
+  //     });
+
+  //     res.json({ url: session.url });
+
+  //   } catch (err) {
+  //     console.log(err);
+  //     res.status(500).json({ error: "Something went wrong" });
+  //   }
+  // });
+
+router.post("/create-checkout-session", ensureAuthenticated, async (req, res) => {
   try {
-    const { items } = req.body;
+    const { items, customer, orderType, deliveryAddress } = req.body;
 
     let subtotal = 0;
     let discountAmount = 0;
     const line_items = [];
+    const processedItems = [];
 
-    // 1️⃣ Fetch products
+    // 1️⃣ Process products
     for (const item of items) {
       const product = await Product.findById(item.productId);
       if (!product) continue;
 
       const itemTotal = product.price * item.quantity;
       subtotal += itemTotal;
+
+      processedItems.push({
+        productId: product._id,
+        name: product.name,
+        price: product.price,
+        quantity: item.quantity,
+        image: product.image,
+      });
 
       line_items.push({
         price_data: {
@@ -110,57 +208,30 @@ router.post("/create-checkout-session", async (req, res) => {
       });
     }
 
-    // 2️⃣ Apply Offers
-    const now = new Date();
-
-    const activeOffers = await Offer.find({
-      validFrom: { $lte: now },
-      validUntil: { $gte: now },
-    });
-
-    for (const offer of activeOffers) {
-      for (const item of items) {
-        if (offer.products.includes(item.productId)) {
-          const product = await Product.findById(item.productId);
-          const itemTotal = product.price * item.quantity;
-
-          if (offer.percentageDiscount) {
-            discountAmount +=
-              (itemTotal * offer.percentageDiscount) / 100;
-          }
-
-          if (offer.discountValue) {
-            discountAmount += offer.discountValue * item.quantity;
-          }
-        }
-      }
-    }
-
     const totalAmount = subtotal - discountAmount;
 
-    // 3️⃣ Add discount as negative line item
-    if (discountAmount > 0) {
-      line_items.push({
-        price_data: {
-          currency: "inr",
-          product_data: { name: "Discount" },
-          unit_amount: -Math.round(discountAmount * 100),
-        },
-        quantity: 1,
-      });
-    }
+    // 2️⃣ CREATE ORDER (UNPAID)
+    const order = await Order.create({
+      user: req.user._id,
+      customer,
+      orderType,
+      deliveryAddress,
+      items: processedItems,
+      subtotal,
+      discountAmount,
+      totalAmount,
+      paymentStatus: "unpaid",
+    });
 
-    // 4️⃣ Create Stripe session
+    // 3️⃣ Create Stripe session with orderId
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
       mode: "payment",
       line_items,
-      success_url: `${process.env.FRONTEND_URL}/checkout-success`,
-      cancel_url: `${process.env.FRONTEND_URL}/checkout-cancel`,
+      success_url: `${process.env.FRONTEND}/checkout-success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${process.env.FRONTEND}/checkout-cancel`,
       metadata: {
-        subtotal,
-        discountAmount,
-        totalAmount,
+        orderId: order._id.toString(),
       },
     });
 
@@ -172,4 +243,34 @@ router.post("/create-checkout-session", async (req, res) => {
   }
 });
 
-module.exports = router;
+
+  router.post("/confirm", async (req, res) => {
+    try {
+      const { sessionId } = req.body;
+
+      const session = await stripe.checkout.sessions.retrieve(sessionId);
+
+      if (session.payment_status !== "paid") {
+        return res.status(400).json({ message: "Payment not completed" });
+      }
+
+      const orderId = session.metadata.orderId;
+
+      const order = await Order.findByIdAndUpdate(
+        orderId,
+        {
+          paymentStatus: "paid",
+          stripeSessionId: sessionId,
+        },
+        { new: true }
+      );
+
+      res.json({ order });
+
+    } catch (error) {
+      console.error("Confirm Payment Error:", error);
+      res.status(500).json({ message: "Server error" });
+    }
+  });
+
+  module.exports = router;

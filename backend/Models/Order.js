@@ -58,6 +58,15 @@ totalAmount: {
   type: Number,
   required: true
 },
+paymentStatus: {
+  type: String,
+  enum: ["unpaid", "paid", "failed"],
+  default: "unpaid"
+},
+
+stripeSessionId: {
+  type: String
+},
 
   status: {
     type: String,

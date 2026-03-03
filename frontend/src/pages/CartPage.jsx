@@ -122,7 +122,7 @@ const CartPage = () => {
 
   const tax = subTotal * taxRate;
 
-  const finalPrice = subTotal + tax + deliveryCharges;
+  const finalPrice = subTotal + deliveryCharges;
 
 
   return (
@@ -133,13 +133,13 @@ const CartPage = () => {
 
       {cart.map(item => (
         <div key={item._id} className="flex justify-between border-b py-4">
-           <img
-              src={item.images?.[0]?.url}
-              alt={item.name}
-              className="h-[120px] w-[120px] object-cover rounded"
-            />
+          <img
+            src={item.images?.[0]?.url}
+            alt={item.name}
+            className="h-[120px] w-[120px] object-cover rounded"
+          />
           <div>
-           
+
 
             <h2 className="text-xl font-semibold">{item.name}</h2>
 
@@ -179,7 +179,7 @@ const CartPage = () => {
 
 
 
-       {/* {cart.map(item => (
+      {/* {cart.map(item => (
         <div key={item._id} className="flex justify-between border-b py-4">
            <img
               src={item.images?.[0]?.url}
@@ -229,7 +229,7 @@ const CartPage = () => {
       <div className="text-l font-semibold p-4">
         <div>Amount: {subTotal}</div>
         <div>Delivery Charges: {deliveryCharges}</div>
-        <div>Tax: {taxRate}%</div>
+        <div>Tax: Calculated at checkout</div>
       </div>
       <div className="flex flex-row p-10 gap-6 border-t-2">
 
@@ -238,8 +238,8 @@ const CartPage = () => {
           Total: ₹{finalPrice}
         </div>
         <p className="text-green-600 mt-2">
-  Discounts will be applied at checkout
-</p>  
+          Discounts will be applied at checkout
+        </p>
         {/* <button >Checkout</button> */}
         <button className="border p-2 rounded text-white  bg-emerald-700" onClick={() => navigate("/checkout")}>
           Checkout

@@ -242,3 +242,17 @@ module.exports = {
   getMyOrders,
   getAllOrders
 };
+
+
+
+
+// const session = await stripe.checkout.sessions.retrieve(sessionId);
+
+// if (session.payment_status === "paid") {
+//    const orderId = session.metadata.orderId;
+
+//    await Order.findByIdAndUpdate(orderId, {
+//       paymentStatus: "paid",
+//       stripeSessionId: sessionId
+//    });
+// }

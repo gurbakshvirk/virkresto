@@ -2,11 +2,12 @@ import { useEffect, useState } from "react"
 import MenuPageCard from "../components/MenuPageCard"
 import { getAllProducts, fetchCategories } from "../services/productservice"
 import { useLocation } from "react-router-dom";
+import MenuLoader from "./MenuLoader";
 
 const Menu = () => {
   const [products, setProducts] = useState([])
   const [categories, setCategories] = useState([])
-  const [activeCategory, setActiveCategory] = useState(null) // null = show all
+  const [activeCategory, setActiveCategory] = useState(null)
   const [foodFilter, setFoodFilter] = useState("all")
   const [loading, setLoading] = useState(true)
   const location = useLocation();
@@ -32,7 +33,9 @@ const Menu = () => {
     loadData()
   }, [])
 
-  if (loading) return <p className="p-10 text-center">Loading menu...</p>
+  // if (loading) return <p className="p-10 text-center mt-50 text-4xl">Loading menu...</p>
+
+  if (loading) return <MenuLoader />;
 
   /* ---------------- FILTER LOGIC ---------------- */
 

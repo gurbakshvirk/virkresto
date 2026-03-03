@@ -56,7 +56,7 @@ const login = async (req, res) => {
             httpOnly: true,
             sameSite: 'lax',
             secure: false, // true only in HTTPS
-            maxAge: 24 * 60 * 60 * 1000
+            maxAge: 60 * 60 * 24 * 7 * 1000
         });
         res.status(200)
             .json({

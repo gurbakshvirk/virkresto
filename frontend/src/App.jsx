@@ -1,4 +1,6 @@
 import { useEffect } from "react"
+import { useLoader } from "./context/Loadercontext";
+import GlobalLoader from "./components/GlobalLoader";
 import Navbar from './components/Navbar'
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Homepage from './pages/Homepage';
@@ -37,6 +39,7 @@ import CheckoutSuccess from "./pages/CheckoutSuccess"
 
 // import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
+
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -83,13 +86,27 @@ const App = () => {
   //   return () => lenis.destroy()
   // }, [])
 const location = useLocation();
+const { setLoading } = useLoader();
 
+useEffect(() => {
+  setLoading(true);
+
+  const timer = setTimeout(() => {
+    setLoading(false);
+  }, 550); // smooth delayyy
+
+  return () => clearTimeout(timer);
+}, [location.pathname]);
 
   return (
+    <>
+    {/* <GlobalLoader /> */}
+
    <Routes location={location} key={location.pathname}>
 
       {/* PUBLIC ROUTES */}
       <Route element={<PublicLayout />}>
+
         <Route path="/" element={<Homepage />} />
         <Route path="/menu" element={<Menu />} />
         <Route path="/sign-up" element={<Signup />} />
@@ -121,6 +138,7 @@ const location = useLocation();
         <Route path="AdminLiveReservations" element={<AdminLiveReservations />} />
       </Route>
     </Routes>
+    </>
   )
 }
 export default App
