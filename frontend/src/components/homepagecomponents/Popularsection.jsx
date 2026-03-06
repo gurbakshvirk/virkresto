@@ -69,7 +69,9 @@ const PopularSection = () => {
   }, []);
 
   return (
-    <div ref={mainRef} className="relative z-10 px-2 md:px-20 p-20 bg-white">
+    <section ref={mainRef} 
+    data-theme="light"
+    className="relative z-10 px-2 md:px-20 p-20 bg-white">
 
       {/* Heading */}
       <div ref={headingText} className='mb-10 text-center md:mx-20'>
@@ -103,7 +105,7 @@ const PopularSection = () => {
         </Swiper>
       </div>
 
-    </div>
+    </section>
   )
 }
 

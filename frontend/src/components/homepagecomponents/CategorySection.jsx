@@ -251,7 +251,10 @@ const CategorySection = () => {
     //     </div>
     // </div>
 
-    <div ref={Mainref}>
+    <section ref={Mainref} 
+      data-theme="light"
+    
+    >
       {/* PIN ONLY */}
       <div ref={sectionRef} className="relative">
 
@@ -278,7 +281,7 @@ const CategorySection = () => {
         </div>
 
       </div>
-    </div>
+    </section>
 
   )
 }

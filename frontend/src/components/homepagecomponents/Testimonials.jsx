@@ -91,7 +91,11 @@ const ReviewSec = () => {
     ];
 
     return (
-        <div ref={mainref} className="bg-[#f4f4f4] py-24 rounded-3xl">
+        <section ref={mainref}
+      data-theme="light"
+        
+        
+        className="bg-[#f4f4f4] py-24 rounded-3xl">
             <div className="text-center mb-16">
                 <h2 className="text-4xl md:text-5xl font-serif text-[#4b2e2e]">
                     Hear From Our Customers
@@ -144,7 +148,7 @@ const ReviewSec = () => {
                 </div>
             </div>
 
-        </div>
+        </section>
     );
 };
 

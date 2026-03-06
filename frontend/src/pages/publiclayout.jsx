@@ -12,46 +12,52 @@ const PublicLayout = () => {
   const location = useLocation();
 
   //  LENIS — RUN ONLY ONCE
-  useLayoutEffect(() => {
-    const lenis = new Lenis({
-      duration: 1.2,
-      smooth: true,
-      smoothTouch: false,
-    });
+useLayoutEffect(() => {
+  const lenis = new Lenis({
+    duration: 1.2,
+    smooth: true,
+    smoothTouch: false,
+  });
 
-    function raf(time) {
-      lenis.raf(time);
-      requestAnimationFrame(raf);
-    }
+  function raf(time) {
+    lenis.raf(time);
+
+    // IMPORTANT: update ScrollTrigger every frame
+    ScrollTrigger.update();
+
     requestAnimationFrame(raf);
+  }
 
-    lenis.on("scroll", ScrollTrigger.update);
+  requestAnimationFrame(raf);
 
-    ScrollTrigger.scrollerProxy(document.body, {
-      scrollTop(value) {
-        if (arguments.length) {
-          return lenis.scrollTo(value, { immediate: true });
-        }
-        return lenis.animatedScroll;
-      },
-      getBoundingClientRect() {
-        return {
-          top: 0,
-          left: 0,
-          width: window.innerWidth,
-          height: window.innerHeight,
-        };
-      },
-    });
+  ScrollTrigger.scrollerProxy(document.body, {
+    scrollTop(value) {
+      if (arguments.length) {
+        lenis.scrollTo(value, { immediate: true });
+      } else {
+        return window.scrollY;
+      }
+    },
+    getBoundingClientRect() {
+      return {
+        top: 0,
+        left: 0,
+        width: window.innerWidth,
+        height: window.innerHeight,
+      };
+    },
+  });
 
-    // ScrollTrigger.addEventListener("refresh", () => lenis.update());
-    ScrollTrigger.refresh();
+  ScrollTrigger.defaults({
+    scroller: document.body,
+  });
 
-    return () => {
-      lenis.destroy();
-    };
-  }, []);
+  ScrollTrigger.refresh();
 
+  return () => {
+    lenis.destroy();
+  };
+}, []);
   //  REFRESH ON ROUTE CHANGE
   useEffect(() => {
     setTimeout(() => {

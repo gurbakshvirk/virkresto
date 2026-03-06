@@ -13,6 +13,7 @@ const BookTablesec = () => {
 
       <section
         ref={sectionRef}
+        data-theme="dark"
         className="relative bg-white rounded-4xl shadow-2xl m-4 h-[50vh] overflow-hidden border-2 md:m-10 md:h-[70vh]"
       >
         {/* Background Image */}

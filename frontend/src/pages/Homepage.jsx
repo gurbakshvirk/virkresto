@@ -8,7 +8,7 @@ import ReviewSec from '../components/Reviewsec'
 import CategorySection from '../components/homepagecomponents/CategorySection'
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { gsap } from "gsap";
-import TextSec from '../components/TextSec'
+import TextSec from '../components/homepagecomponents/TextSec'
 import Testimonials from '../components/homepagecomponents/Testimonials'
 import Allproducts from '../components/homepagecomponents/Allproducts'
 import OffersSection from '../components/homepagecomponents/OfferSection'

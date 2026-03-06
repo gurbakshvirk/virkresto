@@ -43,6 +43,41 @@ const CheckoutSuccess = () => {
     if (sessionId) confirmPayment()
   }, [])
 
+ const downloadInvoice = async () => {
+  try {
+    const token = localStorage.getItem("token")
+
+    const res = await fetch(
+      `${import.meta.env.VITE_API_URL}/api/orders/${order._id}/invoice`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    )
+
+    if (!res.ok) {
+      throw new Error("Failed to download invoice")
+    }
+
+    const blob = await res.blob()
+    const url = window.URL.createObjectURL(blob)
+
+    const a = document.createElement("a")
+    a.href = url
+    a.download = `invoice-${order._id}.pdf`
+    document.body.appendChild(a)
+    a.click()
+    a.remove()
+
+    window.URL.revokeObjectURL(url)
+  } catch (err) {
+    console.error(err)
+    alert("Could not download invoice")
+  }
+}
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -75,7 +110,7 @@ const CheckoutSuccess = () => {
         </p>
 
         <button
-          onClick={() => window.print()}
+          onClick={downloadInvoice}
           className="bg-green-600 text-white px-6 py-2 rounded-lg mt-4"
         >
           Download Invoice

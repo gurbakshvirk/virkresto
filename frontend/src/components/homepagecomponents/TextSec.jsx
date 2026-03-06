@@ -30,16 +30,25 @@ const TextSec = () => {
 
   return (
     <section
-      ref={sectionRef}
-      className="h-[70vh] bg-linear-to-r from-yellow-300 via-yellow-200 to-gray-100 overflow-hidden flex items-center"
+      ref={sectionRef} 
+      data-theme="dark"
+      
+      className="h-[70vh] bg-linear-to-r from-yellow-300 via-yellow-200 to-gray-100 overflow-hidden flex items-center "
     >
       <h1
         ref={textRef}
          style={{
           WebkitTextStroke: "2px #5c3a00",
           textShadow: "6px 6px 12px rgba(0,0,0,0.45)",
+          backgroundImage:
+      "url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTKhcPg-OnIvBESDS2LUBY4WBiLDR5dY3pwBg&s')",
+    // backgroundSize: "cover",
+   backgroundRepeat: "repeat",
+backgroundSize: "300px",
+backgroundPosition: "center",
+          
         }}
-        className="whitespace-nowrap text-[14vw] font-serif font-light px-12 textoutline-6 text-transparent bg-clip-text bg-gradient-to-r from-yellow-900 via-yellow-600 to-yellow-900"
+        className="whitespace-nowrap text-[14vw] font-serif font-bold px-12 textoutline-6 text-transparent bg-clip-text bg-gradient-to-r from-yellow-900 via-yellow-600 to-yellow-900"
       >JUICY BURGERS • MELTING CHEESE • FIRE GRILLED • VIRKRESTO</h1>
     </section>
   );

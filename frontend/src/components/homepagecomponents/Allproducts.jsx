@@ -132,7 +132,11 @@ const Allproducts = () => {
 
 
   return (
-    <div ref={Mainref}>
+    <section ref={Mainref} 
+    
+      data-theme="light"
+    
+    >
       {/* <section  ref={sectionRef} className="py-12 md:h-screen bg-linear-to-r from-yellow-300 via-yellow-200 to-gray-100 border-b-2 border-yellow-300"> */}
       {/* <section
         ref={sectionRef}
@@ -212,7 +216,7 @@ const Allproducts = () => {
           </button>
         </div>
       </section >
-    </div >
+    </section>
   )
 }
 

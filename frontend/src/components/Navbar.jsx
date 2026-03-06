@@ -1,13 +1,83 @@
 import { NavLink } from 'react-router-dom'
 import { useState } from "react"
 import { useAuth } from "../context/authcontext"
+import { useEffect } from 'react'
+import { useLocation } from "react-router-dom";
 
 const Navbar = () => {
     const [open, setOpen] = useState(false)
     const { user, isLoggedIn, logout } = useAuth()
     const [authOpen, setAuthOpen] = useState(false)
+    // const [scrolled, setScrolled] = useState(false);
+const [theme, setTheme] = useState("dark");
+const location = useLocation(); 
+//     useEffect(() => {
+//   const handleScroll = () => {
+//     if (window.scrollY > 1024) {
+//       setScrolled(true);
+//     } else {
+//       setScrolled(false);
+//     }
+//   };
+
+//   window.addEventListener("scroll", handleScroll);
+//   return () => window.removeEventListener("scroll", handleScroll);
+// }, []);
 
 
+
+
+// useEffect(() => {
+//   const sections = document.querySelectorAll("section[data-theme]");
+
+//   const observer = new IntersectionObserver(
+//     (entries) => {
+//       entries.forEach((entry) => {
+//         if (entry.isIntersecting) {
+//           const newTheme = entry.target.getAttribute("data-theme");
+//           setTheme(newTheme);
+//         }
+//       });
+//     },
+//     {
+//       threshold: 0.6,
+//     }
+//   );
+
+//   sections.forEach((sec) => observer.observe(sec));
+
+//   return () => observer.disconnect();
+// }, []);
+useEffect(() => {
+
+  // If NOT homepage → force light theme (black glass navbar)
+  if (location.pathname !== "/") {
+    setTheme("light")
+    return
+  }
+
+  // HOMEPAGE → section based theme
+  const sections = document.querySelectorAll("section[data-theme]")
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const newTheme = entry.target.getAttribute("data-theme")
+          setTheme(newTheme)
+        }
+      })
+    },
+    {
+      threshold: 0.5,
+    }
+  )
+
+  sections.forEach((sec) => observer.observe(sec))
+
+  return () => observer.disconnect()
+
+}, [location.pathname])
     // Common desktop link styles
     const desktopLinkClass = ({ isActive }) =>
         `px-4 py-2 border-2 rounded-2xl transition ${isActive
@@ -16,8 +86,41 @@ const Navbar = () => {
         }`
 
     return (
-        <nav className="absolute inset-x-0 top-0 z-50 py-8">
-            <div className="mx-5 md:mx-14 bg-black/70 border-2 border-white p-5 rounded-bl-4xl rounded-tr-4xl">
+        <nav className="absolute inset-x-0 top-0 z-50 py-8  fixed">
+            {/* <div className="mx-5 md:mx-14 bg-black/70 border-2 border-white p-5 rounded-bl-4xl rounded-tr-4xl"> */}
+                {/* <div className="mx-5 md:mx-14 
+bg-gradient-to-b from-white/10 to-white/5
+backdrop-blur-xl
+border border-white/20
+shadow-[0_8px_32px_rgba(0,0,0,0.35)]
+p-5
+rounded-bl-4xl rounded-tr-4xl
+"> */}
+
+
+
+
+
+{/* <div
+  className={`relative overflow-hidden mx-5 md:mx-14 p-5 rounded-bl-4xl rounded-tr-4xl transition-all duration-300
+  backdrop-blur-xl border shadow-[0_8px_32px_rgba(0,0,0,0.35)]
+  ${
+    scrolled
+      ? "bg-black/60 border-white/10"
+      : "bg-gradient-to-b from-white/10 to-white/5 border-white/20"
+  }`}
+> */}
+
+
+
+<div
+className={`relative overflow-hidden mx-5 md:mx-14 p-5 rounded-bl-4xl rounded-tr-4xl transition-all duration-300 backdrop-blur-xl border shadow-[0_8px_32px_rgba(0,0,0,0.35)]
+${theme === "dark"
+? "bg-white/10 border-white/20 text-white"
+: "bg-black/60 border-black/20 text-white"
+}`}
+>
+                
                 <div className="flex items-center justify-between md:px-10">
 
                     {/* Logo */}

@@ -60,7 +60,11 @@ const Menu = () => {
     return matchCategory && matchFood
   })
   return (
-    <div className="pt-38 pb-20 bg-[#f7f4ef] min-h-screen">
+    <section
+      data-theme="light"
+      
+    
+    className="pt-38 pb-20 bg-[#f7f4ef] min-h-screen">
 
       {/* Heading */}
       <h1 className="text-4xl font-serif text-center mb-10">
@@ -155,7 +159,7 @@ const Menu = () => {
         }
       </div>
 
-    </div>
+    </section>
   )
 }
 

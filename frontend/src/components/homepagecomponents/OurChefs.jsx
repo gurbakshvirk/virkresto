@@ -165,7 +165,10 @@ const OurChefs = () => {
 
 
   return (
-    <div ref={mainRef}>
+    <section ref={mainRef}
+      data-theme="light"
+    
+    >
       {/* <section
         ref={sectionRef}
         className="my-10 py-10 border-b-2 border-yellow-300"
@@ -202,7 +205,7 @@ const OurChefs = () => {
 
         </div>
       </section>
-    </div>
+    </section>
   );
 };
 

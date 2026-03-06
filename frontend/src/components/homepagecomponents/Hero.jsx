@@ -10,68 +10,64 @@ const Hero = () => {
   const rightRef = useRef(null);
   const heroRefImg = useRef(null);
 
-  useEffect(() => {
-    gsap.to(heroRefImg.current, {
+useEffect(() => {
 
+  // kill old triggers when component mounts again
+  ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+
+  const ctx = gsap.context(() => {
+
+    gsap.to(heroRefImg.current, {
+      scale: 1.1,
+      ease: "none",
       scrollTrigger: {
         trigger: heroRef.current,
         start: "10% 0%",
         end: "bottom 60%",
         scrub: true,
-        // markers: true,
       },
-      scale: 1.1,
-      ease: "none",
     });
 
-
-
-    gsap.fromTo(leftRef.current, {
-      x: 60,
-      opacity: 1,
-    }, {
-      x: -60,
-      opacity: 1,
-      duration: 1,
-
-      scrollTrigger: {
-        trigger: heroRef.current,
-        start: "top 10%",
-        end: "bottom 65%",
-        scrub: 1,
-        // markers: true,
-      }
-    }),
-      // gsap.to(rightRef.current, {
-      // y: 150,
-      // scrollTrigger: {
-      //   trigger: heroRef.current,
-      //   start: "top 0%",
-      //   end:  "bottom 30%",
-      //   scrub: 3,
-      //   // markers: true,
-      // },
-      gsap.fromTo(
-        rightRef.current,
-        { y: 0 },   // always start centered
-        {
-          y: 150,
-          ease: "none",
-          scrollTrigger: {
-            trigger: heroRef.current,
-            start: "top top",
-            end: "bottom top",
-            scrub: true,
-            // markers: true,
-          }
+    gsap.fromTo(
+      leftRef.current,
+      { x: 60, opacity: 1 },
+      {
+        x: -60,
+        opacity: 1,
+        duration: 1,
+        scrollTrigger: {
+          trigger: heroRef.current,
+          start: "top 10%",
+          end: "bottom 65%",
+          scrub: 1,
         }
-      );
+      }
+    );
 
+    gsap.fromTo(
+      rightRef.current,
+      { y: 0 },
+      {
+        y: 150,
+        ease: "none",
+        scrollTrigger: {
+          trigger: heroRef.current,
+          start: "top top",
+          end: "bottom top",
+          scrub: true,
+        }
+      }
+    );
 
-  
-}, [])
+  }, heroRef);
+
+  // ScrollTrigger.refresh();
+
+  return () => ctx.revert();
+
+}, []);
 return (
-  <section ref={heroRef} className="relative h-screen w-full overflow-hidden">
+  <section ref={heroRef} data-theme="dark" className="relative h-screen w-full overflow-hidden">
 
     {/* Background Image */}
     <img ref={heroRefImg}

@@ -1,5 +1,6 @@
 import { useEffect } from "react"
 import { useLoader } from "./context/Loadercontext";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import GlobalLoader from "./components/GlobalLoader";
 import Navbar from './components/Navbar'
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
@@ -94,6 +95,17 @@ useEffect(() => {
   const timer = setTimeout(() => {
     setLoading(false);
   }, 550); // smooth delayyy
+
+  return () => clearTimeout(timer);
+}, [location.pathname]);
+
+
+useEffect(() => {
+  setLoading(true);
+
+  const timer = setTimeout(() => {
+    setLoading(false);
+  }, 550);
 
   return () => clearTimeout(timer);
 }, [location.pathname]);
