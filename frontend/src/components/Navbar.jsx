@@ -48,6 +48,19 @@ const location = useLocation();
 
 //   return () => observer.disconnect();
 // }, []);
+
+useEffect(() => {
+  const handleScroll = () => {
+    setAuthOpen(false)
+  }
+
+  window.addEventListener("scroll", handleScroll)
+
+  return () => window.removeEventListener("scroll", handleScroll)
+}, [])
+useEffect(() => {
+  setAuthOpen(false)
+}, [location.pathname])
 useEffect(() => {
 
   // If NOT homepage → force light theme (black glass navbar)
@@ -86,7 +99,7 @@ useEffect(() => {
         }`
 
     return (
-        <nav className="absolute inset-x-0 top-0 z-50 py-8  fixed">
+        <nav className="absolute inset-x-0 top-0 z-50 py-8 fixed">
             {/* <div className="mx-5 md:mx-14 bg-black/70 border-2 border-white p-5 rounded-bl-4xl rounded-tr-4xl"> */}
                 {/* <div className="mx-5 md:mx-14 
 bg-gradient-to-b from-white/10 to-white/5
@@ -114,7 +127,7 @@ rounded-bl-4xl rounded-tr-4xl
 
 
 <div
-className={`relative overflow-hidden mx-5 md:mx-14 p-5 rounded-bl-4xl rounded-tr-4xl transition-all duration-300 backdrop-blur-xl border shadow-[0_8px_32px_rgba(0,0,0,0.35)]
+className={`relative mx-5 md:mx-14 p-5 rounded-bl-4xl rounded-tr-4xl transition-all duration-300 backdrop-blur-xl border shadow-[0_8px_32px_rgba(0,0,0,0.35)]
 ${theme === "dark"
 ? "bg-white/10 border-white/20 text-white"
 : "bg-black/60 border-black/20 text-white"
