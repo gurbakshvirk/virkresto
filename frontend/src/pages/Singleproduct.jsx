@@ -1,216 +1,161 @@
-import { useParams } from 'react-router-dom'
-import { getSingleProduct } from '../services/productservice'
-import { useEffect, useState } from 'react'
-import AddToCartButton from '../components/AddtoCartbtn'
-// import style from '../pages/SingleProduct.css'
-import "./SingleProduct.css";
+import { useParams } from "react-router-dom";
+import { getSingleProduct } from "../services/productservice";
+import { useEffect, useState } from "react";
+import AddToCartButton from "../components/AddtoCartbtn";
 
 const SingleProductPage = () => {
-  const { id } = useParams()
+  const { id } = useParams();
 
-  const [product, setProduct] = useState(null)
-  const [loading, setLoading] = useState(true)
-  const [activeImage, setActiveImage] = useState("");
-
+  const [product, setProduct] = useState(null);
+  const [loading, setLoading] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(0);
 
-
   useEffect(() => {
-    if (!id) return
+    if (!id) return;
 
     const fetchProduct = async () => {
       try {
-        const data = await getSingleProduct(id)
-        setProduct(data)
+        const data = await getSingleProduct(id);
+        setProduct(data);
       } catch (error) {
-        console.error(error)
+        console.error(error);
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
-    }
+    };
 
-    fetchProduct()
-  }, [id])
-
-
-  // const getImageUrl = (url) =>
-  //   url
-  //     ? url
-  //     : `${process.env.REACT_APP_API_URL}${url}`;
+    fetchProduct();
+  }, [id]);
 
   const prevImage = () => {
     setCurrentIndex((prev) =>
       prev === 0 ? product.images.length - 1 : prev - 1
     );
   };
-  useEffect(() => {
-    if (product) {
-      setActiveImage(product.images[currentIndex]);
-    }
-  }, [currentIndex, product]);
 
   const nextImage = () => {
     setCurrentIndex((prev) =>
       prev === product.images.length - 1 ? 0 : prev + 1
     );
   };
-  // console.log(product)
-  if (loading) return <p className="p-10">Loading...</p>
-  if (!product) return <p className="p-10">Product not found</p>
+
+  if (loading) return <p className="p-10">Loading...</p>;
+  if (!product) return <p className="p-10">Product not found</p>;
 
   return (
-    <div className="my-20 p-10 ">
-      {/* <h1 className="text-black text-4xl font-bold mb-6">
-        {product.name}
-      </h1>
+    <div className="min-h-screen bg-gradient-to-br from-yellow-100 via-lime-100 to-green-200 py-16 px-4 pt-30 overflow-hidden">
 
-      <img
-        src={product.images[0].url}
-        alt={product.title}
-        className="h-72 mx-auto"
-      />
-  {product.images.length > 1 && (
-    <div className="mt-10">
-      <h2 className="text-2xl font-semibold mb-4">More Images</h2>
+      {/* PRODUCT SECTION */}
+      <section className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-12 items-start">
 
-      <div className="flex gap-4 flex-wrap justify-center">
-        {product.images.slice(1).map((img, index) => (
-          <img
-            key={index}
-            src={img.url}
-            alt={`product-${index}`}
-            className="h-40 w-40 object-cover rounded-lg shadow"
-          />
-        ))}
-      </div>
-    </div>
-  )}
+        {/* LEFT SIDE */}
+        <div className="flex flex-col gap-4">
 
-      <p className="mt-6">{product.description}</p>
-      <p className="mt-4 text-2xl font-bold">₹ {product.price}</p>
-      <p className="mt-4 text-2xl font-bold">{product.description}</p>
-       <p className="mt-4 text-2xl font-bold">{product.isAvailable}</p>
-      <p className="mt-4 text-2xl font-bold">{product.shortdescription}</p>
+          {/* MAIN IMAGE */}
+          <div className="relative group">
+            <img
+              src={product.images[currentIndex]?.url}
+              alt={product.name}
+              className="w-full aspect-square object-cover rounded-2xl shadow-xl"
+            />
 
+            {/* arrows */}
+            <button
+              onClick={prevImage}
+              className="absolute left-3 top-1/2 -translate-y-1/2
+              bg-black/40 backdrop-blur text-white w-9 h-9 rounded-full
+              opacity-0 group-hover:opacity-100 transition"
+            >
+              ‹
+            </button>
 
-      <div className="flex gap-4 mt-6">
-        <button className="px-6 py-2 bg-black text-white rounded">
-          Buy now
-        </button>
+            <button
+              onClick={nextImage}
+              className="absolute right-3 top-1/2 -translate-y-1/2
+              bg-black/40 backdrop-blur text-white w-9 h-9 rounded-full
+              opacity-0 group-hover:opacity-100 transition"
+            >
+              ›
+            </button>
+          </div>
 
-        <button className="px-6 py-2 border border-black rounded">
-          Add to cart
-        </button>
-        <AddToCartButton item={product}/> 
-      </div>
-
-
-
-
-
- */}
-
-
-
-
-
-
-
-
-
-
-
-
-
-      <div className="page">
-
-        {/* ================= PRODUCT ================= */}
-        <section className="product">
-
-          {/* ---------- THUMBNAILS ---------- */}
-          <div className="thumbs">
+          {/* THUMBNAILS */}
+          <div className="flex gap-3 overflow-x-auto">
             {product.images.map((img, i) => (
               <img
                 key={i}
                 src={img.url}
-                alt={product.name}
-                className={currentIndex === i ? "active" : ""}
+                alt=""
                 onClick={() => setCurrentIndex(i)}
+                className={`w-20 h-20 object-cover rounded-lg cursor-pointer border
+                ${
+                  currentIndex === i
+                    ? "border-purple-500"
+                    : "border-transparent"
+                }
+                hover:scale-105 transition`}
               />
             ))}
           </div>
 
-          {/* ---------- MAIN IMAGE ---------- */}
-          <div className="main-image">
-            <button className="slide-btn left" onClick={prevImage}>‹</button>
+        </div>
 
-            <img
-              src={product.images[currentIndex]?.url}
-              alt={product.name}
-              className="h-120 mx-auto"
-            />
 
-            <button className="slide-btn right" onClick={nextImage}>›</button>
+        {/* RIGHT SIDE INFO */}
+        <div className="bg-white/40 backdrop-blur-xl border border-white/30 rounded-3xl p-8 shadow-xl">
+
+          <h1 className="text-3xl font-bold text-gray-900">
+            {product.name}
+          </h1>
+
+          <p className="text-3xl font-semibold text-purple-600 mt-4">
+            ₹{product.price}
+          </p>
+
+          <p className="text-gray-700 mt-4 leading-relaxed">
+            {product.shortdescription}
+          </p>
+
+          {/* BUTTONS */}
+          <div className="flex flex-wrap gap-4 mt-8">
+
+            <button
+              className="px-6 py-3 rounded-full
+              bg-gradient-to-r from-purple-500 to-pink-500
+              text-white font-semibold shadow-md
+              hover:scale-105 transition"
+            >
+              Buy Now
+            </button>
+
+            <AddToCartButton item={product} />
 
           </div>
 
-          {/* ---------- INFO ---------- */}
-          <div className="info">
-            <h1 className="text-black text-4xl font-bold mt-20"> {product.name}</h1>
+        </div>
 
-            <div className="mt-4 text-2xl font-bold mt-5">₹{product.price}</div>
-
-            {/* <div className={`stock ${product.stock > 0 ? "in" : "out"}`}>
-            <span className="dot"></span>
-            {product.stock > 0 ? "In Stock" : "Out of Stock"}
-          </div> */}
-
-            <p className="desc text-2xl">{product.shortdescription}</p>
-
-            <div className="actions-box">
-
-              <button
-                className="px-6 py-2  bg-purple-500 border rounded-4xl mx-4"
-              // onClick={() => navigate(`/buynow/${product._id}`)}
-              >
-                Buy Now
-              </button>
-                <AddToCartButton item={product} />
+      </section>
 
 
-              <div className="secondary-actions">
-                {/* <button
-                className="btn add"
-                // disabled={product.stock < 1}
-                // onClick={() => addToCart(product._id)}
-              > */}
-                {/* Add To Cart */}
-                {/* </button> */}
+      {/* DESCRIPTION SECTION */}
+      <section className="max-w-5xl mx-auto mt-16">
 
+        <div className="bg-white/30 backdrop-blur-xl border border-white/30 rounded-2xl p-8 shadow-lg">
 
-              </div>
+          <h2 className="text-xl font-semibold mb-3">
+            Description
+          </h2>
 
-            </div>
-          </div>
-        </section>
+          <p className="text-gray-700 leading-relaxed">
+            {product.description}
+          </p>
 
+        </div>
 
-        {/* ================= DESCRIPTION ================= */}
-        <section className="details">
-          <div className="details-left">
-            <h3>Description</h3>
-            {/* <p>{product.description}</p> */}
-            <p>{product.description}</p>
-          </div>
-        </section>
+      </section>
 
-      </div>
     </div>
+  );
+};
 
-    // from other website
-
-
-  )
-}
-
-export default SingleProductPage
+export default SingleProductPage;

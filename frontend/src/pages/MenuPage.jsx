@@ -72,10 +72,11 @@ const Menu = () => {
       </h1>
 
       {/* Category Tabs */}
-      <div className="flex justify-center gap-5 flex-wrap mb-5">
+      {/* <div className="flex justify-center gap-1 flex-wrap mb-5"> */}
+      <div className="flex md:justify-center gap-2 mb-6 overflow-x-auto whitespace-nowrap px-4 scrollbar-hide">
 
         {/* ALL BUTTON */}
-        <button
+        {/* <button
           onClick={() => setActiveCategory(null)}
           className={`px-6 py-2 rounded-full border transition
             ${activeCategory === null
@@ -84,15 +85,20 @@ const Menu = () => {
             }`}
         >
           All
-        </button>
-
-
-
-
-
+        </button> */}
+        <button
+  onClick={() => setActiveCategory(null)}
+  className={`px-5 py-2 rounded-full border text-sm md:text-base flex-shrink-0 transition
+    ${activeCategory === null
+      ? "bg-green-700 text-white"
+      : "bg-white hover:bg-green-100"
+    }`}
+>
+  All
+</button>
 
         {/* Dynamic Categories */}
-        {categories.map(cat => (
+        {/* {categories.map(cat => (
           <button
             key={cat._id}
             onClick={() =>
@@ -108,7 +114,24 @@ const Menu = () => {
           >
             {cat.name}
           </button>
-        ))}
+        ))} */}
+        {categories.map(cat => (
+  <button
+    key={cat._id}
+    onClick={() =>
+      setActiveCategory(prev =>
+        prev === cat._id ? null : cat._id
+      )
+    }
+    className={`px-5 py-2 rounded-full border text-sm md:text-base flex-shrink-0 transition
+      ${activeCategory === cat._id
+        ? "bg-green-700 text-white"
+        : "bg-white hover:bg-green-100"
+      }`}
+  >
+    {cat.name}
+  </button>
+))}
       </div>
 
       {/* Veg / Non-Veg Toggle */}
