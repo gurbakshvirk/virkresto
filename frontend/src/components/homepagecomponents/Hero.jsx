@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
+import { useNavigate } from "react-router-dom";
 gsap.registerPlugin(ScrollTrigger);
 
 const Hero = () => {
@@ -9,7 +10,7 @@ const Hero = () => {
   const leftRef = useRef(null);
   const rightRef = useRef(null);
   const heroRefImg = useRef(null);
-
+const navigate = useNavigate();
 useEffect(() => {
 
   // kill old triggers when component mounts again
@@ -102,10 +103,11 @@ return (
 
         {/* Buttons */}
         <div className="mt-8 flex gap-6">
-          <button className=" text-white rounded-full bg-yellow-400 px-6 py-3 font-bold md:font-semibold hover:bg-yellow-800 hover:scale-110 transition">
+          <button     onClick={() => navigate("/menu")}
+ className=" text-white rounded-full bg-yellow-400 px-6 py-3 font-bold md:font-semibold hover:bg-yellow-800 hover:scale-110 transition">
             Order Online
           </button>
-          <button className="rounded-full border border-white px-6 py-3 font-semibold hover:bg-white hover:scale-95 hover:text-black transition">
+          <button    onClick={() => navigate("/reservation")} className="rounded-full border border-white px-6 py-3 font-semibold hover:bg-white hover:scale-95 hover:text-black transition">
             Reserve Table
           </button>
         </div>
