@@ -144,7 +144,7 @@ const Allproducts = () => {
       > */}
       <section
         ref={sectionRef}
-        className="relative z-10 overflow-hidden h-screen py-20 px-8 md:px-16 rounded-[60px] bg-gradient-to-r from-yellow-300 via-yellow-200 to-gray-100 border-b-2 border-yellow-300"
+        className="relative z-10 overflow-hidden h-screen py-10 md:py-20 px-8 md:px-16 rounded-[60px] bg-gradient-to-r from-yellow-300 via-yellow-200 to-gray-100 border-b-2 border-yellow-300"
       >
 
 

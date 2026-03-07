@@ -14,20 +14,30 @@ const BookTablesec = () => {
       <section
         ref={sectionRef}
         data-theme="dark"
-        className="relative bg-white rounded-4xl shadow-2xl m-4 h-[50vh] overflow-hidden border-2 md:m-10 md:h-[70vh]"
-      >
+        // className="relative bg-white rounded-4xl shadow-2xl m-4 h-[50vh] overflow-hidden border-2 md:m-10 md:h-[70vh]"
+     className="relative bg-white rounded-4xl shadow-2xl overflow-hidden border-2
+min-h-[280px] h-[40vh] md:h-[60vh] lg:h-[70vh] m-4 md:m-10"
+
+
+
+// className="relative bg-white rounded-4xl shadow-2xl overflow-hidden border-2
+// min-h-[260px] h-[35vh] sm:h-[40vh] md:h-[60vh] lg:h-[70vh]
+// m-4 md:m-10"
+     
+     >
         {/* Background Image */}
         <img
           src="https://plus.unsplash.com/premium_photo-1670984939638-01d1854a5d12"
           alt="Book a table"
           className="absolute inset-0 h-full w-full object-cover scale-110"
+
         />
 
         {/* Dark Overlay */}
         <div className="absolute inset-0 bg-black/60"></div>
 
         {/* Content */}
-        <div className="relative z-10 flex h-full flex-col items-center justify-center text-center text-white px-6">
+        <div className="relative z-10 flex h-full flex-col items-center justify-center text-center text-white px-4 md:px-6">
           <h2 className="text-3xl md:text-5xl font-bold">
             Book a Table
           </h2>

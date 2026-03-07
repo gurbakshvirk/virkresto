@@ -1,5 +1,5 @@
 const Order = require("../Models/Order");
-
+const User = require("../Models/User"); 
 /*
 ========================================
 CREATE ORDER
@@ -215,23 +215,64 @@ Protected Route
 */
 const getAllOrders = async (req, res) => {
   try {
-
-    // Optional: restrict to admin
     if (req.user.role !== "admin") {
       return res.status(403).json({ message: "Access denied" });
     }
 
     const orders = await Order.find()
-      .populate("user", "name email")
+      .populate("user", "name email") // <-- use the correct field name
       .sort({ createdAt: -1 });
 
     res.status(200).json(orders);
 
   } catch (error) {
     console.error("Get All Orders Error:", error);
-    res.status(500).json({
-      message: "Server Error"
+    res.status(500).json({ message: "Server Error" });
+  }
+};
+
+
+
+/*
+========================================
+UPDATE ORDER STATUS (Admin Only)
+PATCH /api/orders/:id/status
+Protected Route
+========================================
+*/
+const updateOrderStatus = async (req, res) => {
+  try {
+
+    if (req.user.role !== "admin") {
+      return res.status(403).json({ message: "Access denied" });
+    }
+
+    const { status } = req.body;
+
+    const validStatuses = ["pending", "preparing", "ready", "completed"];
+
+    if (!validStatuses.includes(status)) {
+      return res.status(400).json({ message: "Invalid status" });
+    }
+
+    const order = await Order.findByIdAndUpdate(
+      req.params.id,
+      { status },
+      { new: true }
+    );
+
+    if (!order) {
+      return res.status(404).json({ message: "Order not found" });
+    }
+
+    res.status(200).json({
+      message: "Order status updated",
+      order
     });
+
+  } catch (error) {
+    console.error("Update Order Status Error:", error);
+    res.status(500).json({ message: "Server Error" });
   }
 };
 
@@ -240,7 +281,8 @@ module.exports = {
   createOrder,
   previewOrder,
   getMyOrders,
-  getAllOrders
+  getAllOrders,
+  updateOrderStatus
 };
 
 

@@ -95,9 +95,11 @@ const ReviewSec = () => {
       data-theme="light"
         
         
-        className="bg-[#f4f4f4] py-24 rounded-3xl">
-            <div className="text-center mb-16">
-                <h2 className="text-4xl md:text-5xl font-serif text-[#4b2e2e]">
+        className="
+         py-10 md:py-24 rounded-3xl
+        bg-gradient-to-br from-orange-100 via-white to-orange-200">
+            <div className="text-center mb-8 md:mb-16 px-4">
+                <h2 className="text-3xl md:text-5xl font-serif text-[#4b2e2e]">
                     Hear From Our Customers
                 </h2>
             </div>
@@ -123,13 +125,18 @@ const ReviewSec = () => {
                 >
                     {reviews.map((review) => (
                         <SwiperSlide key={review.id}>
-                            <div className="flex flex-col md:flex-row items-center justify-center gap-12">
+                            <div className="flex flex-col md:flex-row items-center justify-center gap-6 md:gap-12">
                                 <ReviewCard2 {...review} />
-                                <img
+                                {/* <img
                                     src={review.image}
                                     alt="food"
                                     className="w-80 h-72 object-cover rounded-lg shadow-lg"
-                                />
+                                /> */}
+                                <img
+  src={review.image}
+  alt="food"
+  className="w-full max-w-[320px] h-[240px] md:h-72 object-cover rounded-lg shadow-lg"
+/>
 
                             </div>
                         </SwiperSlide>

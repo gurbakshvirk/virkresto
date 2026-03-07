@@ -71,7 +71,8 @@ const PopularSection = () => {
   return (
     <section ref={mainRef} 
     data-theme="light"
-    className="relative z-10 px-2 md:px-20 p-20 bg-white">
+    // className="relative z-10 px-2 md:px-20 p-20 bg-white">
+    className="relative z-10 px-4 md:px-20 py-12 md:py-20 bg-white">
 
       {/* Heading */}
       <div ref={headingText} className='mb-10 text-center md:mx-20'>
@@ -81,19 +82,33 @@ const PopularSection = () => {
 
       {/* Slider */}
       <div ref={cardsSec}>
-        <Swiper
+        {/* <Swiper
           modules={[Navigation, Pagination]}
           navigation
-          spaceBetween={0}
-          slidesPerView={1}
+          spaceBetween={20}
+          slidesPerView={1.2}
           breakpoints={{
             640: { slidesPerView: 2 },
             1024: { slidesPerView: 4 },
           }}
-        >
+        > */}
+        <Swiper
+  modules={[Navigation, Pagination]}
+  navigation
+  spaceBetween={20}
+  breakpoints={{
+    0: { slidesPerView: 1.1 },   // mobile
+    640: { slidesPerView: 2 },   // tablets
+    1024: { slidesPerView: 4 },  // desktop
+  }}
+>
 
           {popularProducts.map(product => (
-            <SwiperSlide className='px-6' key={product._id}>
+            <SwiperSlide
+            //  className='px-6'
+            
+             className='px-2 sm:px-4 md:px-6'
+             key={product._id}>
               <PopularCard
                 title={product.name}
                 image={product.images}

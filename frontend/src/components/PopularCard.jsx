@@ -14,8 +14,8 @@ const PopularCard = (props) => {
   }
 
     return (
-        <div className="group relative h-96 w-80 overflow-hidden rounded-tr-2xl rounded-bl-2xl bg-black shadow-lg">
-            {/* Image */}
+        // <div className="group relative h-96 w-80 overflow-hidden rounded-tr-2xl rounded-bl-2xl bg-black shadow-lg">
+<div className="group relative h-80 sm:h-96 w-full md:w-80 overflow-hidden rounded-tr-2xl rounded-bl-2xl bg-black shadow-lg">        {/* Image */}
             <img
                 src={props.image[0].url}
                 alt={props.title}

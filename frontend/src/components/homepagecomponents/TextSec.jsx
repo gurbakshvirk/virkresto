@@ -15,7 +15,7 @@ const TextSec = () => {
         ease: "none",
         scrollTrigger: {
           trigger: sectionRef.current,
-          start: "top top",
+          start: "top 10",
           end: "bottom 40%",
         //   end: "top 20% ",
           scrub: 1,
@@ -33,7 +33,7 @@ const TextSec = () => {
       ref={sectionRef} 
       data-theme="dark"
       
-      className="h-[70vh] bg-linear-to-r from-yellow-300 via-yellow-200 to-gray-100 overflow-hidden flex items-center "
+      className=" h-[50vh] md:h-[70vh] bg-linear-to-r from-yellow-300 via-yellow-200 to-gray-100 overflow-hidden flex items-center "
     >
       <h1
         ref={textRef}
@@ -48,7 +48,7 @@ backgroundSize: "300px",
 backgroundPosition: "center",
           
         }}
-        className="whitespace-nowrap text-[14vw] font-serif font-bold px-12 textoutline-6 text-transparent bg-clip-text bg-gradient-to-r from-yellow-900 via-yellow-600 to-yellow-900"
+        className="whitespace-nowrap text-[40vw] md:text-[14vw] font-serif font-bold px-12 textoutline-6 text-transparent bg-clip-text bg-gradient-to-r from-yellow-900 via-yellow-600 to-yellow-900"
       >JUICY BURGERS • MELTING CHEESE • FIRE GRILLED • VIRKRESTO</h1>
     </section>
   );

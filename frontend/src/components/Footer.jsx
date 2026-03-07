@@ -64,9 +64,9 @@ const Footer = () => {
 }, []);
 
   return (
-    <footer ref={FooterMain}  className="bg-white border-t-1 border-black  px-6 py-16 text-black md:px-20">
+    <footer ref={FooterMain}  className="bg-white border-t-1 border-black  px-6 py-6 text-black md:px-20">
 
-      <div  ref={Footersec} className="grid gap-12 md:grid-cols-3">
+      <div  ref={Footersec} className="grid gap-6 md:gap-12 md:grid-cols-3">
 
         {/* Brand */}
         <div>
@@ -80,7 +80,7 @@ const Footer = () => {
         {/* Quick Links */}
         <div>
           <h2 className="mb-4 text-xl font-semibold">Quick Actions</h2>
-          <ul className="space-y-3 text-black">
+          <ul className="md:space-y-3 space-y-0 text-black">
             <li className="hover:text-black transition cursor-pointer">Home</li>
             <li className="hover:text-black transition cursor-pointer">About Us</li>
             <li className="hover:text-black transition cursor-pointer">Reservations</li>

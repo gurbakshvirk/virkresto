@@ -82,7 +82,7 @@ return (
 
 
     {/* Content */}
-    <div className="relative z-10 flex h-full flex-col items-center pt-48 md:flex-row md:pt-0 md:justify-between" >
+    <div className="relative z-10 flex h-full flex-col items-center pt-36 md:flex-row md:pt-8 md:justify-between" >
 
 
       {/* left text content div  */}
@@ -95,14 +95,14 @@ return (
           <span className="text-yellow-300">Perfectly Served</span>
         </h1>
 
-        <p className="mt-6 text-base md:text-xl text-gray-200">
+        <p className="mt-4 text-base md:text-xl text-gray-200">
           Experience fresh flavors, warm hospitality, and unforgettable meals —
           dine in, take away, or order online with ease.
         </p>
 
         {/* Buttons */}
         <div className="mt-8 flex gap-6">
-          <button className=" text-white rounded-full bg-yellow-400 px-6 py-3 font-semibold hover:bg-yellow-800 hover:scale-110 transition">
+          <button className=" text-white rounded-full bg-yellow-400 px-6 py-3 font-bold md:font-semibold hover:bg-yellow-800 hover:scale-110 transition">
             Order Online
           </button>
           <button className="rounded-full border border-white px-6 py-3 font-semibold hover:bg-white hover:scale-95 hover:text-black transition">
@@ -114,7 +114,7 @@ return (
 
       {/* right image div  */}
       {/* <div className="m-20 sm sm:w-1/2 flex items-center justify-center flex-col"> */}
-      <div ref={rightRef} className="mt-16 md:mt-0 md:w-1/2 flex items-center justify-center">
+      <div ref={rightRef} className="mt-12 md:mt-0 md:w-1/2 flex items-center justify-center">
 
         <img
           src="https://images.unsplash.com/photo-1550547660-d9450f859349"

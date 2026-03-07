@@ -2,13 +2,14 @@ import React from 'react'
 
 const CategoryCard = ({ image, title, id }) => {
   return (
-    <div className="w-60 rounded-2xl overflow-hidden">
+    // <div className="md:w-60 rounded-2xl overflow-hidden">
+    <div className="w-full md:w-60 rounded-2xl overflow-hidden">
       <div className="relative group w-full">
 
         <img
           src={image}
           alt={title}
-          className="h-[260px] w-full object-cover"
+          className=" h-[180px] md:h-[260px] w-full object-cover"
         />
 
         {/* overlay */}

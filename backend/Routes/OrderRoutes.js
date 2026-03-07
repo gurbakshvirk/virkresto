@@ -2,14 +2,15 @@ const PDFDocument = require("pdfkit");
 
 const router = require("express").Router();
 const ensureAuthenticated = require("../Middleware/Auth");
-
+const Order = require("../Models/Order");
 // const ensureAuthenticated = require("../Middleware/authMiddleware");
 
 const {
   createOrder,
   getMyOrders,
   getAllOrders,
-  previewOrder
+  previewOrder,
+   updateOrderStatus
 } = require("../Controllers/OrderController");
 
 
@@ -81,7 +82,11 @@ router.get("/:id/invoice", ensureAuthenticated, async (req, res) => {
 
 router.post("/", ensureAuthenticated, createOrder);
 router.get("/my", ensureAuthenticated, getMyOrders);
-router.get("/", ensureAuthenticated, getAllOrders);
 router.post("/preview",ensureAuthenticated, previewOrder);
+
+//  (ADMIN)
+router.patch("/:id/status", ensureAuthenticated, updateOrderStatus);
+router.get("/", ensureAuthenticated, getAllOrders);
+
 
 module.exports = router;
