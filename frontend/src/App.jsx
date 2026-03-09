@@ -16,7 +16,8 @@ import Login from './pages/login';
 import PublicLayout from "./pages/publiclayout";
 import BookTable from "./pages/BookTable";
 import Checkout from "./pages/Checkout";
-
+import About from "./pages/About";
+import Contact from "./pages/Contact";
 
 
 import Dashboard from './pages/admin/Dashboard';
@@ -34,12 +35,13 @@ import Adminsettings from "./pages/admin/Adminsettings";
 import SubCategories from "./pages/admin/subCategories";
 import AdminLiveReservations from "./pages/admin/AdminLiveReservations";
 import CheckoutSuccess from "./pages/CheckoutSuccess"
-
+import MyOrders from "./pages/MyOrders";
 
 
 
 // import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
+
 
 
 function ScrollToTop() {
@@ -130,8 +132,9 @@ useEffect(() => {
         <Route path="/reservation" element={<BookTable />} />
         <Route path="/checkout" element={<Checkout />} />
 <Route path="/checkout-success" element={<CheckoutSuccess />} />
-
-
+<Route path="/my-orders" element={<MyOrders />} />
+<Route path="/about" element={<About />} />
+<Route path="/contact" element={<Contact />} />
       </Route>
 
 

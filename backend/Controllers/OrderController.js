@@ -1,5 +1,5 @@
 const Order = require("../Models/Order");
-const User = require("../Models/User"); 
+const User = require("../Models/User");
 /*
 ========================================
 CREATE ORDER
@@ -71,12 +71,19 @@ const createOrder = async (req, res) => {
 
       discountAmount += itemDiscount;
 
+      // processedItems.push({
+      //   productId: product._id,
+      //   name: product.name,
+      //   price: itemPrice,
+      //   quantity: item.quantity,
+      //   image: product.image
+      // });
       processedItems.push({
         productId: product._id,
         name: product.name,
         price: itemPrice,
         quantity: item.quantity,
-        image: product.image
+        image: product.images?.[0]?.url
       });
     }
 

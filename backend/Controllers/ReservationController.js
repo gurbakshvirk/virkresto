@@ -36,7 +36,6 @@ exports.getAvailableTables = async (req, res) => {
 exports.createReservation = async (req, res) => {
   try {
 
-    // Extra safety → prevent double booking race condition
     const exists = await Reservation.findOne({
       tableId: req.body.tableId,
       date: req.body.date,
@@ -47,7 +46,11 @@ exports.createReservation = async (req, res) => {
       return res.status(400).json({ message: "Table already booked" });
     }
 
-    const reservation = await Reservation.create(req.body);
+    const reservation = await Reservation.create({
+      ...req.body,
+      user: req.session.user.id
+    });
+
     res.status(201).json(reservation);
 
   } catch (err) {
@@ -85,6 +88,26 @@ exports.getReservations = async (req, res) => {
       .sort({ date: 1, time: 1 });
 
     res.json(reservations);
+  } catch (err) {
+    res.status(500).json({ message: "Error fetching reservations" });
+  }
+};
+
+
+exports.getMyReservations = async (req, res) => {
+  try {
+
+    // const reservations = await Reservation.find({
+    //   user: req.user._id
+    // })
+    const reservations = await Reservation.find({
+      user: req.session.user.id
+    })
+      .populate("tableId")
+      .sort({ createdAt: -1 });
+
+    res.json(reservations);
+
   } catch (err) {
     res.status(500).json({ message: "Error fetching reservations" });
   }

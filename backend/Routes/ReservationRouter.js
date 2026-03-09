@@ -1,11 +1,13 @@
 const express = require("express");
+const ensureAuthenticated = require("../Middleware/Auth");
 const router = express.Router();
 
 const {
   getAvailableTables,
   createReservation,
   updateReservationStatus,
-  getReservations
+  getReservations,
+   getMyReservations
 } = require("../Controllers/ReservationController");
 
 
@@ -17,6 +19,8 @@ router.get("/available", getAvailableTables);
 router.put("/:id/status",updateReservationStatus);
 
 
+
+router.get("/my", ensureAuthenticated, getMyReservations);
 
 router.get("/", getReservations);
 

@@ -235,6 +235,8 @@ ${theme === "dark"
 
                                             <NavLink to="/contact" className="block px-4 py-3 hover:bg-white/10" onClick={() => setAuthOpen(false)}>Contact</NavLink>
                                             <NavLink to="/about" className="block px-4 py-3 hover:bg-white/10" onClick={() => setAuthOpen(false)}>About</NavLink>
+                                            <NavLink to="/my-orders" className="block px-4 py-3 hover:bg-white/10" onClick={() => setAuthOpen(false)}>My-Orders</NavLink>
+
                                             <button
                                                 onClick={logout}
                                                 // className="px-4 py-2 border-2 rounded-2xl hover:bg-white/10 transition"
