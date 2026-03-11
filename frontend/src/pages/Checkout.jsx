@@ -1,6 +1,7 @@
 import React, { useContext, useState, useEffect } from 'react'
 import { CartContext } from '../context/CartContext'
 import { useNavigate } from 'react-router-dom'
+import { useLocation } from "react-router-dom";
 // import { loadStripe } from "@stripe/stripe-js";
 
 // const stripePromise = loadStripe(`${import.meta.env.STRIPEKEY}`); 
@@ -11,14 +12,22 @@ import { useNavigate } from 'react-router-dom'
 const Checkout = () => {
 
     const { cart, clearCart } = useContext(CartContext)
+const location = useLocation()
+
+const items = location.state?.buyNowItem
+  ? [location.state.buyNowItem]
+  : cart
+    
     const [preview, setPreview] = useState(null)
     const navigate = useNavigate()
+    // const location = useLocation();
+const buyNowItem = location.state?.buyNowItem;
     console.log(cart)
-    if (cart.length === 0) {
+    if (items.length === 0) {
         return <h2>Your Cart is Empty</h2>
     }
 
-    const totalAmount = cart.reduce((acc, item) => {
+    const totalAmount = items.reduce((acc, item) => {
         return acc + item.price * item.qty
     }, 0)
 
@@ -55,7 +64,7 @@ const Checkout = () => {
                     },
                     //  body: JSON.stringify({
                     //     customer: form,
-                    //     items: cart.map(item => ({
+                    //     items: items.map(item => ({
                     //         productId: item._id,
                     //         quantity: item.qty
                     //     }))
@@ -68,7 +77,7 @@ const Checkout = () => {
                         orderType: form.orderType,
                         deliveryAddress:
                             form.orderType === "delivery" ? form.address : null,
-                        items: cart.map(item => ({
+                        items: items.map(item => ({
                             productId: item._id,
                             quantity: item.qty
                         }))
@@ -100,7 +109,7 @@ const Checkout = () => {
                             Authorization: `Bearer ${token}`
                         },
                         body: JSON.stringify({
-                            items: cart.map(item => ({
+                            items: items.map(item => ({
                                 productId: item._id,
                                 quantity: item.qty
                             }))
@@ -119,7 +128,7 @@ const Checkout = () => {
         }
 
         fetchPreview()
-    }, [cart])
+    }, [cart, location.state])
 
 
     const handleSubmit = async (e) => {
@@ -140,7 +149,7 @@ const Checkout = () => {
             },
             orderType: form.orderType,
             deliveryAddress: form.orderType === "delivery" ? form.address : null,
-            items: cart.map(item => ({
+            items: items.map(item => ({
                 productId: item._id,
                 quantity: item.qty
             }))
@@ -194,7 +203,7 @@ const Checkout = () => {
                     </h2>
 
                     <div className="space-y-4">
-                        {cart.map((item) => (
+                        {items.map((item) => (
                             <div key={item.id} className="flex justify-between items-center border-b pb-2">
                                 <div>
                                     <p className="font-medium">{item.name}</p>
@@ -295,7 +304,7 @@ const Checkout = () => {
                      onClick={handleCheckout} >
                         Place Order
                     </button> */}
-                        {/* <button onClick={handleCheckout} disabled={cart.length === 0}>
+                        {/* <button onClick={handleCheckout} disabled={items.length === 0}>
   Checkout
 </button> */}
 

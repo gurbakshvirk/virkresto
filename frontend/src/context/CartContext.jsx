@@ -84,7 +84,7 @@
 
 
 import { createContext, useEffect, useState} from "react";
-import { toast } from "react-toastify"
+import { toast } from "react-toastify";
 import { useAuth } from "./authcontext";
 import { useNavigate } from "react-router-dom";
 

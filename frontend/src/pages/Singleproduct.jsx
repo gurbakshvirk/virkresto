@@ -1,7 +1,9 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { getSingleProduct } from "../services/productservice";
 import { useEffect, useState } from "react";
 import AddToCartButton from "../components/AddtoCartbtn";
+import { toast } from "react-toastify"
+import axios from 'axios';  
 
 const SingleProductPage = () => {
   const { id } = useParams();
@@ -9,7 +11,20 @@ const SingleProductPage = () => {
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(0);
-
+const navigate = useNavigate();
+const API = import.meta.env.VITE_API_URL;
+const handleBuyNow = () => {
+  navigate("/checkout", {
+    state: {
+      buyNowItem: {
+        _id: product._id,
+        name: product.name,
+        price: product.price,
+        qty: 1
+      }
+    }
+  });
+};
   useEffect(() => {
     if (!id) return;
 
@@ -120,6 +135,7 @@ const SingleProductPage = () => {
           <div className="flex flex-wrap gap-4 mt-8">
 
             <button
+            onClick={handleBuyNow}
               className="px-6 py-3 rounded-full
               bg-gradient-to-r from-purple-500 to-pink-500
               text-white font-semibold shadow-md
