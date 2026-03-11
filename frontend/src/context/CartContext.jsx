@@ -118,6 +118,7 @@ const navigate = useNavigate();
       const existing = oldCart.find((item) => item._id === food._id);
 
       if (existing) {
+         toast.success("Cart updated");
         return oldCart.map((item) =>
           item._id === food._id ? { ...item, qty: item.qty + 1 } : item
         );

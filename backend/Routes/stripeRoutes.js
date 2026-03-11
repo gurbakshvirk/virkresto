@@ -183,30 +183,83 @@ router.post("/create-checkout-session", ensureAuthenticated, async (req, res) =>
     const processedItems = [];
 
     // 1️⃣ Process products
+    // for (const item of items) {
+    //   const product = await Product.findById(item.productId);
+    //   if (!product) continue;
+
+    //   const itemTotal = product.price * item.quantity;
+    //   subtotal += itemTotal;
+
+    //   processedItems.push({
+    //     productId: product._id,
+    //     name: product.name,
+    //     price: product.price,
+    //     quantity: item.quantity,
+    //     image: product.image,
+    //   });
+
+    //   line_items.push({
+    //     price_data: {
+    //       currency: "inr",
+    //       product_data: { name: product.name },
+    //       unit_amount: Math.round(product.price * 100),
+    //     },
+    //     quantity: item.quantity,
+    //   });
+    // }
+
+
     for (const item of items) {
-      const product = await Product.findById(item.productId);
-      if (!product) continue;
 
-      const itemTotal = product.price * item.quantity;
-      subtotal += itemTotal;
+  const product = await Product.findById(item.productId);
+  if (!product) continue;
 
-      processedItems.push({
-        productId: product._id,
-        name: product.name,
-        price: product.price,
-        quantity: item.quantity,
-        image: product.image,
-      });
+  let itemPrice = product.price;
 
-      line_items.push({
-        price_data: {
-          currency: "inr",
-          product_data: { name: product.name },
-          unit_amount: Math.round(product.price * 100),
-        },
-        quantity: item.quantity,
-      });
+  const offer = await Offer.findOne({
+    isActive: true,
+    startDate: { $lte: new Date() },
+    endDate: { $gte: new Date() },
+    products: { $in: [product._id] }
+  });
+
+  let itemDiscount = 0;
+
+  if (offer) {
+
+    if (offer.discountType === "percentage") {
+      itemDiscount = (itemPrice * offer.discountValue) / 100;
     }
+
+    if (offer.discountType === "flat") {
+      itemDiscount = offer.discountValue;
+    }
+
+  }
+
+  const finalPrice = itemPrice - itemDiscount;
+
+  subtotal += itemPrice * item.quantity;
+  discountAmount += itemDiscount * item.quantity;
+
+  processedItems.push({
+    productId: product._id,
+    name: product.name,
+    price: finalPrice,   // store discounted price
+    quantity: item.quantity,
+    image: product.images?.[0]?.url
+  });
+
+  line_items.push({
+    price_data: {
+      currency: "inr",
+      product_data: { name: product.name },
+      unit_amount: Math.round(finalPrice * 100)
+    },
+    quantity: item.quantity
+  });
+
+}
 
     const totalAmount = subtotal - discountAmount;
 
