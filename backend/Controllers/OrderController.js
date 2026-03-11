@@ -50,12 +50,18 @@ const createOrder = async (req, res) => {
       subtotal += itemTotal;
 
       // 🔥 Check active offer for this product
+      // const offer = await Offer.findOne({
+      //   isActive: true,
+      //   startDate: { $lte: now },
+      //   endDate: { $gte: now },
+      //   products: product._id
+      // });
       const offer = await Offer.findOne({
-        isActive: true,
-        startDate: { $lte: now },
-        endDate: { $gte: now },
-        products: product._id
-      });
+  isActive: true,
+  startDate: { $lte: now },
+  endDate: { $gte: now },
+  products: { $in: [product._id] }
+});
 
       let itemDiscount = 0;
 

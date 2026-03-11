@@ -91,19 +91,52 @@ exports.createProduct = async (req, res) => {
 
 
 //  Get All Products (with filtering)
+// exports.getProducts = async (req, res) => {
+//   try {
+//     const { category, foodType } = req.query;
+
+//     let filter = {};
+
+//     // Filter by category
+//     if (category) filter.category = category;
+
+//     let products = await Product.find(filter)
+//       .populate("category", "name foodType");
+
+//     // Filter by veg/nonveg through category
+//     if (foodType) {
+//       products = products.filter(
+//         (p) => p.category.foodType === foodType
+//       );
+//     }
+
+//     res.json(products);
+//   } catch (error) {
+//     res.status(500).json({ message: error.message });
+//   }
+// };
 exports.getProducts = async (req, res) => {
   try {
-    const { category, foodType } = req.query;
+    const { category, foodType, popular } = req.query;
 
     let filter = {};
 
-    // Filter by category
-    if (category) filter.category = category;
+    // filter by category
+    if (category) {
+      filter.category = category;
+    }
+
+    // filter by popular
+    if (popular === "true") {
+      filter.isPopular = true;
+      filter.isVisible = true;
+      filter.isAvailable = true;
+    }
 
     let products = await Product.find(filter)
       .populate("category", "name foodType");
 
-    // Filter by veg/nonveg through category
+    // veg/nonveg filter via category
     if (foodType) {
       products = products.filter(
         (p) => p.category.foodType === foodType
@@ -111,11 +144,11 @@ exports.getProducts = async (req, res) => {
     }
 
     res.json(products);
+
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
-
 
 
 //  Get Single Product

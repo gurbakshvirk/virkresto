@@ -8,11 +8,11 @@ const About = () => {
       <div className="max-w-6xl mx-auto text-center mb-16">
 
         <h1 className="text-5xl font-bold text-gray-800 mb-6">
-          About Virkresto
+          About Delieat
         </h1>
 
         <p className="text-gray-600 max-w-3xl mx-auto text-lg">
-          At Virkresto, we believe food is more than just a meal — it's an
+          At Delieat, we believe food is more than just a meal — it's an
           experience. Our kitchen brings together authentic flavors, fresh
           ingredients, and a passion for culinary excellence.
         </p>
@@ -36,7 +36,7 @@ const About = () => {
           </h2>
 
           <p className="text-gray-600 leading-relaxed mb-4">
-            Virkresto started with a simple mission: to serve food that
+            Delieat started with a simple mission: to serve food that
             makes people happy. From traditional flavors to modern cuisine,
             every dish we prepare is crafted with love and attention.
           </p>

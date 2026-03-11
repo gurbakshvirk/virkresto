@@ -43,7 +43,7 @@ const SingleProductPage = () => {
   if (!product) return <p className="p-10">Product not found</p>;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-yellow-100 via-lime-100 to-green-200 py-16 px-4 pt-30 overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-yellow-100 via-lime-100 to-green-200 py-16 px-4 pt-32 overflow-hidden">
 
       {/* PRODUCT SECTION */}
       <section className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-12 items-start">

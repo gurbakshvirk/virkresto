@@ -146,13 +146,14 @@ exports.updateCategory = async (req, res) => {
 // Delete Category (only if unused)
 exports.deleteCategory = async (req, res) => {
   try {
+
     const categoryId = req.params.id;
 
     const productsExist = await Product.findOne({ category: categoryId });
 
     if (productsExist) {
       return res.status(400).json({
-        message: "Cannot delete category. Products exist in this category.",
+        message: "Cannot delete category. Products exist in this category."
       });
     }
 
@@ -162,17 +163,22 @@ exports.deleteCategory = async (req, res) => {
       return res.status(404).json({ message: "Category not found" });
     }
 
-    // ✅ Delete image from Cloudinary
-    const publicId = category.image.split("/").pop().split(".")[0];
+    // ✅ Delete image from Cloudinary safely
+    if (category.image && category.image.includes("cloudinary")) {
 
-    await cloudinary.uploader.destroy(`virkresto/categories/${publicId}`);
+      const parts = category.image.split("/");
+      const fileName = parts[parts.length - 1];
+      const publicId = fileName.split(".")[0];
+
+      await cloudinary.uploader.destroy(`virkresto/categories/${publicId}`);
+    }
 
     await Category.findByIdAndDelete(categoryId);
 
     res.json({ message: "Category deleted successfully" });
 
   } catch (error) {
+    console.error("DELETE CATEGORY ERROR:", error);
     res.status(500).json({ message: error.message });
   }
 };
-

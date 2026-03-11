@@ -16,8 +16,18 @@ const CartPage = () => {
 
   const finalPrice = subTotal + deliveryCharges
 
+
+  const isEmpty = cart.length === 0
+
   return (
-    <div className="min-h-screen pt-32 pb-20 px-4 bg-gradient-to-br from-gray-200 via-white to-gray-300">
+    <div
+  className={`min-h-screen bg-gradient-to-br from-gray-200 via-white to-gray-300 px-4 ${
+    isEmpty
+      ? "flex flex-col items-center pt-32 text-center min-h-auto"
+      : "pt-32 pb-20"
+  }`}
+>
+    {/* // <div className="min-h-screen pt-32 pb-20 px-4 bg-gradient-to-br from-gray-200 via-white to-gray-300"> */}
 
       <div className="max-w-4xl mx-auto">
 
@@ -25,10 +35,29 @@ const CartPage = () => {
         <h1 className="text-3xl font-bold mb-8 text-black">
           Your Cart
         </h1>
+{isEmpty && (
+  <div className="flex flex-col items-center justify-center gap-6">
 
-        {cart.length === 0 && (
-          <p className="text-gray-500">Your cart is empty</p>
-        )}
+    <img
+      src="https://static.vecteezy.com/system/resources/previews/016/026/442/non_2x/empty-shopping-cart-concept-illustration-flat-design-eps10-modern-graphic-element-for-landing-page-empty-state-ui-infographic-icon-vector.jpg"
+      alt="Empty cart"
+      className="w-60 md:w-72 opacity-90"
+    />
+
+    <p className="text-gray-600 text-lg">
+      Your cart is empty
+    </p>
+
+    <button
+      onClick={() => navigate("/menu")}
+      className="mt-2 px-6 py-3 bg-black text-white rounded-xl
+      hover:bg-gray-800 transition"
+    >
+      Menu??
+    </button>
+
+  </div>
+)}
 
         {/* CART ITEMS */}
         <div className="space-y-6">

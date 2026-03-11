@@ -105,7 +105,7 @@ return (
         <div className="mt-8 flex gap-6">
           <button     onClick={() => navigate("/menu")}
  className=" text-white rounded-full bg-yellow-400 px-6 py-3 font-bold md:font-semibold hover:bg-yellow-800 hover:scale-110 transition">
-            Order Online
+            Order Now
           </button>
           <button    onClick={() => navigate("/reservation")} className="rounded-full border border-white px-6 py-3 font-semibold hover:bg-white hover:scale-95 hover:text-black transition">
             Reserve Table

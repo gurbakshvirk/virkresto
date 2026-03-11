@@ -154,7 +154,7 @@ ${theme === "dark"
                         <NavLink to="/menu" className={desktopLinkClass}>Menu</NavLink>
 
                         <NavLink to="/reservation" className={desktopLinkClass}>Reservations</NavLink>
-                        <NavLink to="/orderonline" className={desktopLinkClass}>Order Online</NavLink>
+                        {/* <NavLink to="/orderonline" className={desktopLinkClass}>Order Online</NavLink> */}
                         {/* <NavLink to="/contact" className={desktopLinkClass}>Contact</NavLink> */}
 
                         {/* NOT LOGGED IN */}
@@ -307,7 +307,7 @@ ${theme === "dark"
                         <NavLink to="/" onClick={() => setOpen(false)}>Home</NavLink>
                         <NavLink to="/about" onClick={() => setOpen(false)}>About</NavLink>
                         <NavLink to="/reservation" onClick={() => setOpen(false)}>Reservations</NavLink>
-                        <NavLink to="/orderonline" onClick={() => setOpen(false)}>Order Online</NavLink>
+                        {/* <NavLink to="/orderonline" onClick={() => setOpen(false)}>Order Online</NavLink> */}
                         <NavLink to="/contact" onClick={() => setOpen(false)}>Contact</NavLink>
                         <NavLink to="/menu" onClick={() => setOpen(false)}>Menu</NavLink>
                         <NavLink to="/cart" onClick={() => setOpen(false)}>Cart</NavLink>
